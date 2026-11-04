@@ -1,0 +1,2443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nurjaya Shop - Belanja ATK, Photocopy & Print</title>
+
+  <!-- Color Theme Tab & Address Bar Browser (Emerald 700) -->
+  <meta name="theme-color" content="#047857">
+  <meta name="msapplication-navbutton-color" content="#047857">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- PWA & Mobile App Capability -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Nurjaya Shop">
+
+  <!-- Manifest File PWA -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/icon-16.png">
+  <link rel="apple-touch-icon" href="assets/img/icon-192.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- CSS SPLASH SCREEN ANTI-BOCOR & ANTI-FREEZE -->
+  <style>
+/* Pengunci Scrollbar Khusus Saat Splash Masih Aktif */
+    body.splash-active {
+      overflow: hidden !important;
+      touch-action: none !important;
+    }
+
+    /* TAMBAHKAN BARIS INI: Sembunyikan seluruh isi halaman & navbar saat splash aktif */
+    body.splash-active > *:not(#splash-screen) {
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+
+    /* Direct Splash Pengunci Utama */
+    #splash-screen {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 9999999 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: radial-gradient(circle at center, #16a34a 0%, #15803d 60%, #0f5132 100%) !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0.4s ease-out !important;
+    }
+
+    #splash-screen.fade-out {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transform: scale(1.04) !important;
+      pointer-events: none !important;
+    }
+
+    @keyframes splashPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(8px);
+        filter: blur(4px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+      }
+    }
+  </style>
+  <style>
+    /* Custom Scrollbar & Utility Classes */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Animation Keyframes */
+    @keyframes cartBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3) rotate(-10deg); }
+    }
+    .animate-cart-bounce {
+      animation: cartBounce 0.4s ease-in-out;
+    }
+	
+	/* Animasi Menyembul dari Bawah (Slide Up Smooth) */
+@keyframes modalSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-modal-slide-up {
+  animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Animasi Tombol Keranjang Interaktif Pas Diklik */
+@keyframes cartBtnPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+  75% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+.animate-btn-pop {
+  animation: cartBtnPop 0.3s ease-in-out;
+}
+
+/* Animasi Menyembul Keluar / Slide Down */
+@keyframes modalSlideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
+}
+.animate-modal-slide-down {
+  animation: modalSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+/* Animasi Denyut Shimmer Skeleton */
+@keyframes skeletonPulse {
+  0%, 100% { background-color: #f1f5f9; }
+  50% { background-color: #e2e8f0; }
+}
+.animate-skeleton {
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen pb-28 select-none splash-active">
+<!-- ========================================== -->
+  <!-- DIRECT SPLASH SCREEN (HARUS DI PALING ATAS <body>) -->
+  <!-- ========================================== -->
+  <div id="splash-screen" 
+       style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999999; display: flex; opacity: 1; visibility: visible;"
+       class="bg-[radial-gradient(circle_at_center,_#16a34a_0%,_#15803d_60%,_#0f5132_100%)] items-center justify-center p-4 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] select-none">
+    
+    <div class="splash-content flex flex-col items-center text-center animate-[splashPop_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+      <!-- Baris Utama: Logo Troli + Judul -->
+      <div class="flex items-center justify-center gap-3 sm:gap-4">
+        <svg class="w-10 h-10 sm:w-12 sm:h-12 text-white drop-shadow-md flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="21" r="1"></circle>
+          <circle cx="19" cy="21" r="1"></circle>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+        </svg>
+
+        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none drop-shadow-md">
+          Nurjaya Shop
+        </h1>
+      </div>
+
+      <!-- Subtitle -->
+      <p class="text-xs sm:text-sm font-semibold text-white/90 mt-2.5 tracking-wide">
+        Belanja ATK, Print & Cetak Foto.
+      </p>
+    </div>
+  </div>
+  <!-- ========================================== -->
+  <!-- TOP PERMANENT NAVIGATION HEADER            -->
+  <!-- ========================================== -->
+  <header class="fixed top-0 inset-x-0 bg-emerald-700 text-white z-30 shadow-md">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-3">
+<!-- Searchbar -->
+<div class="relative flex-1">
+  <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+  <input 
+    type="text" 
+    id="globalSearchInput" 
+    placeholder="Cari barang di Nurjaya Shop..." 
+    onfocus="handleSearchFocus()"
+    oninput="handleSearchInput(this.value)"
+    class="w-full pl-9 pr-8 py-2 text-sm bg-white text-slate-800 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-400 placeholder-slate-400 shadow-inner"
+  >
+  <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+    <i class="fa-solid fa-circle-xmark"></i>
+  </button>
+</div>
+
+      <!-- Icon Keranjang Header -->
+      <button onclick="openCartModal()" id="headerCartBtn" class="relative p-2 text-white hover:text-emerald-200 transition">
+        <i class="fa-solid fa-cart-shopping text-xl"></i>
+        <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-amber-400 text-emerald-950 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-emerald-700 shadow">
+          0
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SPACER HEADER -->
+  <div class="h-16"></div>
+
+  <!-- SEARCH OVERLAY RESULTS (Aktif saat pencarian di luar Tab Beli Barang) -->
+  <div id="searchOverlay" class="hidden fixed inset-x-0 top-16 bottom-24 bg-white z-20 overflow-y-auto max-w-md mx-auto p-4 shadow-lg">
+    <div class="flex justify-between items-center mb-3">
+      <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider" id="searchResultCount">Hasil Pencarian</h3>
+      <button onclick="clearSearch()" class="text-xs text-emerald-600 font-bold">Tutup</button>
+    </div>
+    <div id="searchResultList" class="space-y-2"></div>
+  </div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="main-content max-w-md mx-auto px-4 pt-3">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: BERANDA                             -->
+    <!-- ========================================== -->
+    <div id="tab-dashboard" class="tab-content space-y-6">
+      
+   <!-- Banner Slide Photo Infinity (Ratio 3:1 Landscape) -->
+
+<!-- Banner Slide Photo Infinity (Ratio 3:1 Landscape) -->
+<div class="relative w-full overflow-hidden rounded-2xl shadow-sm border border-slate-200 bg-slate-900 aspect-[3/1] mt-3 sm:mt-4">
+  <!-- Container Slide Gambar -->
+  <div id="bannerContainer" class="flex transition-transform duration-500 ease-in-out h-full w-full">
+	<div class="min-w-full h-full">
+      <img src="assets/banner/banner-0.webp" alt="Banner 0" class="w-full h-full object-cover">
+    </div>
+    <div class="min-w-full h-full">
+      <img src="assets/banner/banner-1.webp" alt="Banner 1" class="w-full h-full object-cover">
+    </div>
+    <div class="min-w-full h-full">
+      <img src="assets/banner/banner-2.webp" alt="Banner 2" class="w-full h-full object-cover">
+    </div>
+    <div class="min-w-full h-full">
+      <img src="assets/banner/banner-3.webp" alt="Banner 3" class="w-full h-full object-cover">
+    </div>
+    <div class="min-w-full h-full">
+      <img src="assets/banner/banner-4.webp" alt="Banner 4" class="w-full h-full object-cover">
+    </div>
+    <div class="min-w-full h-full">
+      <img src="assets/banner/banner-5.webp" alt="Banner 5" class="w-full h-full object-cover">
+    </div>
+  </div>
+
+  <!-- Banner Dots Indicator (5 Titik) -->
+  <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10 bg-black/30 px-2 py-1 rounded-full backdrop-blur-sm" id="bannerDots">
+    <span class="w-2 h-2 rounded-full bg-white opacity-100 transition"></span>
+    <span class="w-2 h-2 rounded-full bg-white opacity-40 transition"></span>
+    <span class="w-2 h-2 rounded-full bg-white opacity-40 transition"></span>
+    <span class="w-2 h-2 rounded-full bg-white opacity-40 transition"></span>
+    <span class="w-2 h-2 rounded-full bg-white opacity-40 transition"></span>
+  </div>
+</div>
+
+<!-- SECTION SIDE-TO-SIDE: 4 ICON GRID (KIRI) & PREVIEW LIVE SLIDER VERTIKAL (KANAN) -->
+<!-- h-[165px] atau h-[180px] mengunci tinggi keseluruhan agar ramping, items-stretch memastikan sejajar -->
+<div class="mt-3 sm:mt-4 flex items-stretch gap-2.5 h-[165px] sm:h-[180px] w-full">
+  
+  <!-- KIRI: GRID 2x2 DARI 4 ICON ASLI (Lock tinggi penuh sesuai h-parent) -->
+  <div class="flex-1 grid grid-cols-2 gap-2 h-full">
+    <!-- Shortcut 1: Semua ATK -->
+    <button onclick="showTab('belanja')" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+        <i class="fa-solid fa-store"></i>
+      </div>
+      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Semua ATK</span>
+    </button>
+
+    <!-- Shortcut 2: Pelayanan & Jasa -->
+    <button onclick="openServicesModal()" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+        <i class="fa-solid fa-hand-holding-hand"></i>
+      </div>
+      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Pelayanan & Jasa</span>
+    </button>
+
+    <!-- Shortcut 3: Price List -->
+    <button onclick="openPricelistModal()" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+        <i class="fa-solid fa-tags"></i>
+      </div>
+      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Price List</span>
+    </button>
+
+    <!-- Shortcut 4: Keranjang -->
+    <button onclick="openCartModal()" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+        <i class="fa-solid fa-basket-shopping"></i>
+      </div>
+      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Keranjang</span>
+    </button>
+  </div>
+
+  <!-- KANAN: LIVE PREVIEW SLIDER VERTIKAL (Lock Rasio 3:4 & Overflow-Hidden) -->
+  <!-- w-[123px] / aspect-[3/4] adalah perpaduan tepat untuk menjaga visual Live ramping setinggi grid di kirinya -->
+  <div class="w-[123px] sm:w-[135px] aspect-[3/4] h-full relative rounded-xl overflow-hidden shadow-sm border border-slate-200/80 bg-slate-950 flex-shrink-0">
+    
+    <!-- Badge LIVE Ala Shopee -->
+    <div class="absolute top-1.5 left-1.5 z-20 bg-rose-600 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full flex items-center gap-1 shadow-md animate-pulse">
+      <span class="w-1 h-1 rounded-full bg-white"></span> LIVE
+    </div>
+
+    <!-- Container Slider Gambar VERTIKAL -->
+    <div id="livePreviewContainer" class="flex flex-col transition-transform duration-500 ease-in-out h-full w-full">
+      
+      <!-- Banner 6 -->
+      <div class="w-full h-full relative flex-shrink-0 overflow-hidden">
+        <img src="assets/banner/banner-6.webp" alt="Live 1" class="w-full h-full object-cover">
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-1.5 pt-4 pb-2.5">
+          <p class="text-[8.5px] font-medium text-white leading-tight drop-shadow-md line-clamp-2">di kami sedia buku bacalah 1-6 loh!</p>
+        </div>
+      </div>
+      
+      <!-- Banner 7 -->
+      <div class="w-full h-full relative flex-shrink-0 overflow-hidden">
+        <img src="assets/banner/banner-7.webp" alt="Live 2" class="w-full h-full object-cover">
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-1.5 pt-4 pb-2.5">
+          <p class="text-[8.5px] font-medium text-white leading-tight drop-shadow-md line-clamp-2">iqro juga ada ya ...</p>
+        </div>
+      </div>
+      
+      <!-- Banner 8 -->
+      <div class="w-full h-full relative flex-shrink-0 overflow-hidden">
+        <img src="assets/banner/banner-8.webp" alt="Live 3" class="w-full h-full object-cover">
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-1.5 pt-4 pb-2.5">
+          <p class="text-[8.5px] font-medium text-white leading-tight drop-shadow-md line-clamp-2">berbagai macam pulpen ada ...</p>
+        </div>
+      </div>
+      
+      <!-- Banner 9 -->
+      <div class="w-full h-full relative flex-shrink-0 overflow-hidden">
+        <img src="assets/banner/banner-9.webp" alt="Live 4" class="w-full h-full object-cover">
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-1.5 pt-4 pb-2.5">
+          <p class="text-[8.5px] font-medium text-white leading-tight drop-shadow-md line-clamp-2">macam-macam buku.</p>
+        </div>
+      </div>
+      
+      <!-- Banner 10 -->
+      <div class="w-full h-full relative flex-shrink-0 overflow-hidden">
+        <img src="assets/banner/banner-10.webp" alt="Live 5" class="w-full h-full object-cover">
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-1.5 pt-4 pb-2.5">
+          <p class="text-[8.5px] font-medium text-white leading-tight drop-shadow-md line-clamp-2">di kami juga jual minuman dingin segar ya ...</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live Dots Indicator Vertikal (Diperkecil agar proporsional) -->
+    <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex flex-col space-y-0.5 z-20 bg-black/40 p-0.5 rounded-full backdrop-blur-xs" id="liveDots">
+      <span class="w-1 h-1 rounded-full bg-white opacity-100 transition duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-white opacity-30 transition duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-white opacity-30 transition duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-white opacity-30 transition duration-300"></span>
+      <span class="w-1 h-1 rounded-full bg-white opacity-30 transition duration-300"></span>
+    </div>
+
+  </div>
+
+</div>
+
+      <!-- Category Filter Chips -->
+      <div>
+        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">Kategori Pilihan</h3>
+        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+          <button onclick="filterCategory('sekolah')" class="px-4 py-2 bg-emerald-700 text-white font-semibold text-xs rounded-full shadow-sm whitespace-nowrap active:scale-95 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-graduation-cap"></i> Perlengkapan Sekolah
+          </button>
+          <button onclick="filterCategory('lamaran')" class="px-4 py-2 bg-teal-700 text-white font-semibold text-xs rounded-full shadow-sm whitespace-nowrap active:scale-95 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-briefcase"></i> Lamaran Kerja
+          </button>
+        </div>
+      </div>
+
+      <!-- Best Seller Grid (2 Column) -->
+      <div>
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-sm font-extrabold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-fire text-amber-500"></i> BEST SELLER
+          </h3>
+          <button onclick="showTab('belanja')" class="text-xs font-bold text-emerald-700 hover:underline">Lihat Semua</button>
+        </div>
+        <div id="bestSellerGrid" class="grid grid-cols-2 gap-3"></div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: BELI BARANG (KATALOG UTAMA)         -->
+    <!-- ========================================== -->
+    <div id="tab-belanja" class="tab-content hidden space-y-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-base font-extrabold text-slate-800">Katalog Barang</h2>
+          <p class="text-xs text-slate-500" id="katalogTotalCount">Memuat produk...</p>
+        </div>
+      </div>
+
+      <!-- Product Grid (2 Column Shopee Style) -->
+      <div id="katalogGrid" class="grid grid-cols-2 gap-3"></div>
+    </div>
+
+<!-- ========================================== -->
+<!-- TAB 3: PELAYANAN & JASA (VERSI SIMPEL & FLEXIBLE) -->
+<!-- ========================================== -->
+<div id="tab-pelayanan" class="tab-content hidden space-y-4 max-w-md mx-auto pb-10">
+  
+  <!-- SEKSI 1: PRINT & CETAK FOTO (DIRECT WA) -->
+  <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3 text-center">
+    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xl mx-auto">
+      <i class="fa-solid fa-print"></i>
+    </div>
+    <div>
+      <h3 class="text-sm font-extrabold text-slate-800">Print & Cetak Foto</h3>
+      <p class="text-xs text-slate-500 mt-1 px-2">
+        Silakan hubungi Admin di bawah ini untuk mengirimkan file dokumen/foto beserta instruksi cetaknya.
+      </p>
+    </div>
+    <button onclick="chatAdminWA()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs active:scale-95">
+      <i class="fa-brands fa-whatsapp text-base"></i> Hubungi Admin via WhatsApp
+    </button>
+  </div>
+
+  <!-- SEKSI 2: HITUNG CETAK FOTO MANDIRI (FLEXIBLE MIXER) -->
+  <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+    <div class="flex justify-between items-center border-b pb-2">
+      <div>
+        <h3 class="text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+          <i class="fa-solid fa-calculator text-amber-500"></i> Hitung Cetak Foto Mandiri
+        </h3>
+        <p class="text-[11px] text-slate-500">Kalkulator bantu hitung total biaya cetak foto mix.</p>
+      </div>
+    </div>
+
+    <!-- Container Daftar Ukuran Foto yang Ditambahkan -->
+    <div id="fotoMixList" class="space-y-2">
+      <!-- Item dimasukkan & dirender via JS -->
+    </div>
+
+    <!-- Tombol Tambah Variasi Ukuran Lain -->
+    <button onclick="addFotoMixItem()" class="w-full py-2 border-2 border-dashed border-emerald-300 hover:border-emerald-500 text-emerald-700 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition active:scale-98">
+      <i class="fa-solid fa-plus-circle text-sm"></i> Tambah Ukuran Foto Lain
+    </button>
+
+    <!-- Totalan Biaya & Action Order -->
+    <div class="pt-2 border-t border-slate-100 space-y-2.5">
+      <!-- Tombol Trigger Manual Hitung -->
+      <button onclick="calculateFotoMixTotal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-sm transition active:scale-95 flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-calculator"></i> Hitung Total Biaya
+      </button>
+
+      <!-- Box Totalan Akhir (Default Rp 0 Netral) -->
+      <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex justify-between items-center">
+        <span class="text-xs font-bold text-slate-700">Total Estimasi Cetak:</span>
+        <span id="fotoMixTotalPrice" class="text-base font-extrabold text-emerald-700">Rp 0</span>
+      </div>
+
+      <!-- Tombol Kirim Pesanan ke WhatsApp -->
+      <button onclick="sendFotoMixToWA()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-xs active:scale-95">
+        <i class="fa-brands fa-whatsapp text-sm"></i> Pesan Rincian Cetak Foto Ini
+      </button>
+    </div>
+  </div>
+
+</div>
+	
+	<!-- ========================================== -->
+<!-- TAB 4: PEMBAYARAN QRIS                  -->
+<!-- ========================================== -->
+<div id="tab-pembayaran" class="tab-content hidden py-4 space-y-4 max-w-sm mx-auto pb-10">
+  <!-- Card Pembayaran -->
+  <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm text-center space-y-4">
+    <div>
+      
+      <h3 class="text-base font-extrabold text-slate-800 mt-2">Pembayaran QRIS</h3>
+      <p class="text-xs text-slate-500 mt-0.5">Kami menerima pembayaran non-tunai via seluruh e-wallet & mobile banking.</p>
+    </div>
+
+    <!-- Foto QRIS -->
+    <div class="relative bg-slate-50 p-3 rounded-xl border border-slate-200 inline-block w-full max-w-[260px] mx-auto shadow-inner">
+      <img src="assets/payment/qris.jpg" alt="QRIS Nurjaya Abadi Photocopy" class="w-full h-auto rounded-lg object-contain mx-auto" onerror="this.src='https://via.placeholder.com/300x400?text=QRIS+Nurjaya'">
+    </div>
+
+    <!-- Tombol Simpan Ke Galeri -->
+    <button onclick="downloadQRIS()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs active:scale-95">
+  <i class="fa-solid fa-download"></i> Simpan Gambar QRIS ke Galeri
+</button>
+
+    <!-- Catatan Penting -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-left flex gap-2.5 items-start">
+      <i class="fa-solid fa-circle-info text-amber-600 text-base mt-0.5 flex-shrink-0"></i>
+      <p class="text-[11px] text-amber-900 leading-relaxed">
+        <strong class="font-bold">Catatan Penting:</strong> Nominal transfer wajib sesuai dengan total belanja yang disebutkan Admin/Kasir. <span class="underline decoration-amber-500 font-semibold">Tidak menerima transfer berlebih dengan kembalian tunai (cash)!</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TAB 5: AKUN & PROFIL (MEMBER VIP NURJAYA)  -->
+<!-- ========================================== -->
+<div id="tab-akun" class="tab-content hidden max-w-md mx-auto min-h-[calc(100vh-140px)] flex flex-col justify-center px-4 py-6 pb-20 space-y-4">
+  
+  <!-- STATE 1: BILA BELUM LOGIN (GUEST STATE) -->
+  <div id="accountGuestState" class="bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-amber-200/60 shadow-xl text-center space-y-5 transition-all">
+    <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
+      <div class="absolute inset-0 bg-gradient-to-tr from-amber-400 to-emerald-600 rounded-full blur-md opacity-40 animate-pulse"></div>
+      <div class="relative w-20 h-20 bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-900 text-amber-300 rounded-full flex items-center justify-center text-3xl shadow-lg border-2 border-amber-400/40">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+    </div>
+    
+    <div class="space-y-1.5">
+      <span class="inline-block px-3 py-1 bg-amber-100 text-amber-900 font-extrabold text-[10px] rounded-full uppercase tracking-wider shadow-sm">
+        <i class="fa-solid fa-sparkles text-amber-500 mr-1"></i>GRATIS
+      </span>
+      <h3 class="text-lg font-black text-slate-800 tracking-tight">Gabung Member VIP NURJAYA</h3>
+      <p class="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+        Nikmati kemudahan transaksi, pesanan prioritas, dan koneksi identitas otomatis ke WhatsApp Admin!
+      </p>
+    </div>
+
+    <!-- Tombol Pilihan Pendaftaran / Login -->
+    <div class="grid grid-cols-2 gap-3 pt-2">
+      <button onclick="openRegisterModal()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold py-3 rounded-2xl text-xs shadow-lg shadow-emerald-900/20 transition active:scale-95 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-user-plus text-amber-300"></i> Daftar
+      </button>
+      <button onclick="openLoginModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold py-3 rounded-2xl text-xs border border-slate-200 transition active:scale-95 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-right-to-bracket text-emerald-700"></i> Masuk Akun
+      </button>
+    </div>
+  </div>
+
+  <!-- STATE 2: BILA SUDAH LOGGED IN (VIP PROFILE CARD) -->
+  <div id="accountLoggedInState" class="hidden space-y-4 my-auto">
+    
+    <!-- VIP Profile Card (Luxury Gold & Emerald Design) -->
+    <div class="relative bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 rounded-3xl p-6 text-white shadow-2xl space-y-5 overflow-hidden border border-amber-400/30">
+      
+      <!-- Watermark Icons & Glow Effect -->
+      <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl text-amber-300 pointer-events-none">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      <div class="absolute -left-10 -top-10 w-32 h-32 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+
+      <!-- Card Header: Avatar & VIP Badge -->
+      <div class="flex items-center justify-between relative z-10">
+        <div class="flex items-center gap-3.5">
+          <div class="relative">
+            <div class="w-14 h-14 bg-gradient-to-tr from-amber-300 via-emerald-400 to-amber-500 rounded-full p-[2px] shadow-md">
+              <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center text-2xl text-amber-300">
+                <i class="fa-solid fa-user-astronaut"></i>
+              </div>
+            </div>
+            <span class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
+              VIP
+            </span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] font-extrabold text-amber-300 uppercase tracking-widest flex items-center gap-1">
+                <i class="fa-solid fa-crown text-[9px]"></i> VIP MEMBER
+              </span>
+            </div>
+            <h3 id="userProfileName" class="text-lg font-black tracking-tight text-white leading-snug">Nama Pelanggan</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Body: Identity Info -->
+      <div class="pt-3 border-t border-white/10 grid grid-cols-2 gap-3 relative z-10">
+        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+          <span class="text-[9px] font-bold text-emerald-300/80 uppercase block tracking-wider">ID Akun</span>
+          <span id="userProfileId" class="font-mono font-extrabold text-xs tracking-wider text-amber-200">NJ-XXXXX</span>
+        </div>
+        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+          <span class="text-[9px] font-bold text-emerald-300/80 uppercase block tracking-wider">WhatsApp Terhubung</span>
+          <span id="userProfileWa" class="font-semibold text-xs text-white">08xxxxxxxxxx</span>
+        </div>
+      </div>
+
+      <!-- Card Footer: Status Label -->
+      <div class="flex justify-between items-center text-[10px] text-emerald-200/70 pt-1 relative z-10">
+        <span class="flex items-center gap-1">
+       Status: Aktif
+        </span>
+        <span class="font-semibold text-amber-300/80">Nurjaya Abadi Photocopy</span>
+      </div>
+    </div>
+
+    <!-- Panel Keuntungan & Fitur -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm space-y-4">
+      <div class="space-y-2 text-left">
+        <h4 class="text-xs font-extrabold text-slate-800 tracking-wider flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i> Keuntungan Memiliki Akun
+        </h4>
+        <ul class="text-xs text-slate-600 space-y-2 pl-1">
+          <li class="flex items-center gap-2">
+            <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Menjadi Kontak Konsumen Resmi
+          </li>
+          <li class="flex items-center gap-2">
+            <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Prioritas pengerjaan pesanan & cetak dokumen
+          </li>
+          <li class="flex items-center gap-2">
+            <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Tidak perlu isi identitas berulang kali
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tombol Logout -->
+      <button onclick="logoutAccount()" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 font-extrabold py-3 rounded-2xl text-xs border border-rose-200/80 transition active:scale-95 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-right-from-bracket"></i> Keluar / Logout Akun VIP
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- MODAL 4: REGISTRASI VIP MEMBER             -->
+<!-- ========================================== -->
+<div id="registerModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all">
+  <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl space-y-5 transform transition-all scale-100 border border-slate-100">
+    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm">
+          <i class="fa-solid fa-crown text-amber-500"></i>
+        </div>
+        <h3 class="text-sm font-black text-slate-800">Daftar Member VIP</h3>
+      </div>
+      <button onclick="closeRegisterModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+
+    <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="space-y-4 text-left">
+      <div>
+        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">Nama Lengkap / Nickname</label>
+        <input type="text" id="regNama" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+      </div>
+      <div>
+        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">Nomor WhatsApp Active</label>
+        <input type="tel" id="regWa" required placeholder="Contoh: 08123456789" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+      </div>
+
+      <div class="pt-2">
+        <button type="submit" id="regSubmitBtn" class="w-full bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white font-extrabold py-3.5 rounded-2xl text-xs shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2 active:scale-95">
+          <i class="fa-solid fa-sparkles text-amber-300"></i>
+          <span>Aktivasi Member VIP Now</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- MODAL 5: LOGIN VIP MEMBER                  -->
+<!-- ========================================== -->
+<div id="loginModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all">
+  <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl space-y-5 transform transition-all scale-100 border border-slate-100">
+    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm">
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </div>
+        <h3 class="text-sm font-black text-slate-800">Masuk Akun VIP</h3>
+      </div>
+      <button onclick="closeLoginModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+
+    <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4 text-left">
+      <div>
+        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">Nomor WhatsApp Terdaftar</label>
+        <input type="tel" id="loginWa" required placeholder="Masukkan nomor WhatsApp Anda..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+      </div>
+
+      <div class="pt-2">
+        <button type="submit" id="loginSubmitBtn" class="w-full bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white font-extrabold py-3.5 rounded-2xl text-xs shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2 active:scale-95">
+          <span>Masuk Sebagai VIP</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODALS & POPUPS                            -->
+  <!-- ========================================== -->
+
+<!-- MODAL 1: DETAIL PEMBELIAN PRODUK -->
+<div id="productModal" onclick="closeProductModal()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity">
+  
+  <!-- KARTU MODAL (Stop propagation agar klik di dalam kartu tidak menutup modal) -->
+  <div onclick="event.stopPropagation()" class="bg-white w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl animate-modal-slide-up">
+    
+    <!-- Gambar Produk (Bisa diklik untuk Preview Galeri Fullscreen) -->
+    <div class="relative bg-slate-100 p-4 flex items-center justify-center border-b border-slate-200 cursor-zoom-in group" onclick="openImagePreview()">
+      <button type="button" onclick="event.stopPropagation(); closeProductModal();" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-600 flex items-center justify-center z-10 transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <!-- Diturunkan sedikit max-h nya dari 56 ke 44 agar pas di layar HP -->
+      <img id="modalProductImg" src="" alt="Produk" class="max-h-44 object-contain drop-shadow transition duration-300 group-hover:scale-105">
+      
+      <!-- Hint Indikator Preview -->
+      <span class="absolute bottom-2 right-3 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-sm flex items-center gap-1">
+        <i class="fa-solid fa-expand"></i> Ketuk foto untuk perbesar
+      </span>
+    </div>
+
+    <!-- Body Modal -->
+    <div class="p-4 space-y-3.5">
+      <div>
+        <h3 id="modalProductName" class="text-sm font-bold text-slate-800 leading-snug"></h3>
+        <p id="modalProductPrice" class="text-base font-extrabold text-emerald-700 mt-0.5"></p>
+      </div>
+
+      <!-- Stepper Jumlah -->
+      <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+        <span class="text-xs font-bold text-slate-600">Jumlah Pembelian:</span>
+        <div class="flex items-center space-x-2.5">
+          <button onclick="changeModalQty(-1)" class="w-7 h-7 rounded-lg bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100 flex items-center justify-center active:scale-95">-</button>
+          <input type="number" id="modalQtyInput" value="1" min="1" class="w-10 text-center text-xs font-bold bg-transparent focus:outline-none" oninput="validateQtyInput(this)">
+          <button onclick="changeModalQty(1)" class="w-7 h-7 rounded-lg bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100 flex items-center justify-center active:scale-95">+</button>
+        </div>
+      </div>
+
+      <!-- Tombol Tambah ke Keranjang -->
+      <button id="addToCartBtn" onclick="addToCartFromModal()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs active:scale-95">
+        <i id="btnCartIcon" class="fa-solid fa-cart-plus text-base transition-transform"></i> 
+        <span id="btnCartText">Tambahkan ke Keranjang</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL 2: PELAYANAN & JASA -->
+<div id="servicesModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+  <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4">
+    
+    <!-- Header Modal -->
+    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+      <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-hand-holding-hand text-teal-600"></i> Pelayanan & Jasa
+      </h3>
+      <button onclick="closeServicesModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+    </div>
+
+    <!-- Stacked Services List (1 Baris 1 Chip Memanjang Full) -->
+    <div class="space-y-2 py-1 max-h-[60vh] overflow-y-auto no-scrollbar">
+      
+      <!-- Item 1: Photocopy -->
+      <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center gap-3 text-emerald-900 font-bold text-xs shadow-xs hover:bg-emerald-100/80 transition">
+        <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs flex-shrink-0">
+          <i class="fa-solid fa-copy"></i>
+        </div>
+        <span class="flex-1">Photocopy Hitam Putih & Warna</span>
+      </div>
+
+      <!-- Item 2: Print Dokument -->
+      <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center gap-3 text-emerald-900 font-bold text-xs shadow-xs hover:bg-emerald-100/80 transition">
+        <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs flex-shrink-0">
+          <i class="fa-solid fa-print"></i>
+        </div>
+        <span class="flex-1">Print Dokumen Max A3</span>
+      </div>
+
+      <!-- Item 3: Cetak Foto Studio -->
+      <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center gap-3 text-emerald-900 font-bold text-xs shadow-xs hover:bg-emerald-100/80 transition">
+        <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs flex-shrink-0">
+          <i class="fa-solid fa-image"></i>
+        </div>
+        <span class="flex-1">Cetak Foto High Quality</span>
+      </div>
+
+      <!-- Item 4: Laminating Press -->
+      <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center gap-3 text-emerald-900 font-bold text-xs shadow-xs hover:bg-emerald-100/80 transition">
+        <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs flex-shrink-0">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span class="flex-1">Laminating Dokumen & Foto</span>
+      </div>
+
+      <!-- Item 5: Penjilidan Buku -->
+      <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center gap-3 text-emerald-900 font-bold text-xs shadow-xs hover:bg-emerald-100/80 transition">
+        <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs flex-shrink-0">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+        <span class="flex-1">Penjilidan (Lakban)</span>
+      </div>
+
+      <!-- Item 6: Pengetikan Jasa -->
+      <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center gap-3 text-emerald-900 font-bold text-xs shadow-xs hover:bg-emerald-100/80 transition">
+        <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs flex-shrink-0">
+          <i class="fa-solid fa-keyboard"></i>
+        </div>
+        <span class="flex-1">Jasa Pengetikan</span>
+      </div>
+
+    </div>
+
+    <!-- Info Footer & Quick WA CTA -->
+    <div class="pt-2 border-t border-slate-100 space-y-2">
+      <p class="text-[11px] text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 text-center leading-relaxed">
+        Untuk konsultasi atau pemesanan layanan jasa, silakan hubungi Admin via WhatsApp.
+      </p>
+      <button onclick="chatAdminWA()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-full shadow-sm transition flex items-center justify-center gap-2 text-xs active:scale-95">
+        <i class="fa-brands fa-whatsapp text-sm"></i> Tanya Admin via WhatsApp
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL 3: PRICE LIST (LENGKAP & INTERAKTIF) -->
+<div id="pricelistModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+  <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4">
+    
+    <!-- Header Modal -->
+    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+      <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-tags text-amber-500"></i> Daftar Harga Layanan
+      </h3>
+      <button onclick="closePricelistModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+    </div>
+
+<!-- Teks Petunjuk Kategori -->
+<p class="text-[11px] font-bold text-slate-500 mb-1.5">Silakan pilih kategori pelayanan:</p>
+
+<!-- Filter Sub-Kategori (Locked Max 2 Baris) -->
+<div class="grid grid-cols-6 gap-1.5 pb-1">
+  <!-- Baris 1: 3 Chip (Masing-masing col-span-2) -->
+  <button onclick="switchPricelistCategory('fotokopi')" id="pl-chip-fotokopi" class="pl-category-chip active col-span-2 px-2 py-1.5 bg-emerald-800 text-white border-2 border-emerald-950 font-extrabold text-[10.5px] rounded-full shadow-sm transition text-center truncate">
+    <i class="fa-solid fa-copy text-[10px] mr-0.5"></i> Fotokopi
+  </button>
+  
+  <button onclick="switchPricelistCategory('foto')" id="pl-chip-foto" class="pl-category-chip col-span-2 px-2 py-1.5 bg-slate-100 text-slate-700 border border-slate-200/80 font-medium text-[10.5px] rounded-full transition hover:bg-slate-200 text-center truncate">
+    <i class="fa-solid fa-image text-[10px] mr-0.5"></i> Cetak Foto
+  </button>
+  
+  <button onclick="switchPricelistCategory('pengetikan')" id="pl-chip-pengetikan" class="pl-category-chip col-span-2 px-2 py-1.5 bg-slate-100 text-slate-700 border border-slate-200/80 font-medium text-[10.5px] rounded-full transition hover:bg-slate-200 text-center truncate">
+    <i class="fa-solid fa-keyboard text-[10px] mr-0.5"></i> Pengetikan
+  </button>
+
+  <!-- Baris 2: 2 Chip Memanjang (Masing-masing col-span-3) -->
+  <button onclick="switchPricelistCategory('lam-dokumen')" id="pl-chip-lam-dokumen" class="pl-category-chip col-span-3 px-2 py-1.5 bg-slate-100 text-slate-700 border border-slate-200/80 font-medium text-[10.5px] rounded-full transition hover:bg-slate-200 text-center truncate">
+    <i class="fa-solid fa-file-shield text-[10px] mr-0.5"></i> Laminating Dokumen
+  </button>
+  
+  <button onclick="switchPricelistCategory('lam-foto')" id="pl-chip-lam-foto" class="pl-category-chip col-span-3 px-2 py-1.5 bg-slate-100 text-slate-700 border border-slate-200/80 font-medium text-[10.5px] rounded-full transition hover:bg-slate-200 text-center truncate">
+    <i class="fa-solid fa-shield-halved text-[10px] mr-0.5"></i> Laminating Foto
+  </button>
+</div>
+    <!-- Container Daftar Harga (Scrollable Stacked Kapsul) -->
+    <div class="max-h-[55vh] overflow-y-auto no-scrollbar space-y-2 py-1">
+      
+      <!-- 1. KATEGORI FOTOKOPI (DEFAULT PERTAMA) -->
+      <div id="pl-group-fotokopi" class="pl-group-content space-y-2">
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-copy text-emerald-600"></i> Fotokopi Reguler
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 300 <span class="text-[10px] font-normal text-slate-500">/lbr</span></span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-copy text-emerald-600"></i> Fotokopi 2 Sisi
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 500 <span class="text-[10px] font-normal text-slate-500">/lbr</span></span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-address-card text-emerald-600"></i> Fotokopi KTP
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 500 <span class="text-[10px] font-normal text-slate-500">/buah</span></span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-note-sticky text-emerald-600"></i> Fotokopi HVS Warna
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 350 <span class="text-[10px] font-normal text-slate-500">/lbr</span></span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-scroll text-emerald-600"></i> Fotokopi Kertas Buffalo
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 2.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-scroll text-emerald-600"></i> Buffalo 2 Sisi
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 3.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-file text-emerald-600"></i> Fotokopi A3
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 1.000 <span class="text-[10px] font-normal text-slate-500">/lbr</span></span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-file text-emerald-600"></i> Fotokopi A3 2 Sisi
+          </span>
+          <span class="font-extrabold text-emerald-800">Rp 2.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950 flex items-center gap-2">
+            <i class="fa-solid fa-palette text-emerald-600"></i> Fotokopi Warna
+          </span>
+          <span class="font-bold text-amber-600 italic text-[11px]">Dinamis / Menyesuaikan</span>
+        </div>
+      </div>
+
+      <!-- 2. KATEGORI CETAK FOTO -->
+      <div id="pl-group-foto" class="pl-group-content hidden space-y-2">
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Pasfoto 2x3</span>
+          <span class="font-extrabold text-emerald-800">Rp 2.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Pasfoto 3x4</span>
+          <span class="font-extrabold text-emerald-800">Rp 2.500</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Pasfoto 4x6</span>
+          <span class="font-extrabold text-emerald-800">Rp 3.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 2R</span>
+          <span class="font-extrabold text-emerald-800">Rp 3.500</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 3R</span>
+          <span class="font-extrabold text-emerald-800">Rp 4.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 5R</span>
+          <span class="font-extrabold text-emerald-800">Rp 6.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 6R</span>
+          <span class="font-extrabold text-emerald-800">Rp 8.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 8R</span>
+          <span class="font-extrabold text-emerald-800">Rp 13.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran A4</span>
+          <span class="font-extrabold text-emerald-800">Rp 16.000</span>
+        </div>
+      </div>
+
+      <!-- 3. KATEGORI LAMINATING DOKUMEN -->
+      <div id="pl-group-lam-dokumen" class="pl-group-content hidden space-y-2">
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran A3</span>
+          <span class="font-extrabold text-emerald-800">Rp 10.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran F4 / Folio</span>
+          <span class="font-extrabold text-emerald-800">Rp 5.500</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran A4</span>
+          <span class="font-extrabold text-emerald-800">Rp 5.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 1/2 A4 atau F4</span>
+          <span class="font-extrabold text-emerald-800">Rp 3.500</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran Kartu Nama / KTP</span>
+          <span class="font-extrabold text-emerald-800">Rp 2.500</span>
+        </div>
+      </div>
+
+      <!-- 4. KATEGORI LAMINATING FOTO -->
+      <div id="pl-group-lam-foto" class="pl-group-content hidden space-y-2">
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 2R</span>
+          <span class="font-extrabold text-emerald-800">Rp 2.500</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 3R</span>
+          <span class="font-extrabold text-emerald-800">Rp 3.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 4R</span>
+          <span class="font-extrabold text-emerald-800">Rp 3.500</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 5R</span>
+          <span class="font-extrabold text-emerald-800">Rp 4.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 6R</span>
+          <span class="font-extrabold text-emerald-800">Rp 4.500</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran 8R</span>
+          <span class="font-extrabold text-emerald-800">Rp 5.000</span>
+        </div>
+        <div class="w-full px-4 py-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-full flex items-center justify-between text-xs shadow-xs">
+          <span class="font-bold text-emerald-950">Ukuran A4</span>
+          <span class="font-extrabold text-emerald-800">Rp 6.000</span>
+        </div>
+      </div>
+
+      <!-- 5. KATEGORI HARGA PENGETIKAN (PALING BAWAH) -->
+      <div id="pl-group-pengetikan" class="pl-group-content hidden space-y-2">
+        <div class="w-full px-4 py-3 bg-emerald-50/70 border border-emerald-200/80 rounded-2xl space-y-1 shadow-xs">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-emerald-950">Dokumen Simpel</span>
+            <span class="font-extrabold text-emerald-800">Min. Rp 4.000</span>
+          </div>
+          <p class="text-[10px] text-slate-500 leading-tight">Pengerjaan pengetikan dokumen standar & singkat.</p>
+        </div>
+        <div class="w-full px-4 py-3 bg-emerald-50/70 border border-emerald-200/80 rounded-2xl space-y-1 shadow-xs">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-emerald-950">Surat Formal & Dokumen Lain</span>
+            <span class="font-extrabold text-emerald-800">Min. Rp 5.000</span>
+          </div>
+          <p class="text-[10px] text-slate-500 leading-tight">Harga menyesuaikan tingkat kompleksitas instruksi dokumen.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Info Footer & Quick WA Direct -->
+    <div class="pt-2 border-t border-slate-100 space-y-2">
+      <p class="text-[10.5px] text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-200/70 text-center leading-relaxed">
+        *Harga dapat berubah sewaktu-waktu tergantung jumlah dan kondisi dokumen.
+      </p>
+      <button onclick="chatAdminWA()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-full shadow-sm transition flex items-center justify-center gap-2 text-xs active:scale-95">
+        <i class="fa-brands fa-whatsapp text-sm"></i> Tanya Harga via WhatsApp
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL 4: KERANJANG BELANJA & CHECKOUT -->
+<!-- Hapus pb-24 agar nempel tepat di dasar layar HP -->
+<div id="cartModal" onclick="closeCartModal()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center p-0 sm:p-4 transition-opacity">
+  
+  <!-- KARTU MODAL KERANJANG (Ubah rounded-t-2xl sm:rounded-2xl agar bagian bawah rata di HP) -->
+  <div onclick="event.stopPropagation()" class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl max-h-[80vh] flex flex-col shadow-2xl overflow-hidden animate-modal-slide-up">
+    
+    <!-- Header -->
+    <div class="p-4 bg-emerald-700 text-white flex justify-between items-center">
+      <h3 class="text-base font-extrabold flex items-center gap-2">
+        <i class="fa-solid fa-basket-shopping"></i> Keranjang Belanja
+      </h3>
+      <button type="button" onclick="closeCartModal()" class="text-emerald-100 hover:text-white p-1">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Item List Container -->
+    <div id="cartItemsContainer" class="p-4 overflow-y-auto space-y-3 flex-1"></div>
+
+    <!-- Footer Checkout -->
+    <div class="p-4 border-t bg-slate-50 space-y-3">
+      <div class="flex justify-between items-center">
+        <span class="text-xs font-bold text-slate-600">Total Pembayaran:</span>
+        <span id="cartTotalPrice" class="text-base font-extrabold text-emerald-700">Rp 0</span>
+      </div>
+      <button onclick="checkoutToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm active:scale-98">
+        <i class="fa-brands fa-whatsapp text-lg"></i> Ajukan Pesanan
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- FLOATING LIQUID GLASS BOTTOM NAV -->
+<aside class="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-[40] w-[95%] max-w-md bg-transparent p-0 m-0 border-none shadow-none outline-none select-none">
+  <!-- Main Container Kaca -->
+  <div id="nav-glass-container" class="relative bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_20px_40px_rgba(0,0,0,0.12)] rounded-full p-1.5 flex items-center justify-between ring-1 ring-black/5 overflow-hidden">
+      
+      <!-- FLUID BUBBLE KAPSUL -->
+      <div id="nav-active-bubble" 
+           class="absolute top-1.5 bottom-1.5 left-0 w-0 rounded-full bg-gradient-to-b from-emerald-400/30 via-emerald-500/25 to-teal-600/35 border border-emerald-400/60 shadow-md shadow-emerald-900/10 pointer-events-none z-0 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-0">
+          <div class="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent rounded-t-full"></div>
+      </div>
+
+      <div class="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent rounded-t-full z-10"></div>
+
+      <!-- 1. Home Button -->
+      <button onclick="showTab('dashboard')" id="btn-dashboard" 
+          class="nav-link active group relative flex-1 flex flex-col items-center justify-center py-2 px-0.5 rounded-full transition-all duration-300 active:scale-90 z-20">
+          <i class="fa-solid fa-house-user text-base sm:text-lg transition-all duration-300 group-[.active]:text-emerald-700 group-[.active]:-translate-y-0.5 text-slate-500 group-hover:text-slate-700 relative z-10"></i>
+          <span class="text-[8.5px] sm:text-[9.5px] font-semibold tracking-tight transition-all duration-300 group-[.active]:font-extrabold group-[.active]:text-emerald-800 text-slate-600 mt-0.5 block truncate w-full text-center relative z-10">Beranda</span>
+      </button>
+
+      <!-- 2. Beli Barang Button -->
+      <button onclick="showTab('belanja')" id="btn-belanja" 
+          class="nav-link group relative flex-1 flex flex-col items-center justify-center py-2 px-0.5 rounded-full transition-all duration-300 active:scale-90 z-20">
+          <i class="fa-solid fa-store text-base sm:text-lg transition-all duration-300 group-[.active]:text-emerald-700 group-[.active]:-translate-y-0.5 text-slate-500 group-hover:text-slate-700 relative z-10"></i>
+          <span class="text-[8.5px] sm:text-[9.5px] font-semibold tracking-tight transition-all duration-300 group-[.active]:font-extrabold group-[.active]:text-emerald-800 text-slate-600 mt-0.5 block truncate w-full text-center relative z-10">Beli</span>
+      </button>
+
+      <!-- 3. Pelayanan Button -->
+      <button onclick="showTab('pelayanan')" id="btn-pelayanan" 
+          class="nav-link group relative flex-1 flex flex-col items-center justify-center py-2 px-0.5 rounded-full transition-all duration-300 active:scale-90 focus:outline-none z-20">
+          <i class="fa-solid fa-hand-holding-hand text-base sm:text-lg transition-all duration-300 group-[.active]:text-emerald-700 group-[.active]:-translate-y-0.5 text-slate-500 group-hover:text-slate-700 relative z-10"></i>
+          <span class="text-[8.5px] sm:text-[9.5px] font-semibold tracking-tight transition-all duration-300 group-[.active]:font-extrabold group-[.active]:text-emerald-800 text-slate-600 mt-0.5 block truncate w-full text-center relative z-10">Pelayanan</span>
+      </button>
+
+      <!-- 4. TAB BARU: Pembayaran QRIS -->
+      <button onclick="showTab('pembayaran')" id="btn-pembayaran" 
+          class="nav-link group relative flex-1 flex flex-col items-center justify-center py-2 px-0.5 rounded-full transition-all duration-300 active:scale-90 z-20">
+          <i class="fa-solid fa-qrcode text-base sm:text-lg transition-all duration-300 group-[.active]:text-emerald-700 group-[.active]:-translate-y-0.5 text-slate-500 group-hover:text-slate-700 relative z-10"></i>
+          <span class="text-[8.5px] sm:text-[9.5px] font-semibold tracking-tight transition-all duration-300 group-[.active]:font-extrabold group-[.active]:text-emerald-800 text-slate-600 mt-0.5 block truncate w-full text-center relative z-10">Bayar</span>
+      </button>
+
+      <!-- 5. Akun Button -->
+      <button onclick="showTab('akun')" id="btn-akun" 
+          class="nav-link group relative flex-1 flex flex-col items-center justify-center py-2 px-0.5 rounded-full transition-all duration-300 active:scale-90 z-20">
+          <i class="fa-solid fa-circle-user text-base sm:text-lg transition-all duration-300 group-[.active]:text-emerald-700 group-[.active]:-translate-y-0.5 text-slate-500 group-hover:text-slate-700 relative z-10"></i>
+          <span class="text-[8.5px] sm:text-[9.5px] font-semibold tracking-tight transition-all duration-300 group-[.active]:font-extrabold group-[.active]:text-emerald-800 text-slate-600 mt-0.5 block truncate w-full text-center relative z-10">Akun</span>
+      </button>
+
+  </div>
+</aside>
+
+  <!-- ========================================== -->
+<!-- JAVASCRIPT APPLICATION ENGINE              -->
+<!-- ========================================== -->
+<script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZTIveT2eZSA8eI-evypBEwSoz0iBOuRGHkis9-HH8axIwHBS_5OLNimAeM39JK_Pw/exec";
+    const WA_NUMBER = "6285211029598";
+    const IMAGE_PATH = "assets/img/";
+    const CART_STORAGE_KEY = "NURJAYA_CART_DATA";
+
+    // Helper LocalStorage Keranjang
+    function saveCartToStorage() {
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+      } catch (e) {
+        console.error("Gagal menyimpan keranjang ke LocalStorage:", e);
+      }
+    }
+
+    function loadCartFromStorage() {
+      try {
+        const stored = localStorage.getItem(CART_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        console.error("Gagal membaca keranjang dari LocalStorage:", e);
+        return [];
+      }
+    }
+
+    // State Storage (Inisialisasi cart dari LocalStorage)
+    let allProducts = [];
+    let cart = loadCartFromStorage();
+    let selectedProductForModal = null;
+    let currentTabId = "dashboard";
+
+    // List Nama Produk Best Seller
+    const bestSellerNames = [
+      "Meterai 10.000", "PULPEN JOYKO JK-100", "Amplop Lamaran No. 310 Ecer",
+      "AMPLOP PUTIH PAPERLINE BANK NOTE DUS", "AMPLOP PUTIH PAPERLINE SEDANG NO. 104 DUS",
+      "DOUBLE TAPE KECIL 6 MM", "DOUBLE TAPE TANGGUNG 12 MM", "Lakban Bening Besar 48 mm",
+      "Lakban Bening Kecil 12 mm", "LAKBAN BENING SEDANG 24 MM", "Lakban Coklat Besar 48 mm",
+      "Lakban Hitam/Kain Besar 48 mm", "Lakban Hitam/Kain Kecil 24 mm", "Lakban Hitam/Kain Sedang 36 mm",
+      "Lakban Kertas/Masking Sedang 24 mm", "Lem Alteco", "Lem Gel Joyko", "Lem Korea",
+      "Lem Stick Joyko", "Map Biasa", "MAP BIOLA", "Nota Kontan 1 Ply Besar",
+      "Nota Kontan 1 Ply Kecil", "PULPEN CASTELLO C88 0,5 MM HITAM",
+      "PULPEN CASTELLO C88 CRYSTAL 0,5 MM HITAM", "Pulpen Joyko Vokus 0,7 mm Hitam",
+      "Refill Cutter Besar", "Refill Cutter Kecil"
+    ];
+
+    // List Nama Produk Kategori Perlengkapan Sekolah
+    const sekolahNames = [
+      "Drawing Pen Snowman 0,3 mm Hitam", "Drawing Pen Snowman 0,5 mm Hitam", "Drawing Pen Snowman 1,0 mm Hitam",
+      "Jangka Joyko", "Kapur Putih Dus", "Kapur Putih Ecer", "Kapur Warna Dus", "Krayon Kecil 12 Warna",
+      "Kuas Lukis Satuan No. 1", "Kuas Lukis Satuan No. 2", "Kuas Lukis Satuan No. 3", "Kuas Lukis Satuan No. 4",
+      "Kuas Lukis Satuan No. 5", "Kuas Lukis Satuan No. 6", "KUAS SET JOYKO", "Lem Stick Evercoss", "Lem Stick Joyko",
+      "Loose Leaf A5 Bergaris", "Loose Leaf A5 Polos", "Loose Leaf B5 Bergaris", "Loose Leaf B5 Polos", "Palet Cat Biasa",
+      "Papan Ujian Karakter", "Papan Ujian Kayu", "Papan Ujian Plastik", "Penggaris Besi Tebal 30 cm", "Penggaris Besi Tebal 40 cm",
+      "Penggaris Besi Tebal 60 cm", "Penggaris Besi Tipis 30 cm", "Penggaris Plastik 20 cm Butterfly", "Penggaris Plastik 30 cm Butterfly",
+      "Penghapus Joyko Panjang Hitam", "Penghapus Joyko Panjang Putih", "Penghapus Joyko Panjang Warna", "Penghapus Joyko Pendek Hitam",
+      "Penghapus Joyko Pendek Putih", "Penghapus Joyko Pendek Warna", "Penghapus Kecil Faber Castell Putih", "Pensil Faber Castell 2B",
+      "Pensil Joyko 2B", "Pensil Joyko HB", "Pensil Mekanik Joyko", "Pensil Warna Panjang Ecercoss", "Pensil Warna Pendek Evercoss",
+      "PULPEN BIRU STANDAR", "Pulpen B-Live 0,3 mm Hitam", "Pulpen B-Live Nox 0,3 Hitam", "PULPEN CASTELLO C88 0,5 MM HITAM",
+      "PULPEN CASTELLO C88 CRYSTAL 0,5 MM HITAM", "Pulpen Faber Castell Tripen 0,5 mm Hitam", "Pulpen Faster C-600 0,5 Hitam",
+      "Pulpen Gel Ball Liner 1,0 Hitam", "Pulpen Gel Eraseable 0,3 mm Hitam", "Pulpen Gel Evercoss 802 0,5 mm Hitam",
+      "Pulpen Gel Evercoss EV-811 1,0 Hitam", "Pulpen Gel iTech 2 Joyko 0,3 mm Hitam", "Pulpen Joyko Vokus 0,7 mm Hitam",
+      "Pulpen Lilin", "Pulpen Merah Standar", "Pulpen Pilot Biru", "Pulpen Pilot Hitam", "Pulpen Snowman V-5 0,5 mm Hitam",
+      "PULPEN SQUEEZY 4 WARNA", "Push Pin", "Rautan Joyko", "Rautan Karakter Seribuan", "Refill Pensil Mekanik Joyko 0,5 mm 2B",
+      "Refill Pulpen Gel 0,3 mm", "Refill Pulpen Gel Joyko 0,5 mm", "Sampul Kertas Besar B5 Ecer", "Sampul Kertas Kecil Quarto Ecer",
+      "Sampul Plastik A4 Ecer", "Sampul Plastik Besar B5 Ecer", "Sampul Plastik F4/LKS Ecer", "Sampul Plastik Kecil Quarto Ecer",
+      "Spidol Snowman Pak", "Stabilo Joyko", "Stabilo Panjang", "Sticky Note Kotak Besar", "Sticky Note Kotak Sedang",
+      "Sticky Note Penanda Panjang", "STICKY NOTE PENANDA PENDEK", "PENGHAPUS PAPAN TULIS SUNWELL", "PENGHAPUS PAPAN TULIS GUNINDO"
+    ];
+
+    // List Nama Produk Kategori Lamaran Kerja
+    const lamaranNames = [
+      "Amplop Coklat Polos A4/F4 Ecer", "Amplop Coklat Polos Besar Ecer", "AMPLOP COKLAT POLOS SEDANG ECER",
+      "Amplop Coklat Polos Surat/Uang Ecer", "Amplop Lamaran No. 310 Ecer", "Map Biasa", "MAP BIOLA",
+      "Map Letter-L Plastik", "Map Plastik Mika Kancing", "Map Plastik Mika Tali", "Map Tas Kancing", "MAP TAS ZIPPER/RESLETING"
+    ];
+
+    // Format Rupiah
+    function formatRupiah(num) {
+      return "Rp " + Number(num).toLocaleString("id-ID");
+    }
+
+    // Fetch Data Apps Script
+    async function fetchProducts() {
+      const containerKatalog = document.getElementById("katalogGrid");
+      const containerBestSeller = document.getElementById("bestSellerGrid");
+
+      if (containerKatalog) {
+        document.getElementById("katalogTotalCount").textContent = "Mencari barang...";
+        containerKatalog.innerHTML = createSkeletonCardsHTML(10);
+      }
+      if (containerBestSeller) {
+        containerBestSeller.innerHTML = createSkeletonCardsHTML(6);
+      }
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL);
+        const data = await res.json();
+        allProducts = data;
+
+        renderBestSeller();
+        renderKatalogGrid(allProducts);
+      } catch (err) {
+        console.error("Gagal load data:", err);
+        if (containerKatalog) {
+          containerKatalog.innerHTML = `<p class="text-center text-xs text-slate-400 py-6">Gagal memuat produk. Coba segarkan halaman.</p>`;
+        }
+      }
+    }
+
+    // Render Product Card HTML
+    function createProductCardHTML(p) {
+      const imgUrl = `${IMAGE_PATH}${p.foto_file}`;
+      return `
+        <div onclick="openProductModal('${p.foto_file}')" class="bg-white rounded-xl border border-slate-200/80 p-2.5 shadow-sm hover:shadow-md transition active:scale-98 flex flex-col justify-between cursor-pointer">
+          <div>
+            <div class="w-full aspect-square bg-slate-50 rounded-lg overflow-hidden mb-2 flex items-center justify-center p-2 border border-slate-100">
+              <img src="${imgUrl}" alt="${p.nama_barang}" loading="lazy" class="max-h-full max-w-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Nurjaya'">
+            </div>
+            <h4 class="text-xs font-bold text-slate-800 line-clamp-2 leading-tight">${p.nama_barang}</h4>
+          </div>
+          <div class="mt-2 flex justify-between items-center pt-1 border-t border-slate-100">
+            <span class="text-xs font-extrabold text-emerald-700">${formatRupiah(p.harga_jual)}</span>
+            <button class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center hover:bg-emerald-700 hover:text-white text-xs transition">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Best Seller Grid
+    function renderBestSeller() {
+      const container = document.getElementById("bestSellerGrid");
+      if (!container) return;
+      const filtered = allProducts.filter(p => bestSellerNames.includes(p.nama_barang));
+      const itemsToRender = filtered.length > 0 ? filtered : allProducts.slice(0, 10);
+      container.innerHTML = itemsToRender.map(createProductCardHTML).join("");
+    }
+
+    // Render Katalog Grid (Tab 2)
+    function renderKatalogGrid(products) {
+      const container = document.getElementById("katalogGrid");
+      if (!container) return;
+      document.getElementById("katalogTotalCount").textContent = `${products.length} Produk Tersedia`;
+      container.innerHTML = products.map(createProductCardHTML).join("");
+    }
+
+    // Filter Kategori dari Chip Beranda
+    function filterCategory(catKey) {
+      showTab("belanja");
+      let targetNames = catKey === "sekolah" ? sekolahNames : lamaranNames;
+      const filtered = allProducts.filter(p => targetNames.includes(p.nama_barang));
+      renderKatalogGrid(filtered);
+    }
+
+    // Handling Searchbar Top Nav
+    function handleSearchInput(query) {
+      const clearBtn = document.getElementById("clearSearchBtn");
+      const overlay = document.getElementById("searchOverlay");
+      const cleanQ = query.toLowerCase().trim();
+
+      if (cleanQ.length > 0) clearBtn.classList.remove("hidden");
+      else clearBtn.classList.add("hidden");
+
+      if (currentTabId === "belanja") {
+        overlay.classList.add("hidden");
+        const filtered = allProducts.filter(p => p.nama_barang.toLowerCase().includes(cleanQ));
+        renderKatalogGrid(filtered);
+      } else {
+        if (cleanQ.length > 0) {
+          overlay.classList.remove("hidden");
+          const filtered = allProducts.filter(p => p.nama_barang.toLowerCase().includes(cleanQ));
+          document.getElementById("searchResultCount").textContent = `${filtered.length} Ditemukan`;
+          
+          const resultList = document.getElementById("searchResultList");
+          if (filtered.length === 0) {
+            resultList.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">Produk tidak ditemukan.</p>`;
+          } else {
+            resultList.innerHTML = filtered.map(p => `
+              <div onclick="openProductModal('${p.foto_file}')" class="flex items-center gap-3 p-2 bg-slate-50 hover:bg-emerald-50 rounded-lg cursor-pointer border border-slate-100">
+                <img src="${IMAGE_PATH}${p.foto_file}" class="w-10 h-10 object-contain rounded bg-white p-1 border">
+                <div class="flex-1">
+                  <h4 class="text-xs font-bold text-slate-800">${p.nama_barang}</h4>
+                  <p class="text-[11px] font-extrabold text-emerald-700">${formatRupiah(p.harga_jual)}</p>
+                </div>
+              </div>
+            `).join("");
+          }
+        } else {
+          overlay.classList.add("hidden");
+        }
+      }
+    }
+
+    function clearSearch() {
+      const input = document.getElementById("globalSearchInput");
+      if (input) input.value = "";
+      const clearBtn = document.getElementById("clearSearchBtn");
+      if (clearBtn) clearBtn.classList.add("hidden");
+      const overlay = document.getElementById("searchOverlay");
+      if (overlay) overlay.classList.add("hidden");
+      if (currentTabId === "belanja") renderKatalogGrid(allProducts);
+    }
+
+    // Modal Product Handling
+    function openProductModal(fotoFile) {
+      selectedProductForModal = allProducts.find(p => p.foto_file === fotoFile);
+      if (!selectedProductForModal) return;
+
+      document.getElementById("modalProductImg").src = `${IMAGE_PATH}${selectedProductForModal.foto_file}`;
+      document.getElementById("modalProductName").textContent = selectedProductForModal.nama_barang;
+      document.getElementById("modalProductPrice").textContent = formatRupiah(selectedProductForModal.harga_jual);
+      document.getElementById("modalQtyInput").value = 1;
+
+      const modal = document.getElementById("productModal");
+      const modalCard = modal ? modal.querySelector(".bg-white") : null;
+
+      if (!modal || !modalCard) return;
+
+      modal.classList.remove("hidden", "opacity-0");
+      modalCard.classList.remove("animate-modal-slide-down");
+      modalCard.classList.add("animate-modal-slide-up");
+    }
+
+    function closeProductModal() {
+      const modal = document.getElementById("productModal");
+      const modalCard = modal ? modal.querySelector(".bg-white") : null;
+
+      if (!modal || !modalCard) return;
+
+      modalCard.classList.remove("animate-modal-slide-up");
+      modalCard.classList.add("animate-modal-slide-down");
+      modal.classList.add("opacity-0", "transition-opacity", "duration-300");
+
+      setTimeout(() => {
+        modal.classList.add("hidden");
+        modal.classList.remove("opacity-0", "transition-opacity", "duration-300");
+      }, 240);
+    }
+
+    function changeModalQty(delta) {
+      const input = document.getElementById("modalQtyInput");
+      let val = parseInt(input.value) || 1;
+      val += delta;
+      if (val < 1) val = 1;
+      input.value = val;
+    }
+
+    function validateQtyInput(input) {
+      if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) input.value = 1;
+    }
+
+    // Add To Cart & Animate Badge
+    function addToCartFromModal() {
+      if (!selectedProductForModal) return;
+      const qty = parseInt(document.getElementById("modalQtyInput").value) || 1;
+      
+      const existing = cart.find(item => item.product.foto_file === selectedProductForModal.foto_file);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ product: selectedProductForModal, qty: qty, checked: true });
+      }
+
+      saveCartToStorage(); // Simpan ke LocalStorage
+      updateCartBadge();
+      triggerCartBounceAnimation();
+      
+      const btn = document.getElementById("addToCartBtn");
+      const icon = document.getElementById("btnCartIcon");
+      const text = document.getElementById("btnCartText");
+
+      if (btn && icon && text) {
+        btn.classList.add("animate-btn-pop", "bg-emerald-600");
+        icon.className = "fa-solid fa-circle-check text-lg scale-125 text-amber-300 transition-all";
+        text.textContent = "Berhasil Ditambahkan!";
+
+        setTimeout(() => {
+          btn.classList.remove("animate-btn-pop", "bg-emerald-600");
+          icon.className = "fa-solid fa-cart-plus text-lg transition-transform";
+          text.textContent = "Tambahkan ke Keranjang";
+        }, 1200);
+      }
+    }
+
+    function triggerCartBounceAnimation() {
+      const btn = document.getElementById("headerCartBtn");
+      if (!btn) return;
+      btn.classList.add("animate-cart-bounce");
+      setTimeout(() => btn.classList.remove("animate-cart-bounce"), 400);
+    }
+
+    function updateCartBadge() {
+      const badge = document.getElementById("cartBadge");
+      if (!badge) return;
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      if (totalItems > 0) {
+        badge.textContent = totalItems;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+    }
+
+    // Cart Modal & Checkout
+    function openCartModal() {
+      renderCartItems();
+      
+      const modal = document.getElementById("cartModal");
+      const modalCard = modal ? modal.querySelector(".bg-white") : null;
+
+      if (!modal || !modalCard) return;
+
+      modal.classList.remove("hidden", "opacity-0");
+      modalCard.classList.remove("animate-modal-slide-down");
+      modalCard.classList.add("animate-modal-slide-up");
+    }
+
+    function closeCartModal() {
+      const modal = document.getElementById("cartModal");
+      const modalCard = modal ? modal.querySelector(".bg-white") : null;
+
+      if (!modal || !modalCard) return;
+
+      modalCard.classList.remove("animate-modal-slide-up");
+      modalCard.classList.add("animate-modal-slide-down");
+      modal.classList.add("opacity-0", "transition-opacity", "duration-300");
+
+      setTimeout(() => {
+        modal.classList.add("hidden");
+        modal.classList.remove("opacity-0", "transition-opacity", "duration-300");
+      }, 240);
+    }
+
+    function renderCartItems() {
+      const container = document.getElementById("cartItemsContainer");
+      if (!container) return;
+
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="py-12 text-center text-slate-400 text-xs"><i class="fa-solid fa-basket-shopping text-3xl mb-2 opacity-40"></i><p>Keranjang kamu masih kosong.</p></div>`;
+        const totalPriceElem = document.getElementById("cartTotalPrice");
+        if (totalPriceElem) totalPriceElem.textContent = "Rp 0";
+        return;
+      }
+
+      container.innerHTML = cart.map((item, idx) => `
+        <div class="flex items-center gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+          <input type="checkbox" ${item.checked ? "checked" : ""} onchange="toggleCartItemChecked(${idx})" class="w-4 h-4 accent-emerald-600 rounded">
+          <img src="${IMAGE_PATH}${item.product.foto_file}" class="w-12 h-12 object-contain bg-white rounded-lg p-1 border">
+          <div class="flex-1">
+            <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${item.product.nama_barang}</h4>
+            <p class="text-xs font-extrabold text-emerald-700">${formatRupiah(item.product.harga_jual)}</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-1 border rounded-lg bg-white p-0.5">
+              <button onclick="updateCartQty(${idx}, -1)" class="w-5 h-5 rounded text-xs font-bold hover:bg-slate-100 flex items-center justify-center">-</button>
+              <span class="text-xs font-bold w-5 text-center">${item.qty}</span>
+              <button onclick="updateCartQty(${idx}, 1)" class="w-5 h-5 rounded text-xs font-bold hover:bg-slate-100 flex items-center justify-center">+</button>
+            </div>
+            <button onclick="removeCartItem(${idx})" class="w-7 h-7 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg flex items-center justify-center transition" title="Hapus dari keranjang">
+              <i class="fa-solid fa-trash-can text-sm"></i>
+            </button>
+          </div>
+        </div>
+      `).join("");
+
+      calculateCartTotal();
+    }
+
+    function removeCartItem(idx) {
+      cart.splice(idx, 1);
+      saveCartToStorage(); // Simpan perubahan
+      updateCartBadge();
+      renderCartItems();
+    }
+
+    function toggleCartItemChecked(idx) {
+      cart[idx].checked = !cart[idx].checked;
+      saveCartToStorage(); // Simpan perubahan
+      calculateCartTotal();
+    }
+
+    function updateCartQty(idx, delta) {
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      saveCartToStorage(); // Simpan perubahan
+      updateCartBadge();
+      renderCartItems();
+    }
+
+    function calculateCartTotal() {
+      const total = cart.reduce((sum, item) => item.checked ? sum + (item.product.harga_jual * item.qty) : sum, 0);
+      const totalPriceElem = document.getElementById("cartTotalPrice");
+      if (totalPriceElem) totalPriceElem.textContent = formatRupiah(total);
+    }
+
+    async function checkoutToWhatsApp() {
+      const user = getUserAccountData();
+      
+      if (!user) {
+        await alert("Untuk melakukan checkout, Anda wajib terdaftar sebagai Member VIP Nurjaya. Anda akan diarahkan ke halaman Akun untuk login / mendaftar.");
+        
+        const cartModal = document.getElementById('cartModal') || document.getElementById('modal-cart');
+        if (cartModal) cartModal.classList.add('hidden');
+
+        if (typeof showTab === 'function') {
+          showTab('akun');
+        } else {
+          document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.add('hidden');
+            el.classList.remove('flex');
+          });
+
+          const tabAkun = document.getElementById('tab-akun');
+          if (tabAkun) {
+            tabAkun.classList.remove('hidden');
+            tabAkun.classList.add('flex');
+          }
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const selectedItems = cart.filter(item => item.checked);
+      if (selectedItems.length === 0) {
+        alert("Pilih minimal satu barang di keranjang untuk dipesan!");
+        return;
+      }
+
+      const userHeader = getWaUserHeader();
+
+      let text = `${userHeader}Halo Nurjaya Abadi Photocopy, saya mau pesan barang berikut:\n\n`;
+      let total = 0;
+
+      selectedItems.forEach((item, index) => {
+        const subtotal = item.product.harga_jual * item.qty;
+        total += subtotal;
+        text += `${index + 1}. ${item.product.nama_barang}\n   - Jumlah: ${item.qty} x ${formatRupiah(item.product.harga_jual)} = ${formatRupiah(subtotal)}\n`;
+      });
+
+      text += `\n*Total Pembayaran: ${formatRupiah(total)}*\n\nMohon konfirmasi ketersediaan stoknya. Terima kasih!`;
+      
+      const encodedText = encodeURIComponent(text);
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodedText}`, "_blank");
+    }
+
+    // Modal Services & Pricelist
+    function openServicesModal() { document.getElementById("servicesModal").classList.remove("hidden"); }
+    function closeServicesModal() { document.getElementById("servicesModal").classList.add("hidden"); }
+    function openPricelistModal() { document.getElementById("pricelistModal").classList.remove("hidden"); }
+    function closePricelistModal() { document.getElementById("pricelistModal").classList.add("hidden"); }
+
+    // Engine Navigasi Tab & Bubble
+    const BUBBLE_WIDTH = 50;
+    const tabScrollPositions = {};
+
+    window.showTab = function(tabId) {
+      if (currentTabId) {
+        tabScrollPositions[currentTabId] = window.scrollY || document.documentElement.scrollTop;
+      }
+
+      currentTabId = tabId;
+      
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+      document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+      
+      const targetTab = document.getElementById('tab-' + tabId);
+      const targetBtn = document.getElementById('btn-' + tabId);
+      
+      if (targetTab) {
+        targetTab.classList.remove('hidden');
+        if (tabId === 'akun') targetTab.classList.add('flex');
+      }
+      if (targetBtn) targetBtn.classList.add('active');
+
+      clearSearch();
+
+      const savedPosition = tabScrollPositions[tabId] || 0;
+      
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: savedPosition,
+          behavior: 'instant'
+        });
+      });
+
+      requestAnimationFrame(() => {
+        moveBubbleToTab(tabId);
+      });
+    };
+
+    function moveBubbleToTab(activeTabName) {
+      const activeBtn = document.getElementById(`btn-${activeTabName}`);
+      const bubble = document.getElementById('nav-active-bubble');
+
+      if (activeBtn && bubble) {
+        const btnLeft = activeBtn.offsetLeft;
+        const btnWidth = activeBtn.offsetWidth;
+        const centerPos = btnLeft + (btnWidth / 2) - (BUBBLE_WIDTH / 2);
+
+        bubble.style.width = `${BUBBLE_WIDTH}px`;
+        bubble.style.transform = `translate3d(${centerPos}px, 0px, 0px)`;
+        bubble.style.opacity = '1';
+      }
+    }
+
+    // Init & Lifecycle Events
+    document.addEventListener("DOMContentLoaded", () => {
+      showTab('dashboard');
+      fetchProducts();
+      updateCartBadge(); // Update badge saat pertama buka app
+
+      let currentSlide = 0;
+      const totalSlides = 5;
+      let autoSlideTimer = null;
+
+      const container = document.getElementById("bannerContainer");
+      const bannerWrapper = container ? container.parentElement : null;
+
+      function updateSlidePosition() {
+        const dots = document.querySelectorAll("#bannerDots span");
+        if (container) {
+          container.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        if (dots.length > 0) {
+          dots.forEach((dot, idx) => {
+            dot.style.opacity = idx === currentSlide ? "1" : "0.4";
+          });
+        }
+      }
+
+      function startAutoSlide() {
+        stopAutoSlide();
+        autoSlideTimer = setInterval(() => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          updateSlidePosition();
+        }, 3500);
+      }
+
+      function stopAutoSlide() {
+        if (autoSlideTimer) clearInterval(autoSlideTimer);
+      }
+
+      let startX = 0;
+      let currentTranslate = 0;
+      let isDragging = false;
+
+      if (bannerWrapper && container) {
+        bannerWrapper.addEventListener('touchstart', (e) => {
+          stopAutoSlide();
+          isDragging = true;
+          startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        bannerWrapper.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          const currentX = e.touches[0].clientX;
+          const diffX = currentX - startX;
+          currentTranslate = (-currentSlide * container.offsetWidth) + diffX;
+          container.style.transition = 'none';
+          container.style.transform = `translateX(${currentTranslate}px)`;
+        }, { passive: true });
+
+        bannerWrapper.addEventListener('touchend', (e) => {
+          if (!isDragging) return;
+          isDragging = false;
+          const endX = e.changedTouches[0].clientX;
+          const diffX = endX - startX;
+
+          container.style.transition = 'transform 0.5s ease-in-out';
+
+          if (diffX < -50) {
+            currentSlide = (currentSlide + 1) % totalSlides;
+          } else if (diffX > 50) {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+          }
+
+          updateSlidePosition();
+          startAutoSlide();
+        });
+
+        bannerWrapper.addEventListener('mousedown', (e) => {
+          stopAutoSlide();
+          isDragging = true;
+          startX = e.clientX;
+          bannerWrapper.style.cursor = 'grabbing';
+        });
+
+        bannerWrapper.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const diffX = e.clientX - startX;
+          currentTranslate = (-currentSlide * container.offsetWidth) + diffX;
+          container.style.transition = 'none';
+          container.style.transform = `translateX(${currentTranslate}px)`;
+        });
+
+        bannerWrapper.addEventListener('mouseup', (e) => {
+          if (!isDragging) return;
+          isDragging = false;
+          bannerWrapper.style.cursor = 'grab';
+          const diffX = e.clientX - startX;
+
+          container.style.transition = 'transform 0.5s ease-in-out';
+          if (diffX < -50) {
+            currentSlide = (currentSlide + 1) % totalSlides;
+          } else if (diffX > 50) {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+          }
+
+          updateSlidePosition();
+          startAutoSlide();
+        });
+
+        bannerWrapper.addEventListener('mouseleave', () => {
+          if (isDragging) {
+            isDragging = false;
+            bannerWrapper.style.cursor = 'grab';
+            container.style.transition = 'transform 0.5s ease-in-out';
+            updateSlidePosition();
+            startAutoSlide();
+          }
+        });
+      }
+
+      startAutoSlide();
+    });
+
+    window.addEventListener('resize', () => {
+      const activeBtn = document.querySelector('.nav-link.active');
+      if (activeBtn) {
+        const currentTab = activeBtn.id.replace('btn-', '');
+        moveBubbleToTab(currentTab);
+      }
+    });
+
+    function openImagePreview() {
+      if (!selectedProductForModal) return;
+      document.getElementById("fullPreviewImg").src = `${IMAGE_PATH}${selectedProductForModal.foto_file}`;
+      document.getElementById("fullPreviewCaption").textContent = selectedProductForModal.nama_barang;
+      document.getElementById("imagePreviewModal").classList.remove("hidden");
+    }
+
+    function closeImagePreview() {
+      document.getElementById("imagePreviewModal").classList.add("hidden");
+    }
+
+    function createSkeletonCardsHTML(count = 10) {
+      let skeletons = "";
+      for (let i = 0; i < count; i++) {
+        skeletons += `
+          <div class="bg-white rounded-xl border border-slate-200/80 p-2.5 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="w-full aspect-square animate-skeleton rounded-lg mb-2 border border-slate-100 flex items-center justify-center">
+                <i class="fa-regular fa-image text-slate-300 text-xl"></i>
+              </div>
+              <div class="h-3 w-11/12 animate-skeleton rounded-md mb-2"></div>
+              <div class="h-3 w-8/12 animate-skeleton rounded-md"></div>
+            </div>
+            <div class="mt-3 flex justify-between items-center pt-2 border-t border-slate-100">
+              <div class="h-3 w-5/12 animate-skeleton rounded-md"></div>
+              <div class="w-7 h-7 rounded-full animate-skeleton"></div>
+            </div>
+          </div>
+        `;
+      }
+      return skeletons;
+    }
+
+    function downloadQRIS() {
+      const imageSrc = 'assets/payment/qris.jpg';
+      const fileName = 'QRIS-Nurjaya-Abadi.jpg';
+
+      fetch(imageSrc)
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+          }, 100);
+        })
+        .catch(() => {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            
+            try {
+              const dataURL = canvas.toDataURL('image/jpeg');
+              const a = document.createElement('a');
+              a.href = dataURL;
+              a.download = fileName;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            } catch (e) {
+              alert("Mode Pengujian Lokal (file:///):\nSilakan klik kanan gambar QRIS lalu pilih 'Simpan Gambar Sebagai...' atau jalankan melalui Live Server.");
+            }
+          };
+          img.src = imageSrc;
+        });
+    }
+
+    function switchServiceMenu(menu) {
+      document.querySelectorAll('.chip-service').forEach(btn => {
+        btn.classList.remove('bg-emerald-700', 'text-white');
+        btn.classList.add('bg-slate-200', 'text-slate-700');
+      });
+
+      document.getElementById('service-menu-print').classList.add('hidden');
+      document.getElementById('service-menu-foto').classList.add('hidden');
+
+      if (menu === 'print') {
+        document.getElementById('chip-service-print').className = 'chip-service px-4 py-2 bg-emerald-700 text-white font-bold text-xs rounded-full shadow-sm whitespace-nowrap transition flex items-center gap-1.5';
+        document.getElementById('service-menu-print').classList.remove('hidden');
+      } else {
+        document.getElementById('chip-service-foto').className = 'chip-service px-4 py-2 bg-emerald-700 text-white font-bold text-xs rounded-full shadow-sm whitespace-nowrap transition flex items-center gap-1.5';
+        document.getElementById('service-menu-foto').classList.remove('hidden');
+      }
+    }
+
+    function calculateFotoEstimate() {
+      const sizeValue = document.getElementById('fotoSize').value.split('|')[0];
+      const qty = parseInt(document.getElementById('fotoQty').value) || 1;
+      const total = parseInt(sizeValue) * qty;
+      
+      document.getElementById('fotoTotalPrice').textContent = formatRupiah(total);
+    }
+
+    const FOTO_PRICE_MAP = {
+      "2000": "Pasfoto 2x3 (Rp 2.000)",
+      "2500": "Pasfoto 3x4 (Rp 2.500)",
+      "3000": "Pasfoto 4x6 (Rp 3.000)",
+      "3500": "Ukuran 2R (Rp 3.500)",
+      "4000": "Ukuran 3R (Rp 4.000)",
+      "6000": "Ukuran 5R (Rp 6.000)",
+      "8000": "Ukuran 6R (Rp 8.000)",
+      "13000": "Ukuran 8R (Rp 13.000)",
+      "16000": "Ukuran A4 (Rp 16.000)"
+    };
+
+    let fotoMixItems = [];
+    let isCalculated = false;
+
+    function chatAdminWA() {
+      const user = getUserAccountData();
+      const namaUser = user && user.nama ? `Saya ${user.nama}, ` : '';
+      
+      const text = `Halo Nurjaya Abadi Photocopy, ${namaUser}saya mau tanya / kirim file untuk Print / Cetak Foto.`;
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function addFotoMixItem(price = "2500", qty = 1) {
+      fotoMixItems.push({ id: Date.now() + Math.random(), price: String(price), qty: qty });
+      isCalculated = false;
+      renderFotoMixList();
+    }
+
+    function removeFotoMixItem(id) {
+      if (fotoMixItems.length <= 1) return;
+      fotoMixItems = fotoMixItems.filter(item => item.id !== id);
+      isCalculated = false;
+      renderFotoMixList();
+    }
+
+    function updateFotoMixItem(id, field, value) {
+      const item = fotoMixItems.find(i => i.id === id);
+      if (item) {
+        if (field === 'qty') item.qty = Math.max(1, parseInt(value) || 1);
+        if (field === 'price') item.price = String(value);
+        isCalculated = false;
+        renderFotoMixList();
+      }
+    }
+
+    function renderFotoMixList() {
+      const container = document.getElementById("fotoMixList");
+      if (!container) return;
+
+      container.innerHTML = fotoMixItems.map((item) => {
+        const subtotal = parseInt(item.price) * item.qty;
+        return `
+          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-2">
+            <div class="flex items-center gap-2">
+              <select onchange="updateFotoMixItem(${item.id}, 'price', this.value)" class="flex-1 p-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 focus:outline-none">
+                ${Object.keys(FOTO_PRICE_MAP).map(p => `
+                  <option value="${p}" ${item.price === p ? 'selected' : ''}>${FOTO_PRICE_MAP[p]}</option>
+                `).join('')}
+              </select>
+
+              <div class="flex items-center space-x-1 border rounded-lg bg-white p-0.5">
+                <button onclick="updateFotoMixItem(${item.id}, 'qty', ${item.qty - 1})" class="w-6 h-6 rounded text-xs font-bold hover:bg-slate-100 flex items-center justify-center text-slate-600">-</button>
+                <input type="number" min="1" value="${item.qty}" onchange="updateFotoMixItem(${item.id}, 'qty', this.value)" class="w-8 text-center text-xs font-bold bg-transparent focus:outline-none">
+                <button onclick="updateFotoMixItem(${item.id}, 'qty', ${item.qty + 1})" class="w-6 h-6 rounded text-xs font-bold hover:bg-slate-100 flex items-center justify-center text-slate-600">+</button>
+              </div>
+
+              ${fotoMixItems.length > 1 ? `
+                <button onclick="removeFotoMixItem(${item.id})" class="text-rose-500 hover:text-rose-700 p-1 text-xs">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              ` : '<div class="w-5"></div>'}
+            </div>
+
+            <div class="flex justify-between items-center text-[11px] pt-1 border-t border-slate-200/60 px-1">
+              <span class="text-slate-500 font-medium">Subtotal foto ini:</span>
+              <span class="font-bold text-slate-700">${formatRupiah(subtotal)}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const totalEl = document.getElementById("fotoMixTotalPrice");
+      if (totalEl) {
+        if (isCalculated) {
+          const total = fotoMixItems.reduce((sum, item) => sum + (parseInt(item.price) * item.qty), 0);
+          totalEl.textContent = formatRupiah(total);
+        } else {
+          totalEl.textContent = "Rp 0";
+        }
+      }
+    }
+
+    function calculateFotoMixTotal() {
+      isCalculated = true;
+      renderFotoMixList();
+    }
+
+    function sendFotoMixToWA() {
+      if (fotoMixItems.length === 0) return;
+
+      if (!isCalculated) calculateFotoMixTotal();
+
+      let text = `Halo Nurjaya Abadi Photocopy, saya mau *Cetak Foto* dengan rincian berikut:\n\n`;
+      let grandTotal = 0;
+
+      fotoMixItems.forEach((item, idx) => {
+        const label = FOTO_PRICE_MAP[item.price].split(' (')[0];
+        const subtotal = parseInt(item.price) * item.qty;
+        grandTotal += subtotal;
+        text += `${idx + 1}. ${label} x ${item.qty} pcs = ${formatRupiah(subtotal)}\n`;
+      });
+
+      text += `\n*Total Biaya: ${formatRupiah(grandTotal)}*\n\nSaya akan kirimkan file fotonya di chat ini ya!`;
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (fotoMixItems.length === 0) {
+        addFotoMixItem("2500", 1);
+      }
+    });
+</script>
+
+<script>
+    // ==========================================
+    // LOOP SLIDER LIVE PREVIEW VERTIKAL (TIKTOK STYLE)
+    // ==========================================
+    let currentLiveSlide = 0;
+    const totalLiveSlides = 5;
+
+    setInterval(() => {
+      const liveContainer = document.getElementById("livePreviewContainer");
+      const liveDots = document.querySelectorAll("#liveDots span");
+
+      if (liveContainer && liveDots.length > 0) {
+        currentLiveSlide = (currentLiveSlide + 1) % totalLiveSlides;
+        liveContainer.style.transform = `translateY(-${currentLiveSlide * 100}%)`;
+
+        liveDots.forEach((dot, idx) => {
+          dot.style.opacity = idx === currentLiveSlide ? "1" : "0.4";
+        });
+      }
+    }, 3000);
+</script>
+
+<script>
+function switchPricelistCategory(category) {
+  // 1. Reset SEMUA chip ke tampilan non-aktif (Background Abu-abu, Teks Gelap)
+  document.querySelectorAll('.pl-category-chip').forEach(chip => {
+    chip.className = "pl-category-chip px-2 py-1.5 bg-slate-100 text-slate-700 border border-slate-200/80 font-medium text-[10.5px] rounded-full transition hover:bg-slate-200 text-center truncate";
+    // Pertahankan layout grid col-span
+    if (chip.id === 'pl-chip-lam-dokumen' || chip.id === 'pl-chip-lam-foto') {
+      chip.classList.add('col-span-3');
+    } else {
+      chip.classList.add('col-span-2');
+    }
+  });
+
+  // 2. Sembunyikan semua konten daftar harga
+  document.querySelectorAll('.pl-group-content').forEach(group => {
+    group.classList.add('hidden');
+  });
+
+  // 3. Ubah chip terpilih menjadi AKTIF (Background Hijau Pekat, Teks Putih Tebal, Border Tebal)
+  const activeChip = document.getElementById(`pl-chip-${category}`);
+  if (activeChip) {
+    activeChip.className = "pl-category-chip active px-2 py-1.5 bg-emerald-800 text-white border-2 border-emerald-950 font-extrabold text-[10.5px] rounded-full shadow-sm transition text-center truncate";
+    if (category === 'lam-dokumen' || category === 'lam-foto') {
+      activeChip.classList.add('col-span-3');
+    } else {
+      activeChip.classList.add('col-span-2');
+    }
+  }
+
+  // 4. Tampilkan grup daftar harga yang sesuai
+  const activeGroup = document.getElementById(`pl-group-${category}`);
+  if (activeGroup) {
+    activeGroup.classList.remove('hidden');
+  }
+}
+</script>
+
+
+<script>
+// ==========================================
+// 1. KONTROL MODAL AKUN
+// ==========================================
+function openRegisterModal() {
+  const modal = document.getElementById("registerModal");
+  if (modal) modal.classList.remove("hidden");
+}
+
+function closeRegisterModal() {
+  const modal = document.getElementById("registerModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+function openLoginModal() {
+  const modal = document.getElementById("loginModal");
+  if (modal) modal.classList.remove("hidden");
+}
+
+function closeLoginModal() {
+  const modal = document.getElementById("loginModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+// ==========================================
+// 2. HELPER LOCALSTORAGE AKUN
+// ==========================================
+function getUserAccountData() {
+  try {
+    const data = localStorage.getItem("NURJAYA_USER_PROFILE");
+    return data ? JSON.parse(data) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function checkUserAccountState() {
+  const savedUser = getUserAccountData();
+  const guestState = document.getElementById("accountGuestState");
+  const loggedInState = document.getElementById("accountLoggedInState");
+
+  if (savedUser && guestState && loggedInState) {
+    guestState.classList.add("hidden");
+    loggedInState.classList.remove("hidden");
+
+    if (document.getElementById("userProfileName")) document.getElementById("userProfileName").textContent = savedUser.nama;
+    if (document.getElementById("userProfileId")) document.getElementById("userProfileId").textContent = savedUser.id;
+    if (document.getElementById("userProfileWa")) document.getElementById("userProfileWa").textContent = savedUser.no_wa;
+  } else if (guestState && loggedInState) {
+    guestState.classList.remove("hidden");
+    loggedInState.classList.add("hidden");
+  }
+}
+
+function saveUserAccountData(user) {
+  localStorage.setItem("NURJAYA_USER_PROFILE", JSON.stringify(user));
+  checkUserAccountState();
+}
+
+function logoutAccount() {
+  if (confirm("Apakah Anda yakin ingin keluar dari akun VIP ini?")) {
+    localStorage.removeItem("NURJAYA_USER_PROFILE");
+    checkUserAccountState();
+    alert("Anda telah berhasil logout.");
+  }
+}
+
+// ==========================================
+// 3. PROSES BUAT AKUN VIP
+// ==========================================
+async function handleRegisterSubmit(event) {
+  event.preventDefault();
+  const nama = document.getElementById("regNama").value.trim();
+  const noWa = document.getElementById("regWa").value.trim();
+  const btn = document.getElementById("regSubmitBtn");
+  
+  const API_URL_AKUN = "https://script.google.com/macros/s/AKfycbwt4IsfcqqDL_QpNJYwJKG9PlNREowsvqhdvl-WTB84haMfRcqE5ho9T8OCCwZUujt1Jw/exec";
+
+  if (!nama || !noWa) return alert("Mohon lengkapi semua kolom!");
+
+  btn.disabled = true;
+  btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses VIP...`;
+
+  try {
+    const targetUrl = `${API_URL_AKUN}?action=register&nama=${encodeURIComponent(nama)}&no_wa=${encodeURIComponent(noWa)}`;
+    const response = await fetch(targetUrl);
+    const res = await response.json();
+
+    if (res.status === "success") {
+      saveUserAccountData(res.data);
+      closeRegisterModal();
+      alert(`Selamat ${res.data.nama}! Akun VIP Anda berhasil diaktifkan dengan ID: ${res.data.id}`);
+      document.getElementById("registerForm").reset();
+    } else if (res.status === "exists") {
+      alert(res.message);
+    } else {
+      alert("Gagal: " + res.message);
+    }
+  } catch (err) {
+    alert("Terjadi kesalahan koneksi saat mendaftar.");
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<i class="fa-solid fa-sparkles text-amber-300"></i> <span>Aktivasi Member VIP Now</span>`;
+  }
+}
+
+// ==========================================
+// 4. PROSES LOGIN AKUN VIP
+// ==========================================
+async function handleLoginSubmit(event) {
+  event.preventDefault();
+  const noWa = document.getElementById("loginWa").value.trim();
+  const btn = document.getElementById("loginSubmitBtn");
+  
+  const API_URL_AKUN = "https://script.google.com/macros/s/AKfycbwt4IsfcqqDL_QpNJYwJKG9PlNREowsvqhdvl-WTB84haMfRcqE5ho9T8OCCwZUujt1Jw/exec";
+
+  if (!noWa) return alert("Masukkan nomor WhatsApp Anda!");
+
+  btn.disabled = true;
+  btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Verifikasi VIP...`;
+
+  try {
+    const targetUrl = `${API_URL_AKUN}?action=login&no_wa=${encodeURIComponent(noWa)}`;
+    const response = await fetch(targetUrl);
+    const res = await response.json();
+
+    if (res.status === "success") {
+      saveUserAccountData(res.data);
+      closeLoginModal();
+      alert(`Selamat datang kembali Member VIP, ${res.data.nama}!`);
+      document.getElementById("loginForm").reset();
+    } else {
+      alert(res.message);
+    }
+  } catch (err) {
+    alert("Terjadi kesalahan koneksi saat login.");
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<span>Masuk Sebagai VIP</span>`;
+  }
+}
+
+// ==========================================
+// 5. HELPER HEADER WHATSAPP OTOMATIS
+// ==========================================
+function getWaUserHeader() {
+  const user = getUserAccountData();
+  if (user) {
+    return `*Identitas Pemesan (VIP Member):*\n- Nama: ${user.nama}\n- ID VIP: ${user.id}\n- WA: ${user.no_wa}\n\n`;
+  }
+  return "";
+}
+
+// ==========================================
+// 6. INITIALIZATION ON DOM LOADED
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+  checkUserAccountState();
+});
+</script>
+
+  
+  <!-- MODAL PREVIEW FOTO FULLSCREEN (GALERI LIGHTBOX) -->
+<div id="imagePreviewModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[60] flex flex-col items-center justify-center p-4" onclick="closeImagePreview()">
+  <button onclick="closeImagePreview()" class="absolute top-4 right-4 text-white text-2xl p-2 hover:text-emerald-400">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <img id="fullPreviewImg" src="" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl">
+  <p id="fullPreviewCaption" class="text-white text-xs font-semibold mt-4 text-center px-4"></p>
+</div>
+
+<!-- ================= MODAL ALERT UNIVERSAL CLOUD FOTOKOPI ================= -->
+<div id="modal-alert-fotokopi" 
+     class="fixed inset-0 z-[999999] hidden items-end justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-sm opacity-0 transition-opacity duration-200 ease-out select-none"
+     onclick="event.stopPropagation();">
+    
+    <!-- Box Alert -->
+    <div id="fotokopi-box-content" 
+         onclick="event.stopPropagation();" 
+         class="bg-white w-full max-w-sm rounded-[32px] p-6 text-center shadow-2xl border border-slate-100 transform translate-y-8 transition-all duration-200 ease-out space-y-4 mb-2 pointer-events-auto">
+        
+        <!-- Wadah Ikon Lingkaran Pastel -->
+        <div id="fotokopi-alert-icon-box" class="mx-auto w-20 h-20 rounded-full flex items-center justify-center text-3xl transition-colors">
+            <i id="fotokopi-alert-icon" class="fa-solid"></i>
+        </div>
+
+        <!-- Wadah Teks Informasi -->
+        <div class="space-y-1.5 px-2">
+            <h3 id="fotokopi-alert-judul" class="text-lg font-bold text-slate-900 tracking-tight leading-snug"></h3>
+            <p id="fotokopi-alert-deskripsi" class="text-xs font-normal text-slate-500 leading-relaxed"></p>
+        </div>
+
+        <!-- Tombol Konfirmasi -->
+        <button type="button" 
+                onclick="tutupAlertFotokopi(event)" 
+                id="fotokopi-alert-btn"
+                class="w-full py-3.5 text-xs font-bold tracking-wide uppercase rounded-full shadow-md active:scale-95 transition-all duration-150">
+            SAYA MENGERTI
+        </button>
+    </div>
+</div>
+
+<script>
+// ====================================================================
+// SYSTEM ALERT & OVERRIDE FOTOKOPI (ISOLATED & PROMISE-BASED)
+// ====================================================================
+
+let resolveAlertPromise = null;
+let bodyOverflowSebelumnya = '';
+
+/**
+ * GLOBAL OVERRIDE: Mengalihkan window.alert bawaan
+ */
+window.alert = function(pesan) {
+    if (pesan === undefined || pesan === null) return Promise.resolve();
+
+    const kataKunciError = ['gagal', 'error', 'salah', 'periksa', 'ditolak', 'kosong', 'ulang', 'ulangi', 'tidak berhasil'];
+    const apakahError = kataKunciError.some(kata => String(pesan).toLowerCase().includes(kata));
+
+    const tipe = apakahError ? "error" : "sukses";
+    const judul = apakahError ? "Sistem Peringatan" : "Notifikasi Baru";
+    const deskripsiFormatted = String(pesan).replace(/\n/g, "<br>");
+
+    return bukaAlertFotokopi(tipe, judul, deskripsiFormatted);
+};
+
+/**
+ * UTILITY: Membuka Modal Alert Kustom
+ */
+function bukaAlertFotokopi(tipe, judul, deskripsi) {
+    return new Promise((resolve) => {
+        // Jika masih ada alert aktif sebelumnya, selesaikan promise lama terlebih dahulu
+        if (typeof resolveAlertPromise === 'function') {
+            resolveAlertPromise();
+        }
+        resolveAlertPromise = resolve;
+
+        const modal = document.getElementById('modal-alert-fotokopi');
+        const box = document.getElementById('fotokopi-box-content');
+        const iconBox = document.getElementById('fotokopi-alert-icon-box');
+        const icon = document.getElementById('fotokopi-alert-icon');
+        const judulElem = document.getElementById('fotokopi-alert-judul');
+        const deskripsiElem = document.getElementById('fotokopi-alert-deskripsi');
+        const btn = document.getElementById('fotokopi-alert-btn');
+
+        if (!modal || !box) {
+            resolve();
+            return;
+        }
+
+        // Simpan gaya overflow body awal (hanya jika belum disimpan)
+        if (!modal.classList.contains('flex')) {
+            bodyOverflowSebelumnya = document.body.style.overflow;
+        }
+
+        // Setel Teks
+        if (judulElem) judulElem.innerHTML = judul;
+        if (deskripsiElem) deskripsiElem.innerHTML = deskripsi;
+
+        // Setel Visual Tipe
+        if (tipe === 'sukses') {
+            if (iconBox) iconBox.className = "mx-auto w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center text-3xl";
+            if (icon) icon.className = "fa-solid fa-bell";
+            if (btn) btn.className = "w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold tracking-wide uppercase rounded-full shadow-lg shadow-emerald-200 active:scale-95 transition-all";
+        } else {
+            if (iconBox) iconBox.className = "mx-auto w-20 h-20 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center text-3xl";
+            if (icon) icon.className = "fa-solid fa-triangle-exclamation";
+            if (btn) btn.className = "w-full py-3.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold tracking-wide uppercase rounded-full shadow-lg shadow-rose-200 active:scale-95 transition-all";
+        }
+
+        // Tampilkan Modal Alert
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+
+        // Trigger Animasi Slide Up
+        requestAnimationFrame(() => {
+            modal.classList.remove('opacity-0');
+            modal.classList.add('opacity-100');
+            box.classList.remove('translate-y-8');
+            box.classList.add('translate-y-0');
+        });
+    });
+}
+
+/**
+ * UTILITY: Menutup Modal Alert Kustom
+ */
+function tutupAlertFotokopi(e) {
+    if (e) {
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+    }
+
+    const modal = document.getElementById('modal-alert-fotokopi');
+    const box = document.getElementById('fotokopi-box-content');
+
+    if (!modal || !box) return;
+
+    // Trigger Animasi Slide Down
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    box.classList.remove('translate-y-0');
+    box.classList.add('translate-y-8');
+
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+
+        // Kembalikan overflow body ke kondisi semula sebelum alert dipanggil
+        document.body.style.overflow = bodyOverflowSebelumnya;
+
+        // Resolve Promise agar baris `await alert(...)` di kode utama dapat berlanjut
+        if (typeof resolveAlertPromise === 'function') {
+            const currentResolve = resolveAlertPromise;
+            resolveAlertPromise = null;
+            currentResolve();
+        }
+    }, 200);
+}
+
+// Mencegah Klik Backdrop Lolos Ke Element Lain
+document.addEventListener('DOMContentLoaded', () => {
+    const alertModal = document.getElementById('modal-alert-fotokopi');
+    if (alertModal) {
+        alertModal.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (e.target === alertModal) {
+                tutupAlertFotokopi(e);
+            }
+        });
+        
+        // Mencegah Mousedown/Pointerdown Lolos ke Listener Modal Lain
+        alertModal.addEventListener('mousedown', (e) => e.stopPropagation());
+        alertModal.addEventListener('touchstart', (e) => e.stopPropagation());
+    }
+});
+</script>
+
+
+<script>
+// ==========================================
+// KONTROL DIRECT SPLASH SCREEN ANTI-BOCOR
+// ==========================================
+function hideSplashScreen() {
+  const splash = document.getElementById("splash-screen");
+  
+  // Lepas kunci scrollbar agar halaman bisa di-scroll kembali
+  document.body.classList.remove("splash-active");
+
+  if (!splash) return;
+
+  // Animasi fade out
+  splash.classList.add("fade-out");
+
+  setTimeout(() => {
+    splash.style.display = "none";
+  }, 450);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof showTab === 'function') showTab('dashboard');
+  if (typeof fetchProducts === 'function') fetchProducts();
+  if (typeof updateCartBadge === 'function') updateCartBadge();
+
+  // Hilangkan splash setelah 1.5 detik
+  setTimeout(() => {
+    hideSplashScreen();
+  }, 1500);
+});
+
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker terdaftar:', reg.scope))
+      .catch(err => console.error('Gagal daftar Service Worker:', err));
+  });
+}
+</script>
+</body>
+</html>
