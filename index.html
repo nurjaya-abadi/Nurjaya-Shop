@@ -127,6 +127,37 @@
 .animate-skeleton {
   animation: skeletonPulse 1.5s ease-in-out infinite;
 }
+@keyframes shimmer {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(150%) skewX(-20deg);
+  }
+}
+
+.animate-shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  animation: shimmer 3s infinite ease-in-out;
+  pointer-events: none;
+}
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen pb-28 select-none splash-active">
@@ -192,7 +223,7 @@
   <div class="h-16"></div>
 
   <!-- SEARCH OVERLAY RESULTS (Aktif saat pencarian di luar Tab Beli Barang) -->
-  <div id="searchOverlay" class="hidden fixed inset-x-0 top-16 bottom-24 bg-white z-20 overflow-y-auto max-w-md mx-auto p-4 shadow-lg">
+  <div id="searchOverlay" class="hidden fixed inset-x-0 top-16 bottom-24 bg-white z-50 overflow-y-auto max-w-md mx-auto p-4 shadow-lg">
     <div class="flex justify-between items-center mb-3">
       <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider" id="searchResultCount">Hasil Pencarian</h3>
       <button onclick="clearSearch()" class="text-xs text-emerald-600 font-bold">Tutup</button>
@@ -248,38 +279,38 @@
 <!-- h-[165px] atau h-[180px] mengunci tinggi keseluruhan agar ramping, items-stretch memastikan sejajar -->
 <div class="mt-3 sm:mt-4 flex items-stretch gap-2.5 h-[165px] sm:h-[180px] w-full">
   
-  <!-- KIRI: GRID 2x2 DARI 4 ICON ASLI (Lock tinggi penuh sesuai h-parent) -->
+<!-- KIRI: GRID 2x2 DARI 4 ICON ASLI (Lock tinggi penuh sesuai h-parent) -->
   <div class="flex-1 grid grid-cols-2 gap-2 h-full">
     <!-- Shortcut 1: Semua ATK -->
-    <button onclick="showTab('belanja')" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
-      <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+    <button onclick="showTab('belanja')" class="flex flex-col items-center justify-center p-2 bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-emerald-200/70 text-emerald-800 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
         <i class="fa-solid fa-store"></i>
       </div>
-      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Semua ATK</span>
+      <span class="text-[10px] font-bold text-emerald-900 leading-tight text-center line-clamp-2">Semua ATK</span>
     </button>
 
     <!-- Shortcut 2: Pelayanan & Jasa -->
-    <button onclick="openServicesModal()" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
-      <div class="w-9 h-9 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+    <button onclick="openServicesModal()" class="flex flex-col items-center justify-center p-2 bg-pink-50 hover:bg-pink-100 rounded-xl border border-pink-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-pink-200/70 text-pink-800 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
         <i class="fa-solid fa-hand-holding-hand"></i>
       </div>
-      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Pelayanan & Jasa</span>
+      <span class="text-[10px] font-bold text-pink-900 leading-tight text-center line-clamp-2">Pelayanan</span>
     </button>
 
     <!-- Shortcut 3: Price List -->
-    <button onclick="openPricelistModal()" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
-      <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+    <button onclick="openPricelistModal()" class="flex flex-col items-center justify-center p-2 bg-amber-50 hover:bg-amber-100 rounded-xl border border-amber-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-amber-200/70 text-amber-800 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
         <i class="fa-solid fa-tags"></i>
       </div>
-      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Price List</span>
+      <span class="text-[10px] font-bold text-amber-900 leading-tight text-center line-clamp-2">Price List</span>
     </button>
 
     <!-- Shortcut 4: Keranjang -->
-    <button onclick="openCartModal()" class="flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
-      <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
+    <button onclick="openCartModal()" class="flex flex-col items-center justify-center p-2 bg-blue-50 hover:bg-blue-100 rounded-xl border border-blue-200/80 shadow-sm active:scale-95 transition h-full min-h-0">
+      <div class="w-9 h-9 rounded-full bg-blue-200/70 text-blue-800 flex items-center justify-center text-sm mb-1 shadow-inner flex-shrink-0">
         <i class="fa-solid fa-basket-shopping"></i>
       </div>
-      <span class="text-[10px] font-bold text-slate-700 leading-tight text-center line-clamp-2">Keranjang</span>
+      <span class="text-[10px] font-bold text-blue-900 leading-tight text-center line-clamp-2">Keranjang</span>
     </button>
   </div>
 
@@ -396,8 +427,8 @@
 <!-- ========================================== -->
 <div id="tab-pelayanan" class="tab-content hidden space-y-4 max-w-md mx-auto pb-10">
   
-  <!-- SEKSI 1: PRINT & CETAK FOTO (DIRECT WA) -->
-  <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3 text-center">
+<!-- SEKSI 1: PRINT & CETAK FOTO (DIRECT WA) -->
+  <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3 text-center mt-4">
     <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xl mx-auto">
       <i class="fa-solid fa-print"></i>
     </div>
@@ -492,90 +523,99 @@
 <!-- ========================================== -->
 <div id="tab-akun" class="tab-content hidden max-w-md mx-auto min-h-[calc(100vh-140px)] flex flex-col justify-center px-4 py-6 pb-20 space-y-4">
   
-  <!-- STATE 1: BILA BELUM LOGIN (GUEST STATE) -->
-  <div id="accountGuestState" class="bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-amber-200/60 shadow-xl text-center space-y-5 transition-all">
-    <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
-      <div class="absolute inset-0 bg-gradient-to-tr from-amber-400 to-emerald-600 rounded-full blur-md opacity-40 animate-pulse"></div>
-      <div class="relative w-20 h-20 bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-900 text-amber-300 rounded-full flex items-center justify-center text-3xl shadow-lg border-2 border-amber-400/40">
-        <i class="fa-solid fa-crown"></i>
+  <!-- STATE 1: BILA BELUM LOGIN (GUEST STATE) - Gradasi Emerald -->
+  <div id="accountGuestState" class="relative bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-900 rounded-3xl p-6 text-white shadow-xl text-center space-y-5 transition-all overflow-hidden border border-emerald-600/40 animate-shimmer-card">
+    
+    <!-- Watermark / Efek Cahaya Latar -->
+    <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl text-amber-300 pointer-events-none">
+      <i class="fa-solid fa-crown"></i>
+    </div>
+    <div class="absolute -left-10 -top-10 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+
+    <div class="relative z-10">
+      <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 bg-gradient-to-tr from-amber-400 to-emerald-400 rounded-full blur-md opacity-40 animate-pulse"></div>
+        <div class="relative w-20 h-20 bg-slate-950 text-amber-300 rounded-full flex items-center justify-center text-3xl shadow-lg border-2 border-amber-400/40">
+          <i class="fa-solid fa-crown"></i>
+        </div>
       </div>
     </div>
     
-    <div class="space-y-1.5">
-      <span class="inline-block px-3 py-1 bg-amber-100 text-amber-900 font-extrabold text-[10px] rounded-full uppercase tracking-wider shadow-sm">
-        <i class="fa-solid fa-sparkles text-amber-500 mr-1"></i>GRATIS
+    <div class="space-y-1.5 relative z-10">
+      <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md text-amber-300 font-extrabold text-[10px] rounded-full uppercase tracking-wider shadow-sm border border-white/15">
+        <i class="fa-solid fa-sparkles text-amber-300 mr-1"></i>GRATIS
       </span>
-      <h3 class="text-lg font-black text-slate-800 tracking-tight">Gabung Member VIP NURJAYA</h3>
-      <p class="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+      <h3 class="text-lg font-black text-white tracking-tight">Gabung Member VIP NURJAYA</h3>
+      <p class="text-xs text-emerald-100/80 max-w-xs mx-auto leading-relaxed">
         Nikmati kemudahan transaksi, pesanan prioritas, dan koneksi identitas otomatis ke WhatsApp Admin!
       </p>
     </div>
 
     <!-- Tombol Pilihan Pendaftaran / Login -->
-    <div class="grid grid-cols-2 gap-3 pt-2">
-      <button onclick="openRegisterModal()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold py-3 rounded-2xl text-xs shadow-lg shadow-emerald-900/20 transition active:scale-95 flex items-center justify-center gap-2">
-        <i class="fa-solid fa-user-plus text-amber-300"></i> Daftar
+    <div class="grid grid-cols-2 gap-3 pt-2 relative z-10">
+      <button onclick="openRegisterModal()" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold py-3 rounded-2xl text-xs shadow-lg shadow-amber-900/20 transition active:scale-95 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-user-plus text-slate-950"></i> Daftar
       </button>
-      <button onclick="openLoginModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold py-3 rounded-2xl text-xs border border-slate-200 transition active:scale-95 flex items-center justify-center gap-2">
-        <i class="fa-solid fa-right-to-bracket text-emerald-700"></i> Masuk Akun
+      <button onclick="openLoginModal()" class="w-full bg-white/10 hover:bg-white/20 text-white font-extrabold py-3 rounded-2xl text-xs border border-white/20 backdrop-blur-md transition active:scale-95 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-right-to-bracket text-amber-300"></i> Masuk Akun
       </button>
     </div>
   </div>
 
-  <!-- STATE 2: BILA SUDAH LOGGED IN (VIP PROFILE CARD) -->
+  <!-- STATE 2: BILA SUDAH LOGGED IN (VIP PROFILE CARD) - Gradasi Emas Tua -->
   <div id="accountLoggedInState" class="hidden space-y-4 my-auto">
     
-    <!-- VIP Profile Card (Luxury Gold & Emerald Design) -->
-    <div class="relative bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 rounded-3xl p-6 text-white shadow-2xl space-y-5 overflow-hidden border border-amber-400/30">
+    <!-- VIP Profile Card (Luxury Old Gold / Amber Design) -->
+    <div class="relative bg-gradient-to-br from-amber-700 via-amber-900 to-slate-950 rounded-3xl p-6 text-white shadow-2xl space-y-5 overflow-hidden border border-amber-400/40 animate-shimmer-card">
       
       <!-- Watermark Icons & Glow Effect -->
       <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl text-amber-300 pointer-events-none">
         <i class="fa-solid fa-crown"></i>
       </div>
-      <div class="absolute -left-10 -top-10 w-32 h-32 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -left-10 -top-10 w-32 h-32 bg-amber-300/20 rounded-full blur-2xl pointer-events-none"></div>
 
       <!-- Card Header: Avatar & VIP Badge -->
       <div class="flex items-center justify-between relative z-10">
         <div class="flex items-center gap-3.5">
           <div class="relative">
-            <div class="w-14 h-14 bg-gradient-to-tr from-amber-300 via-emerald-400 to-amber-500 rounded-full p-[2px] shadow-md">
-              <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center text-2xl text-amber-300">
+            <div class="w-14 h-14 bg-gradient-to-tr from-amber-200 via-amber-400 to-yellow-600 rounded-full p-[2px] shadow-md">
+              <div class="w-full h-full bg-slate-950 rounded-full flex items-center justify-center text-2xl text-amber-300">
                 <i class="fa-solid fa-user-astronaut"></i>
               </div>
             </div>
-            <span class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
+            <span class="absolute -bottom-1 -right-1 bg-amber-300 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
               VIP
             </span>
           </div>
           <div>
             <div class="flex items-center gap-1.5">
-              <span class="text-[10px] font-extrabold text-amber-300 uppercase tracking-widest flex items-center gap-1">
-                <i class="fa-solid fa-crown text-[9px]"></i> VIP MEMBER
+              <span class="text-[10px] font-black text-slate-950 bg-gradient-to-r from-amber-300 to-amber-400 px-2.5 py-0.5 rounded-full uppercase tracking-widest flex items-center gap-1 shadow-sm">
+                <i class="fa-solid fa-crown text-[9px] text-slate-950"></i> VIP MEMBER
               </span>
             </div>
-            <h3 id="userProfileName" class="text-lg font-black tracking-tight text-white leading-snug">Nama Pelanggan</h3>
+            <h3 id="userProfileName" class="text-lg font-black tracking-tight text-white leading-snug mt-1">Nama Pelanggan</h3>
           </div>
         </div>
       </div>
 
       <!-- Card Body: Identity Info -->
-      <div class="pt-3 border-t border-white/10 grid grid-cols-2 gap-3 relative z-10">
-        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-          <span class="text-[9px] font-bold text-emerald-300/80 uppercase block tracking-wider">ID Akun</span>
-          <span id="userProfileId" class="font-mono font-extrabold text-xs tracking-wider text-amber-200">NJ-XXXXX</span>
+      <div class="pt-3 border-t border-white/15 grid grid-cols-2 gap-3 relative z-10">
+        <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+          <span class="text-[9px] font-bold text-amber-200/80 uppercase block tracking-wider">ID Akun</span>
+          <span id="userProfileId" class="font-mono font-extrabold text-xs tracking-wider text-amber-100">NJ-XXXXX</span>
         </div>
-        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-          <span class="text-[9px] font-bold text-emerald-300/80 uppercase block tracking-wider">WhatsApp Terhubung</span>
+        <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+          <span class="text-[9px] font-bold text-amber-200/80 uppercase block tracking-wider">WhatsApp</span>
           <span id="userProfileWa" class="font-semibold text-xs text-white">08xxxxxxxxxx</span>
         </div>
       </div>
 
       <!-- Card Footer: Status Label -->
-      <div class="flex justify-between items-center text-[10px] text-emerald-200/70 pt-1 relative z-10">
+      <div class="flex justify-between items-center text-[10px] text-amber-100/70 pt-1 relative z-10">
         <span class="flex items-center gap-1">
-       Status: Aktif
+         Status: Aktif
         </span>
-        <span class="font-semibold text-amber-300/80">Nurjaya Abadi Photocopy</span>
+        <span class="font-semibold text-amber-300">Nurjaya Abadi Photocopy</span>
       </div>
     </div>
 
@@ -605,38 +645,95 @@
     </div>
 
   </div>
-</div>
 
-
-<!-- ========================================== -->
-<!-- MODAL 4: REGISTRASI VIP MEMBER             -->
-<!-- ========================================== -->
-<div id="registerModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all">
-  <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl space-y-5 transform transition-all scale-100 border border-slate-100">
-    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm">
-          <i class="fa-solid fa-crown text-amber-500"></i>
-        </div>
-        <h3 class="text-sm font-black text-slate-800">Daftar Member VIP</h3>
-      </div>
-      <button onclick="closeRegisterModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
-        <i class="fa-solid fa-xmark text-sm"></i>
-      </button>
+  <!-- KARTU LOKASI & PETA -->
+  <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm space-y-3">
+    <div class="flex items-center justify-between">
+      <h4 class="text-xs font-extrabold text-slate-800 tracking-wider flex items-center gap-1.5">
+        <i class="fa-solid fa-map-location-dot text-emerald-600"></i> Lokasi Toko Kami
+      </h4>
+      <span class="text-[9px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full">Tasikmalaya</span>
     </div>
 
-    <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="space-y-4 text-left">
-      <div>
-        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">Nama Lengkap / Nickname</label>
-        <input type="text" id="regNama" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+    <div class="relative w-full aspect-[16/9] overflow-hidden rounded-2xl border border-slate-100 shadow-inner">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d247.32857742440015!2d108.20487424411294!3d-7.324977282121664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f57ed1793d56f%3A0x3ffef6439f0bd323!2sNurjaya%20Abadi%20Photocopy!5e0!3m2!1sid!2sid!4v1778224292141!5m2!1sid!2sid" 
+        class="absolute inset-0 w-full h-full border-0"
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-1">
+      <div class="flex items-center gap-2.5 text-left w-full sm:w-auto">
+        <div class="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+          <i class="fa-solid fa-location-dot text-xs"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-800 leading-tight">Nurjaya Abadi Photocopy</p>
+          <p class="text-[10px] text-slate-500">Tasikmalaya, Jawa Barat</p>
+        </div>
+      </div>
+      <a href="https://maps.google.com/?q=Nurjaya+Abadi+Photocopy+Tasikmalaya" target="_blank" 
+         class="w-full sm:w-auto bg-slate-900 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-[11px] font-bold transition-colors flex items-center justify-center gap-2 shadow-sm">
+        <i class="fa-solid fa-diamond-turn-right"></i>
+        Buka di Maps
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL 4: REGISTRASI VIP MEMBER (MODERN)    -->
+<!-- ========================================== -->
+<div id="registerModal" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all">
+  <div class="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-2xl space-y-6 transform transition-all scale-100 border border-slate-100 relative overflow-hidden text-center">
+    
+    <!-- Tombol Close Melayang di Kanan Atas -->
+    <button onclick="closeRegisterModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition">
+      <i class="fa-solid fa-xmark text-sm"></i>
+    </button>
+
+    <!-- Header / Logo Profil Terpusat -->
+    <div class="space-y-3 pt-2">
+      <div class="relative w-16 h-16 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 bg-gradient-to-tr from-amber-400 to-emerald-600 rounded-full blur-md opacity-40 animate-pulse"></div>
+        <div class="relative w-16 h-16 bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-900 text-amber-300 rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-amber-400/40">
+          <i class="fa-solid fa-crown"></i>
+        </div>
       </div>
       <div>
-        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">Nomor WhatsApp Active</label>
-        <input type="tel" id="regWa" required placeholder="Contoh: 08123456789" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+        <h3 class="text-base font-black text-slate-900 tracking-tight">Daftar Member Nurjaya</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">Nikmati kelebihan menjadi konsumen prioritas di Nurjaya</p>
+      </div>
+    </div>
+
+    <!-- Form Registrasi -->
+    <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="space-y-3.5 text-left">
+      <div>
+        <label class="block text-[11px] font-extrabold text-slate-700 mb-1 ml-1">Nama Lengkap / Nickname</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-xs">
+            <i class="fa-solid fa-user"></i>
+          </span>
+          <input type="text" id="regNama" required placeholder="Contoh: Budi Santoso" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition text-slate-800">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-extrabold text-slate-700 mb-1 ml-1">Nomor WhatsApp Aktif</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-xs">
+            <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+          </span>
+          <input type="tel" id="regWa" required placeholder="Contoh: 08123456789" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition text-slate-800">
+        </div>
       </div>
 
       <div class="pt-2">
-        <button type="submit" id="regSubmitBtn" class="w-full bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white font-extrabold py-3.5 rounded-2xl text-xs shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2 active:scale-95">
+        <button type="submit" id="regSubmitBtn" class="w-full bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white font-extrabold py-3.5 rounded-2xl text-xs shadow-lg shadow-emerald-900/25 transition flex items-center justify-center gap-2 active:scale-95">
           <i class="fa-solid fa-sparkles text-amber-300"></i>
           <span>Aktivasi Member VIP Now</span>
         </button>
@@ -647,31 +744,46 @@
 
 
 <!-- ========================================== -->
-<!-- MODAL 5: LOGIN VIP MEMBER                  -->
+<!-- MODAL 5: LOGIN VIP MEMBER (MODERN)         -->
 <!-- ========================================== -->
-<div id="loginModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all">
-  <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl space-y-5 transform transition-all scale-100 border border-slate-100">
-    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm">
+<div id="loginModal" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all">
+  <div class="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-2xl space-y-6 transform transition-all scale-100 border border-slate-100 relative overflow-hidden text-center">
+    
+    <!-- Tombol Close Melayang di Kanan Atas -->
+    <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition">
+      <i class="fa-solid fa-xmark text-sm"></i>
+    </button>
+
+    <!-- Header / Logo Profil Terpusat -->
+    <div class="space-y-3 pt-2">
+      <div class="relative w-16 h-16 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 bg-gradient-to-tr from-amber-400 to-emerald-600 rounded-full blur-md opacity-40 animate-pulse"></div>
+        <div class="relative w-16 h-16 bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-900 text-amber-300 rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-amber-400/40">
           <i class="fa-solid fa-right-to-bracket"></i>
         </div>
-        <h3 class="text-sm font-black text-slate-800">Masuk Akun VIP</h3>
       </div>
-      <button onclick="closeLoginModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
-        <i class="fa-solid fa-xmark text-sm"></i>
-      </button>
+      <div>
+        <h3 class="text-base font-black text-slate-900 tracking-tight">LOGIN</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">Akses cepat ke profil & riwayat pesananmu</p>
+      </div>
     </div>
 
-    <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4 text-left">
+    <!-- Form Login -->
+    <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3.5 text-left">
       <div>
-        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">Nomor WhatsApp Terdaftar</label>
-        <input type="tel" id="loginWa" required placeholder="Masukkan nomor WhatsApp Anda..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+        <label class="block text-[11px] font-extrabold text-slate-700 mb-1 ml-1">Nomor WhatsApp Terdaftar</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-xs">
+            <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+          </span>
+          <input type="tel" id="loginWa" required placeholder="Masukkan nomor WhatsApp Anda..." class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition text-slate-800">
+        </div>
       </div>
 
       <div class="pt-2">
-        <button type="submit" id="loginSubmitBtn" class="w-full bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white font-extrabold py-3.5 rounded-2xl text-xs shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2 active:scale-95">
-          <span>Masuk Sebagai VIP</span>
+        <button type="submit" id="loginSubmitBtn" class="w-full bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white font-extrabold py-3.5 rounded-2xl text-xs shadow-lg shadow-emerald-900/25 transition flex items-center justify-center gap-2 active:scale-95">
+          <i class="fa-solid fa-crown text-amber-300"></i>
+          <span>MASUK</span>
         </button>
       </div>
     </form>
@@ -1531,7 +1643,7 @@
       const user = getUserAccountData();
       
       if (!user) {
-        await alert("Untuk melakukan checkout, Anda wajib terdaftar sebagai Member VIP Nurjaya. Anda akan diarahkan ke halaman Akun untuk login / mendaftar.");
+        await alert("Untuk melakukan checkout, Anda wajib terdaftar sebagai Member Nurjaya. Anda akan diarahkan ke halaman Akun untuk login / mendaftar.");
         
         const cartModal = document.getElementById('cartModal') || document.getElementById('modal-cart');
         if (cartModal) cartModal.classList.add('hidden');
@@ -1968,12 +2080,42 @@
       renderFotoMixList();
     }
 
-    function sendFotoMixToWA() {
+async function sendFotoMixToWA() {
+      const user = getUserAccountData();
+      
+      if (!user) {
+        await alert("Untuk melakukan checkout, Anda wajib terdaftar sebagai Member Nurjaya. Anda akan diarahkan ke halaman Akun untuk login / mendaftar.");
+        
+        // Tutup modal foto mix jika ada
+        const fotoMixModal = document.getElementById('fotoMixModal') || document.getElementById('modal-fotomix');
+        if (fotoMixModal) fotoMixModal.classList.add('hidden');
+
+        if (typeof showTab === 'function') {
+          showTab('akun');
+        } else {
+          document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.add('hidden');
+            el.classList.remove('flex');
+          });
+
+          const tabAkun = document.getElementById('tab-akun');
+          if (tabAkun) {
+            tabAkun.classList.remove('hidden');
+            tabAkun.classList.add('flex');
+          }
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
       if (fotoMixItems.length === 0) return;
 
       if (!isCalculated) calculateFotoMixTotal();
 
-      let text = `Halo Nurjaya Abadi Photocopy, saya mau *Cetak Foto* dengan rincian berikut:\n\n`;
+      const userHeader = typeof getWaUserHeader === 'function' ? getWaUserHeader() : '';
+
+      let text = `${userHeader}Halo Nurjaya Abadi Photocopy, saya mau *Cetak Foto* dengan rincian berikut:\n\n`;
       let grandTotal = 0;
 
       fotoMixItems.forEach((item, idx) => {
@@ -1986,6 +2128,12 @@
       text += `\n*Total Biaya: ${formatRupiah(grandTotal)}*\n\nSaya akan kirimkan file fotonya di chat ini ya!`;
       window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (fotoMixItems.length === 0) {
+        addFotoMixItem("2500", 1);
+      }
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
       if (fotoMixItems.length === 0) {
@@ -2157,7 +2305,7 @@ async function handleRegisterSubmit(event) {
     console.error(err);
   } finally {
     btn.disabled = false;
-    btn.innerHTML = `<i class="fa-solid fa-sparkles text-amber-300"></i> <span>Aktivasi Member VIP Now</span>`;
+    btn.innerHTML = `<i class="fa-solid fa-sparkles text-amber-300"></i> <span>Daftar Sekarang</span>`;
   }
 }
 
