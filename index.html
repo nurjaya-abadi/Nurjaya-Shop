@@ -9,6 +9,7 @@
   <meta name="theme-color" content="#047857">
   <meta name="msapplication-navbutton-color" content="#047857">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="color-scheme" content="light">
 
   <!-- PWA & Mobile App Capability -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -78,6 +79,14 @@
     }
   </style>
   <style>
+  /* Mencegah browser HP memaksa mengubah warna halaman menjadi gelap */
+:root {
+  color-scheme: light only;
+}
+
+html {
+  color-scheme: light;
+}
     /* Custom Scrollbar & Utility Classes */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
