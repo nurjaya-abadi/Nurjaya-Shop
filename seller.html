@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nurjaya Seller - Dashboard Pesanan Masuk</title>
+
+  <!-- PWA Meta Tags & Web App Manifest -->
+  <link rel="manifest" href="manifest-seller.json">
+  <meta name="theme-color" content="#047857">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Nurjaya Seller">
+  
+  <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/seller/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/seller/icon-192.png">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome CDN -->
@@ -683,6 +696,18 @@ async function updateOrderStatus(orderId, persetujuanVal, statusVal, btnElement)
         fetchOrdersFromSpreadsheet();
       }, POLLING_INTERVAL_MS);
     });
+  </script>
+  
+  
+  <!-- Registrasi Service Worker Seller -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw-seller.js')
+          .then(reg => console.log('Seller PWA SW Registered:', reg.scope))
+          .catch(err => console.error('Seller PWA SW Registration Failed:', err));
+      });
+    }
   </script>
 </body>
 </html>
