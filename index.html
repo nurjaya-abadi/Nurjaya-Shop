@@ -197,36 +197,56 @@ html {
       </p>
     </div>
   </div>
-  <!-- ========================================== -->
-  <!-- TOP PERMANENT NAVIGATION HEADER            -->
-  <!-- ========================================== -->
-  <header class="fixed top-0 inset-x-0 bg-emerald-700 text-white z-30 shadow-md">
-    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-3">
-<!-- Searchbar -->
-<div class="relative flex-1">
-  <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-  <input 
-    type="text" 
-    id="globalSearchInput" 
-    placeholder="Cari barang di Nurjaya Shop..." 
-    onfocus="handleSearchFocus()"
-    oninput="handleSearchInput(this.value)"
-    class="w-full pl-9 pr-8 py-2 text-sm bg-white text-slate-800 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-400 placeholder-slate-400 shadow-inner"
-  >
-  <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-    <i class="fa-solid fa-circle-xmark"></i>
-  </button>
-</div>
+<!-- ========================================== -->
+<!-- TOP PERMANENT NAVIGATION HEADER            -->
+<!-- ========================================== -->
+<header class="fixed top-0 inset-x-0 bg-emerald-700 text-white z-30 shadow-md select-none">
+  <div class="max-w-md mx-auto px-3 py-2 flex items-center justify-between gap-2.5">
+    
+    <!-- Searchbar (Diperkecil secara proporsional) -->
+    <div class="relative flex-1">
+      <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+      <input 
+        type="text" 
+        id="globalSearchInput" 
+        placeholder="Cari barang..." 
+        onfocus="handleSearchFocus()"
+        oninput="handleSearchInput(this.value)"
+        class="w-full pl-8 pr-7 py-1.5 text-xs bg-white text-slate-800 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-400 placeholder-slate-400 shadow-inner"
+      >
+      <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-circle-xmark text-xs"></i>
+      </button>
+    </div>
 
-      <!-- Icon Keranjang Header -->
-      <button onclick="openCartModal()" id="headerCartBtn" class="relative p-2 text-white hover:text-emerald-200 transition">
-        <i class="fa-solid fa-cart-shopping text-xl"></i>
-        <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-amber-400 text-emerald-950 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-emerald-700 shadow">
+    <!-- Group Action Icons dengan Label Teks di Bawah (Pesanan & Keranjang) -->
+    <div class="flex items-center gap-1 shrink-0">
+      
+      <!-- Icon & Label Pesanan Saya -->
+      <!-- Icon & Label Pesanan Saya -->
+<button onclick="openOrdersModal()" id="headerOrdersBtn" class="relative flex flex-col items-center justify-center p-1 text-white hover:text-emerald-200 transition min-w-[42px]" title="Pesanan Saya">
+  <i class="fa-solid fa-receipt text-lg leading-none"></i>
+  <span class="text-[10px] font-semibold mt-1 tracking-tight leading-none">Pesanan</span>
+  <!-- Badge Angka Pesanan Aktif (Hitung Per Baris Sesi) -->
+  <span id="ordersBadge" class="hidden absolute -top-1 right-0.5 bg-amber-400 text-emerald-950 font-extrabold text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
+    0
+  </span>
+</button>
+
+      <!-- Icon & Label Keranjang Header -->
+      <button onclick="openCartModal()" id="headerCartBtn" class="relative flex flex-col items-center justify-center p-1 text-white hover:text-emerald-200 transition min-w-[42px]" title="Keranjang Belanja">
+        <i class="fa-solid fa-cart-shopping text-lg leading-none"></i>
+        <span class="text-[10px] font-semibold mt-1 tracking-tight leading-none">Keranjang</span>
+        <!-- Badge Jumlah Item Keranjang -->
+        <span id="cartBadge" class="hidden absolute -top-1 right-0.5 bg-amber-400 text-emerald-950 font-extrabold text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
           0
         </span>
       </button>
+
     </div>
-  </header>
+
+  </div>
+</header>
 
   <!-- SPACER HEADER -->
   <div class="h-16"></div>
@@ -571,89 +591,94 @@ html {
     </div>
   </div>
 
-  <!-- STATE 2: BILA SUDAH LOGGED IN (VIP PROFILE CARD) - Gradasi Emas Tua -->
-  <div id="accountLoggedInState" class="hidden space-y-4 my-auto">
+<!-- STATE 2: BILA SUDAH LOGGED IN (VIP PROFILE CARD) - Gradasi Emas Tua -->
+<div id="accountLoggedInState" class="hidden space-y-4 my-auto">
+  
+  <!-- VIP Profile Card (Luxury Old Gold / Amber Design) -->
+  <div class="relative bg-gradient-to-br from-amber-700 via-amber-900 to-slate-950 rounded-3xl p-6 text-white shadow-2xl space-y-5 overflow-hidden border border-amber-400/40 animate-shimmer-card">
     
-    <!-- VIP Profile Card (Luxury Old Gold / Amber Design) -->
-    <div class="relative bg-gradient-to-br from-amber-700 via-amber-900 to-slate-950 rounded-3xl p-6 text-white shadow-2xl space-y-5 overflow-hidden border border-amber-400/40 animate-shimmer-card">
-      
-      <!-- Watermark Icons & Glow Effect -->
-      <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl text-amber-300 pointer-events-none">
-        <i class="fa-solid fa-crown"></i>
-      </div>
-      <div class="absolute -left-10 -top-10 w-32 h-32 bg-amber-300/20 rounded-full blur-2xl pointer-events-none"></div>
+    <!-- Watermark Icons & Glow Effect -->
+    <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl text-amber-300 pointer-events-none">
+      <i class="fa-solid fa-crown"></i>
+    </div>
+    <div class="absolute -left-10 -top-10 w-32 h-32 bg-amber-300/20 rounded-full blur-2xl pointer-events-none"></div>
 
-      <!-- Card Header: Avatar & VIP Badge -->
-      <div class="flex items-center justify-between relative z-10">
-        <div class="flex items-center gap-3.5">
-          <div class="relative">
-            <div class="w-14 h-14 bg-gradient-to-tr from-amber-200 via-amber-400 to-yellow-600 rounded-full p-[2px] shadow-md">
-              <div class="w-full h-full bg-slate-950 rounded-full flex items-center justify-center text-2xl text-amber-300">
-                <i class="fa-solid fa-user-astronaut"></i>
-              </div>
+    <!-- Card Header: Avatar & VIP Badge -->
+    <div class="flex items-center justify-between relative z-10">
+      <div class="flex items-center gap-3.5">
+        <div class="relative">
+          <div class="w-14 h-14 bg-gradient-to-tr from-amber-200 via-amber-400 to-yellow-600 rounded-full p-[2px] shadow-md">
+            <div class="w-full h-full bg-slate-950 rounded-full flex items-center justify-center text-2xl text-amber-300">
+              <i class="fa-solid fa-user-astronaut"></i>
             </div>
-            <span class="absolute -bottom-1 -right-1 bg-amber-300 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
-              VIP
+          </div>
+          <span class="absolute -bottom-1 -right-1 bg-amber-300 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm">
+            VIP
+          </span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] font-black text-slate-950 bg-gradient-to-r from-amber-300 to-amber-400 px-2.5 py-0.5 rounded-full uppercase tracking-widest flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-crown text-[9px] text-slate-950"></i> VIP MEMBER
             </span>
           </div>
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[10px] font-black text-slate-950 bg-gradient-to-r from-amber-300 to-amber-400 px-2.5 py-0.5 rounded-full uppercase tracking-widest flex items-center gap-1 shadow-sm">
-                <i class="fa-solid fa-crown text-[9px] text-slate-950"></i> VIP MEMBER
-              </span>
-            </div>
-            <h3 id="userProfileName" class="text-lg font-black tracking-tight text-white leading-snug mt-1">Nama Pelanggan</h3>
-          </div>
+          <h3 id="userProfileName" class="text-lg font-black tracking-tight text-white leading-snug mt-1">Nama Pelanggan</h3>
         </div>
-      </div>
-
-      <!-- Card Body: Identity Info -->
-      <div class="pt-3 border-t border-white/15 grid grid-cols-2 gap-3 relative z-10">
-        <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-          <span class="text-[9px] font-bold text-amber-200/80 uppercase block tracking-wider">ID Akun</span>
-          <span id="userProfileId" class="font-mono font-extrabold text-xs tracking-wider text-amber-100">NJ-XXXXX</span>
-        </div>
-        <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-          <span class="text-[9px] font-bold text-amber-200/80 uppercase block tracking-wider">WhatsApp</span>
-          <span id="userProfileWa" class="font-semibold text-xs text-white">08xxxxxxxxxx</span>
-        </div>
-      </div>
-
-      <!-- Card Footer: Status Label -->
-      <div class="flex justify-between items-center text-[10px] text-amber-100/70 pt-1 relative z-10">
-        <span class="flex items-center gap-1">
-         Status: Aktif
-        </span>
-        <span class="font-semibold text-amber-300">Nurjaya Abadi Photocopy</span>
       </div>
     </div>
 
-    <!-- Panel Keuntungan & Fitur -->
-    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm space-y-4">
-      <div class="space-y-2 text-left">
-        <h4 class="text-xs font-extrabold text-slate-800 tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-circle-check text-emerald-600"></i> Keuntungan Memiliki Akun
-        </h4>
-        <ul class="text-xs text-slate-600 space-y-2 pl-1">
-          <li class="flex items-center gap-2">
-            <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Menjadi Kontak Konsumen Resmi
-          </li>
-          <li class="flex items-center gap-2">
-            <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Prioritas pengerjaan pesanan & cetak dokumen
-          </li>
-          <li class="flex items-center gap-2">
-            <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Tidak perlu isi identitas berulang kali
-          </li>
-        </ul>
+    <!-- Card Body: Identity Info -->
+    <div class="pt-3 border-t border-white/15 grid grid-cols-2 gap-3 relative z-10">
+      <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+        <span class="text-[9px] font-bold text-amber-200/80 uppercase block tracking-wider">ID Akun</span>
+        <span id="userProfileId" class="font-mono font-extrabold text-xs tracking-wider text-amber-100">NJ-XXXXX</span>
       </div>
-
-      <!-- Tombol Logout -->
-      <button onclick="logoutAccount()" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 font-extrabold py-3 rounded-2xl text-xs border border-rose-200/80 transition active:scale-95 flex items-center justify-center gap-2">
-        <i class="fa-solid fa-right-from-bracket"></i> Keluar / Logout Akun VIP
-      </button>
+      <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+        <span class="text-[9px] font-bold text-amber-200/80 uppercase block tracking-wider">WhatsApp</span>
+        <span id="userProfileWa" class="font-semibold text-xs text-white">08xxxxxxxxxx</span>
+      </div>
     </div>
 
+    <!-- TOMBOL SALINAN: PESANAN SAYA -->
+    <button onclick="openOrdersModal()" class="w-full bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 font-extrabold py-3 rounded-2xl text-xs border border-amber-300/40 backdrop-blur-md transition active:scale-95 flex items-center justify-center gap-2 relative z-10 shadow-inner">
+      <i class="fa-solid fa-receipt text-amber-300 text-sm"></i> Lihat Pesanan Saya
+    </button>
+
+    <!-- Card Footer: Status Label -->
+    <div class="flex justify-between items-center text-[10px] text-amber-100/70 pt-1 relative z-10">
+      <span class="flex items-center gap-1">
+       Status: Aktif
+      </span>
+      <span class="font-semibold text-amber-300">Nurjaya Abadi Photocopy</span>
+    </div>
   </div>
+
+  <!-- Panel Keuntungan & Fitur -->
+  <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm space-y-4">
+    <div class="space-y-2 text-left">
+      <h4 class="text-xs font-extrabold text-slate-800 tracking-wider flex items-center gap-1.5">
+        <i class="fa-solid fa-circle-check text-emerald-600"></i> Keuntungan Memiliki Akun
+      </h4>
+      <ul class="text-xs text-slate-600 space-y-2 pl-1">
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Menjadi Kontak Konsumen Resmi
+        </li>
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Prioritas pengerjaan pesanan & cetak dokumen
+        </li>
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Tidak perlu isi identitas berulang kali
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tombol Logout -->
+    <button onclick="logoutAccount()" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 font-extrabold py-3 rounded-2xl text-xs border border-rose-200/80 transition active:scale-95 flex items-center justify-center gap-2">
+      <i class="fa-solid fa-right-from-bracket"></i> Keluar / Logout Akun VIP
+    </button>
+  </div>
+
+</div>
 
   <!-- KARTU LOKASI & PETA -->
   <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm space-y-3">
@@ -1165,7 +1190,7 @@ html {
 </div>
 
 <!-- MODAL 4: KERANJANG BELANJA & CHECKOUT -->
-<!-- Hapus pb-24 agar nempel tepat di dasar layar HP -->
+
 <div id="cartModal" onclick="closeCartModal()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center p-0 sm:p-4 transition-opacity">
   
   <!-- KARTU MODAL KERANJANG (Ubah rounded-t-2xl sm:rounded-2xl agar bagian bawah rata di HP) -->
@@ -1190,12 +1215,164 @@ html {
         <span class="text-xs font-bold text-slate-600">Total Pembayaran:</span>
         <span id="cartTotalPrice" class="text-base font-extrabold text-emerald-700">Rp 0</span>
       </div>
-      <button onclick="checkoutToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm active:scale-98">
-        <i class="fa-brands fa-whatsapp text-lg"></i> Ajukan Pesanan
+     <button onclick="openPaymentModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm active:scale-98">
+  <i class="fa-solid fa-paper-plane text-lg"></i> PESAN SEKARANG
+</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal Pilihan Metode Pembayaran -->
+<div id="paymentModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl relative animate-fade-in max-h-[90vh] overflow-y-auto">
+    
+    <!-- Tombol Close -->
+    <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+      <i class="fa-solid fa-xmark text-xl"></i>
+    </button>
+
+    <h3 class="text-base font-bold text-slate-800 mb-1">Pilih Metode Pembayaran</h3>
+    <p class="text-xs text-slate-500 mb-4">Silakan pilih metode pembayaran sebelum mengirim pesanan.</p>
+
+    <!-- Pilihan Pembayaran -->
+    <div class="space-y-3 mb-4">
+      <label class="flex items-center justify-between p-3 border rounded-xl cursor-pointer hover:bg-emerald-50/50 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50/50 transition">
+        <div class="flex items-center gap-3">
+          <input type="radio" name="paymentMethod" value="Tunai" checked class="accent-emerald-600 w-4 h-4" onchange="toggleQrisPreview(false)">
+          <span class="text-xs font-semibold text-slate-700">Tunai / Bayar di Toko</span>
+        </div>
+        <i class="fa-solid fa-money-bill-wave text-emerald-600 text-base"></i>
+      </label>
+
+      <label class="flex items-center justify-between p-3 border rounded-xl cursor-pointer hover:bg-emerald-50/50 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50/50 transition">
+        <div class="flex items-center gap-3">
+          <input type="radio" name="paymentMethod" value="QRIS" class="accent-emerald-600 w-4 h-4" onchange="toggleQrisPreview(true)">
+          <span class="text-xs font-semibold text-slate-700">QRIS (Scan Barcode)</span>
+        </div>
+        <i class="fa-solid fa-qrcode text-emerald-600 text-base"></i>
+      </label>
+    </div>
+
+    <!-- Container Gambar QRIS + Unduh + Upload Bukti -->
+    <div id="qrisContainer" class="hidden text-center p-3 border border-emerald-200 bg-emerald-50/30 rounded-xl mb-4 space-y-3">
+      <p class="text-xs text-slate-600 font-medium">Scan QRIS untuk melakukan pembayaran:</p>
+      
+      <!-- Gambar QRIS -->
+      <img id="qrisImage" src="assets/payment/qris.jpg" alt="QRIS Nurjaya" class="max-w-[180px] mx-auto rounded-lg shadow-sm border bg-white p-2">
+
+      <!-- Tombol Unduh QRIS -->
+      <a href="assets/payment/qris.jpg" download="QRIS_Nurjaya.jpg" class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white border border-emerald-300 text-emerald-700 rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-50 transition active:scale-95">
+        <i class="fa-solid fa-download text-xs"></i> Unduh QRIS (JPG)
+      </a>
+
+      <hr class="border-emerald-200/60 my-2">
+
+      <!-- Form Upload Bukti Transaksi -->
+      <div class="text-left space-y-1.5">
+        <label class="block text-xs font-bold text-slate-700">Kirim Bukti Transaksi <span class="text-rose-500">*</span></label>
+        
+        <!-- Input File Hidden -->
+        <input type="file" id="buktiBayarInput" accept="image/*" class="hidden" onchange="handleBuktiBayarChange(this)">
+        
+        <!-- Box Area Upload -->
+        <div id="uploadBuktiBox" onclick="document.getElementById('buktiBayarInput').click()" class="border-2 border-dashed border-emerald-300 bg-white hover:bg-emerald-50/50 rounded-xl p-3 text-center cursor-pointer transition">
+          <i class="fa-solid fa-cloud-arrow-up text-emerald-600 text-xl mb-1"></i>
+          <p class="text-xs font-semibold text-slate-700">Klik untuk upload bukti bayar</p>
+          <p class="text-[10px] text-slate-400">Format: JPG, PNG, WEBP (Max 5MB)</p>
+        </div>
+
+        <!-- Preview Bukti yang Terpilih -->
+        <div id="buktiPreviewContainer" class="hidden relative border rounded-xl overflow-hidden bg-white p-2 flex items-center gap-2">
+          <img id="buktiPreviewImg" src="" alt="Bukti Transfer" class="w-12 h-12 object-cover rounded-lg border">
+          <div class="flex-1 min-w-0">
+            <p id="buktiFileName" class="text-xs font-bold text-slate-700 truncate"></p>
+            <p id="buktiFileSize" class="text-[10px] text-slate-400"></p>
+          </div>
+          <button type="button" onclick="removeBuktiBayar()" class="text-rose-500 hover:text-rose-700 p-1">
+            <i class="fa-solid fa-trash-can text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tombol Konfirmasi Kirim -->
+    <button id="btnSubmitOrder" onclick="processCheckoutOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm active:scale-98">
+      <i class="fa-solid fa-circle-check text-base"></i> Konfirmasi & Kirim Pesanan
+    </button>
+  </div>
+</div>
+
+<!-- MODAL: PESANAN SAYA -->
+<div id="ordersModal" onclick="closeOrdersModal()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center p-0 sm:p-4 transition-opacity">
+  
+  <div onclick="event.stopPropagation()" class="bg-slate-100 w-full max-w-md rounded-t-2xl sm:rounded-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-modal-slide-up">
+    
+    <!-- Header -->
+    <div class="p-4 bg-emerald-700 text-white flex justify-between items-center shadow-md">
+      <h3 class="text-base font-extrabold flex items-center gap-2">
+        <i class="fa-solid fa-receipt text-amber-300"></i> Pesanan Saya
+      </h3>
+      <button type="button" onclick="closeOrdersModal()" class="text-emerald-100 hover:text-white p-1">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Container Item Pesanan (Akan Diloop via JS) -->
+    <div id="ordersItemsContainer" class="p-4 overflow-y-auto space-y-4 flex-1">
+      <div class="py-12 text-center text-slate-400 text-xs">
+        <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-emerald-600"></i>
+        <p>Memuat data pesanan...</p>
+      </div>
+    </div>
+
+    <!-- Footer Modal -->
+    <div class="p-3 border-t bg-white text-center">
+      <button onclick="fetchMyOrdersFromSpreadsheet()" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center justify-center gap-1.5 mx-auto py-1">
+        <i class="fa-solid fa-rotate text-xs"></i> Refresh Status Pesanan
       </button>
     </div>
 
   </div>
+</div>
+
+<!-- MODAL VERIFIKASI PEMBATALAN PESANAN (DESAIN SERAGAM ALERT UNIVERSAL FOTOKOPI) -->
+<div id="cancelOrderModal" 
+     class="fixed inset-0 z-[999999] hidden items-end sm:items-center justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-sm opacity-0 transition-opacity duration-200 ease-out select-none"
+     onclick="event.stopPropagation();">
+    
+    <!-- Box Modal Pembatalan -->
+    <div id="cancel-order-box-content" 
+         onclick="event.stopPropagation();" 
+         class="bg-white w-full max-w-sm rounded-[32px] p-6 text-center shadow-2xl border border-slate-100 transform translate-y-8 transition-all duration-200 ease-out space-y-4 mb-2 sm:mb-0 pointer-events-auto">
+        
+        <!-- Wadah Ikon Lingkaran Pastel Merah -->
+        <div class="mx-auto w-20 h-20 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-500 text-3xl shadow-inner transition-colors">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+
+        <!-- Wadah Teks Informasi -->
+        <div class="space-y-1.5 px-2">
+            <h3 class="text-lg font-bold text-slate-900 tracking-tight leading-snug">Batalkan Pesanan Ini?</h3>
+            <p class="text-xs font-normal text-slate-500 leading-relaxed">
+                Apakah Anda yakin ingin membatalkan pesanan ini? Tindakan ini tidak dapat dibatalkan kembali.
+            </p>
+        </div>
+
+        <!-- Tombol Aksi Kiri & Kanan -->
+        <div class="flex items-center gap-2 pt-1">
+            <button type="button" 
+                    onclick="closeCancelOrderModal()" 
+                    class="flex-1 py-3.5 text-xs font-bold tracking-wide uppercase text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-full transition-all duration-150 active:scale-95">
+                BATAL
+            </button>
+            <button type="button" 
+                    id="btnConfirmCancelOrder" 
+                    class="flex-1 py-3.5 text-xs font-bold tracking-wide uppercase text-white bg-rose-600 hover:bg-rose-700 rounded-full shadow-md transition-all duration-150 active:scale-95">
+                YA, BATALKAN
+            </button>
+        </div>
+    </div>
 </div>
 
 <!-- FLOATING LIQUID GLASS BOTTOM NAV -->
@@ -1648,56 +1825,6 @@ html {
       if (totalPriceElem) totalPriceElem.textContent = formatRupiah(total);
     }
 
-    async function checkoutToWhatsApp() {
-      const user = getUserAccountData();
-      
-      if (!user) {
-        await alert("Untuk melakukan checkout, Anda wajib terdaftar sebagai Member Nurjaya. Anda akan diarahkan ke halaman Akun untuk login / mendaftar.");
-        
-        const cartModal = document.getElementById('cartModal') || document.getElementById('modal-cart');
-        if (cartModal) cartModal.classList.add('hidden');
-
-        if (typeof showTab === 'function') {
-          showTab('akun');
-        } else {
-          document.querySelectorAll('.tab-content').forEach(el => {
-            el.classList.add('hidden');
-            el.classList.remove('flex');
-          });
-
-          const tabAkun = document.getElementById('tab-akun');
-          if (tabAkun) {
-            tabAkun.classList.remove('hidden');
-            tabAkun.classList.add('flex');
-          }
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-
-      const selectedItems = cart.filter(item => item.checked);
-      if (selectedItems.length === 0) {
-        alert("Pilih minimal satu barang di keranjang untuk dipesan!");
-        return;
-      }
-
-      const userHeader = getWaUserHeader();
-
-      let text = `${userHeader}Halo Nurjaya Abadi Photocopy, saya mau pesan barang berikut:\n\n`;
-      let total = 0;
-
-      selectedItems.forEach((item, index) => {
-        const subtotal = item.product.harga_jual * item.qty;
-        total += subtotal;
-        text += `${index + 1}. ${item.product.nama_barang}\n   - Jumlah: ${item.qty} x ${formatRupiah(item.product.harga_jual)} = ${formatRupiah(subtotal)}\n`;
-      });
-
-      text += `\n*Total Pembayaran: ${formatRupiah(total)}*\n\nMohon konfirmasi ketersediaan stoknya. Terima kasih!`;
-      
-      const encodedText = encodeURIComponent(text);
-      window.open(`https://wa.me/${WA_NUMBER}?text=${encodedText}`, "_blank");
-    }
 
     // Modal Services & Pricelist
     function openServicesModal() { document.getElementById("servicesModal").classList.remove("hidden"); }
@@ -2151,6 +2278,640 @@ async function sendFotoMixToWA() {
     });
 </script>
 
+
+<script>
+// SPREADSHEET ORDER URL (Simpan Spreadsheet & Auto Upload ke Google Drive)
+const SPREADSHEET_ORDER_URL = "https://script.google.com/macros/s/AKfycbwXrdGh9qmn9M_L5H5Rx4a5gpytP7Fk9X4jVAmRhoq2_3vwliAg0mxjkhS4aH3_bDsh/exec";
+
+// Variable temporary
+let pendingCancelOrderId = null;
+let pendingCancelWaktu = null;
+let selectedBuktiFile = null;
+
+// ==========================================
+// 1. HELPER INTERNAL (ORDER ID, RUPIAH & TANGGAL)
+// ==========================================
+
+// Helper Generator Order ID Unik (Format: NJY-261105-X8K9P)
+function generateOrderId() {
+  const prefix = "NJY";
+  const now = new Date();
+  const dateStr = now.getFullYear().toString().slice(-2) + 
+                  String(now.getMonth() + 1).padStart(2, '0') + 
+                  String(now.getDate()).padStart(2, '0');
+  const randomStr = Math.random().toString(36).substring(2, 7).toUpperCase();
+  return `${prefix}-${dateStr}-${randomStr}`;
+}
+
+function formatRupiahOrders(angka) {
+  if (typeof formatRupiah === 'function') {
+    return formatRupiah(angka);
+  }
+  return "Rp " + Number(angka || 0).toLocaleString("id-ID");
+}
+
+function formatTanggalIndo(waktuRaw) {
+  if (!waktuRaw) return "-";
+  try {
+    let d;
+    if (typeof waktuRaw === 'string' && waktuRaw.includes('/')) {
+      const parts = waktuRaw.split(' ');
+      const dateParts = parts[0].split('/');
+      const timeParts = parts[1] ? parts[1].split(':') : [0, 0, 0];
+      d = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1], timeParts[2] || 0);
+    } else {
+      d = new Date(waktuRaw);
+    }
+
+    if (isNaN(d.getTime())) return waktuRaw;
+
+    const opsiHari = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    return d.toLocaleDateString('id-ID', opsiHari);
+  } catch (e) {
+    return waktuRaw;
+  }
+}
+
+// Update Tampilan Indikator Angka Pesanan Aktif di Header Nav
+function updateOrdersBadge(ordersList) {
+  const badge = document.getElementById("ordersBadge");
+  if (!badge) return;
+
+  if (!Array.isArray(ordersList) || ordersList.length === 0) {
+    badge.textContent = "0";
+    badge.classList.add("hidden");
+    return;
+  }
+
+  const activeOrdersCount = ordersList.filter(order => {
+    const st = (order.status || "").trim().toLowerCase();
+    return st !== "selesai" && st !== "dibatalkan";
+  }).length;
+
+  if (activeOrdersCount > 0) {
+    badge.textContent = activeOrdersCount;
+    badge.classList.remove("hidden");
+  } else {
+    badge.textContent = "0";
+    badge.classList.add("hidden");
+  }
+}
+
+// Helper Convert File ke Base64
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
+}
+
+// ==========================================
+// 2. KONTROL MODAL PEMBAYARAN & UPLOAD
+// ==========================================
+
+window.openPaymentModal = function() {
+  const user = typeof getUserAccountData === 'function' ? getUserAccountData() : null;
+  
+  if (!user) {
+    alert("Untuk melakukan checkout, Anda wajib terdaftar sebagai Member Nurjaya. Anda akan diarahkan ke halaman Akun untuk login / mendaftar.");
+    
+    const cartModal = document.getElementById('cartModal') || document.getElementById('modal-cart');
+    if (cartModal) cartModal.classList.add('hidden');
+
+    if (typeof showTab === 'function') {
+      showTab('akun');
+    } else {
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      });
+      const tabAkun = document.getElementById('tab-akun');
+      if (tabAkun) {
+        tabAkun.classList.remove('hidden');
+        tabAkun.classList.add('flex');
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const selectedItems = typeof cart !== 'undefined' ? cart.filter(item => item.checked) : [];
+  if (selectedItems.length === 0) {
+    alert("Pilih minimal satu barang di keranjang untuk dipesan!");
+    return;
+  }
+
+  const paymentModal = document.getElementById('paymentModal');
+  if (paymentModal) {
+    const cartModal = document.getElementById('cartModal') || document.getElementById('modal-cart');
+    if (cartModal) cartModal.classList.add('hidden');
+
+    paymentModal.classList.remove('hidden', 'opacity-0');
+  } else {
+    alert("Elemen #paymentModal belum ada di struktur HTML kamu!");
+  }
+};
+
+window.closePaymentModal = function() {
+  const paymentModal = document.getElementById('paymentModal');
+  if (paymentModal) paymentModal.classList.add('hidden');
+  removeBuktiBayar();
+};
+
+window.toggleQrisPreview = function(show) {
+  const qrisContainer = document.getElementById('qrisContainer');
+  if (qrisContainer) {
+    if (show) {
+      qrisContainer.classList.remove('hidden');
+    } else {
+      qrisContainer.classList.add('hidden');
+      removeBuktiBayar();
+    }
+  }
+};
+
+function handleBuktiBayarChange(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Ukuran foto bukti transfer maksimal 5MB!");
+      input.value = "";
+      return;
+    }
+
+    selectedBuktiFile = file;
+    
+    const previewContainer = document.getElementById("buktiPreviewContainer");
+    const uploadBox = document.getElementById("uploadBuktiBox");
+    const previewImg = document.getElementById("buktiPreviewImg");
+    const fileName = document.getElementById("buktiFileName");
+    const fileSize = document.getElementById("buktiFileSize");
+
+    if (fileName) fileName.textContent = file.name;
+    if (fileSize) fileSize.textContent = (file.size / 1024).toFixed(1) + " KB";
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      if (previewImg) previewImg.src = e.target.result;
+      if (uploadBox) uploadBox.classList.add("hidden");
+      if (previewContainer) previewContainer.classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function removeBuktiBayar() {
+  selectedBuktiFile = null;
+  const input = document.getElementById("buktiBayarInput");
+  if (input) input.value = "";
+
+  const uploadBox = document.getElementById("uploadBuktiBox");
+  const previewContainer = document.getElementById("buktiPreviewContainer");
+  
+  if (uploadBox) uploadBox.classList.remove("hidden");
+  if (previewContainer) previewContainer.classList.add("hidden");
+}
+
+// Process Checkout Order (Terintegrasi Order ID Unik & Auto Upload Drive via Apps Script)
+window.processCheckoutOrder = async function() {
+  const user = typeof getUserAccountData === 'function' ? getUserAccountData() : null;
+  const selectedItems = typeof cart !== 'undefined' ? cart.filter(item => item.checked) : [];
+  
+  if (!user || selectedItems.length === 0) return;
+
+  const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked')?.value || "Tunai";
+
+  if (selectedPayment === "QRIS" && !selectedBuktiFile) {
+    alert("Harap unggah/upload foto bukti transaksi pembayaran QRIS Anda!");
+    return;
+  }
+
+  const btnSubmit = document.getElementById('btnSubmitOrder');
+  const originalBtnContent = btnSubmit ? btnSubmit.innerHTML : "";
+  
+  if (btnSubmit) {
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-base"></i> Memproses Pesanan...`;
+  }
+
+  try {
+    const newOrderId = generateOrderId();
+    
+    let fileBase64Data = null;
+    let fileNameData = null;
+    let fileMimeTypeData = null;
+
+    if (selectedPayment === "QRIS" && selectedBuktiFile) {
+      fileBase64Data = await fileToBase64(selectedBuktiFile);
+      const fileExt = selectedBuktiFile.name.split('.').pop();
+      fileNameData = `${newOrderId}.${fileExt}`;
+      fileMimeTypeData = selectedBuktiFile.type;
+    }
+
+    const itemsPayload = selectedItems.map(item => ({
+      nama_barang: item.product.nama_barang,
+      qty: item.qty
+    }));
+
+    const payload = {
+      order_id: newOrderId,
+      nama_konsumen: user.nama || user.nama_konsumen || "Member Nurjaya",
+      nomor_wa: user.no_wa || user.nomor_wa || user.whatsapp || "",
+      items: itemsPayload,
+      metode_pembayaran: selectedPayment,
+      bukti_bayar: fileBase64Data ? {
+        base64: fileBase64Data,
+        filename: fileNameData,
+        mimeType: fileMimeTypeData
+      } : null
+    };
+
+    const response = await fetch(SPREADSHEET_ORDER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      alert(`Pesanan berhasil dikirim!\nNomor Order ID: ${newOrderId}`);
+      
+      // Reset keranjang belanja
+      cart = cart.filter(item => !item.checked);
+      if (typeof saveCartToStorage === 'function') saveCartToStorage();
+      if (typeof updateCartBadge === 'function') updateCartBadge();
+      if (typeof renderCartItems === 'function') renderCartItems();
+
+      // Reset modal & bukti bayar
+      removeBuktiBayar();
+      closePaymentModal();
+      
+      // Refresh status pesanan di latar belakang
+      checkOrdersInBackground();
+    } else {
+      alert("Gagal mengirim pesanan: " + (result.message || "Terjadi kesalahan sistem."));
+    }
+  } catch (error) {
+    console.error("Error Checkout:", error);
+    alert("Gagal terhubung ke server. Periksa koneksi internet Anda.");
+  } finally {
+    if (btnSubmit) {
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = originalBtnContent;
+    }
+  }
+};
+
+// ==========================================
+// 3. KONTROL MODAL PESANAN SAYA (DOGET & PEMBATALAN VIA ORDER ID)
+// ==========================================
+
+async function checkOrdersInBackground() {
+  const user = typeof getUserAccountData === 'function' ? getUserAccountData() : null;
+  if (!user) return;
+
+  const userWa = (user.no_wa || user.nomor_wa || user.whatsapp || "").toString().trim();
+  if (!userWa) return;
+
+  try {
+    const response = await fetch(`${SPREADSHEET_ORDER_URL}?nomor_wa=${encodeURIComponent(userWa)}`);
+    const result = await response.json();
+
+    if (result.status === "success" && Array.isArray(result.data)) {
+      updateOrdersBadge(result.data);
+    }
+  } catch (error) {
+    console.log("Background orders check skipped / silent error:", error);
+  }
+}
+
+window.openOrdersModal = function() {
+  const user = typeof getUserAccountData === 'function' ? getUserAccountData() : null;
+
+  if (!user) {
+    alert("Untuk melihat riwayat pesanan, Anda wajib login / mendaftar sebagai Member.");
+    if (typeof showTab === 'function') {
+      showTab('akun');
+    } else {
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      });
+      const tabAkun = document.getElementById('tab-akun');
+      if (tabAkun) {
+        tabAkun.classList.remove('hidden');
+        tabAkun.classList.add('flex');
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const modal = document.getElementById("ordersModal");
+  if (!modal) {
+    console.error("Elemen modal #ordersModal tidak ditemukan di DOM!");
+    return;
+  }
+
+  const modalCard = modal.querySelector(".bg-slate-100") || modal.firstElementChild;
+
+  modal.classList.remove("hidden", "opacity-0");
+
+  if (modalCard) {
+    modalCard.classList.remove("animate-modal-slide-down");
+    modalCard.classList.add("animate-modal-slide-up");
+  }
+
+  fetchMyOrdersFromSpreadsheet();
+};
+
+window.closeOrdersModal = function() {
+  const modal = document.getElementById("ordersModal");
+  if (!modal) return;
+
+  const modalCard = modal.querySelector(".bg-slate-100") || modal.firstElementChild;
+
+  if (modalCard) {
+    modalCard.classList.remove("animate-modal-slide-up");
+    modalCard.classList.add("animate-modal-slide-down");
+  }
+  
+  modal.classList.add("opacity-0", "transition-opacity", "duration-300");
+
+  setTimeout(() => {
+    modal.classList.add("hidden");
+    modal.classList.remove("opacity-0", "transition-opacity", "duration-300");
+  }, 240);
+};
+
+async function fetchMyOrdersFromSpreadsheet() {
+  const user = typeof getUserAccountData === 'function' ? getUserAccountData() : null;
+  const container = document.getElementById("ordersItemsContainer");
+  if (!user || !container) return;
+
+  const userWa = (user.no_wa || user.nomor_wa || user.whatsapp || "").toString().trim();
+
+  container.innerHTML = `
+    <div class="py-12 text-center text-slate-400 text-xs">
+      <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2 text-emerald-600"></i>
+      <p>Mengambil data pesanan Anda...</p>
+    </div>
+  `;
+
+  try {
+    const response = await fetch(`${SPREADSHEET_ORDER_URL}?nomor_wa=${encodeURIComponent(userWa)}`);
+    const result = await response.json();
+
+    if (result.status === "success" && Array.isArray(result.data) && result.data.length > 0) {
+      updateOrdersBadge(result.data);
+      renderMyOrdersList(result.data);
+    } else {
+      updateOrdersBadge([]);
+      container.innerHTML = `
+        <div class="py-12 text-center text-slate-400 text-xs bg-white rounded-xl border border-slate-200">
+          <i class="fa-solid fa-receipt text-4xl mb-3 opacity-30 text-slate-400"></i>
+          <p class="font-bold text-slate-600">Belum Ada Pesanan</p>
+          <p class="mt-1 text-slate-400">Barang yang Anda checkout akan tampil di sini.</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error("Error Fetch Orders:", error);
+    container.innerHTML = `
+      <div class="py-8 text-center text-rose-500 text-xs bg-white rounded-xl border border-rose-200 p-4">
+        <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+        <p class="font-bold">Gagal memuat pesanan</p>
+        <p class="text-slate-500 mt-1">Periksa koneksi internet Anda dan coba lagi.</p>
+      </div>
+    `;
+  }
+}
+
+// Render List Per Sesi Pesanan (Kondisional Persetujuan: Hanya ACC/Disetujui -> "Disetujui", Lainnya -> "Menunggu Seller")
+function renderMyOrdersList(ordersList) {
+  const container = document.getElementById("ordersItemsContainer");
+  if (!container) return;
+
+  const reversedOrders = [...ordersList].reverse();
+
+  container.innerHTML = reversedOrders.map(order => {
+    const tanggalFormatted = formatTanggalIndo(order.waktu);
+    const displayOrderId = order.order_id || "-";
+
+    // KONDISI KHUSUS PERSETUJUAN
+    const rawPersetujuan = (order.persetujuan || "").toString().trim().toLowerCase();
+    let persetujuanText = "Menunggu Seller";
+    let persetujuanBadgeClass = "bg-amber-100 text-amber-800 border-amber-300";
+
+    if (rawPersetujuan === "acc" || rawPersetujuan === "disetujui") {
+      persetujuanText = "Disetujui";
+      persetujuanBadgeClass = "bg-emerald-100 text-emerald-800 border-emerald-300";
+    }
+
+    const statusText = order.status && order.status.trim() !== "" 
+      ? order.status 
+      : "Siap Ambil di Toko";
+
+    let statusBadgeClass = "bg-slate-100 text-slate-700 border-slate-300";
+    if (statusText.toLowerCase() === "selesai") {
+      statusBadgeClass = "bg-blue-100 text-blue-800 border-blue-300";
+    } else if (statusText.toLowerCase() === "dibatalkan") {
+      statusBadgeClass = "bg-rose-100 text-rose-800 border-rose-300";
+    }
+
+    let totalHargaSesi = 0;
+
+    const itemsHtml = order.items.map(item => {
+      const matchedProduct = typeof allProducts !== 'undefined' 
+        ? allProducts.find(p => p.nama_barang.trim().toLowerCase() === item.nama_barang.trim().toLowerCase()) 
+        : null;
+
+      const imgPathPrefix = typeof IMAGE_PATH !== 'undefined' ? IMAGE_PATH : "assets/product/";
+      const fotoSrc = matchedProduct && matchedProduct.foto_file 
+        ? `${imgPathPrefix}${matchedProduct.foto_file}` 
+        : "assets/no-image.webp";
+
+      const subtotalItem = matchedProduct && matchedProduct.harga_jual 
+        ? matchedProduct.harga_jual * item.qty 
+        : 0;
+
+      totalHargaSesi += subtotalItem;
+
+      const hargaDisplay = subtotalItem > 0 
+        ? formatRupiahOrders(subtotalItem) 
+        : "";
+
+      return `
+        <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl border border-slate-200/80">
+          <img src="${fotoSrc}" 
+               alt="${item.nama_barang}" 
+               class="w-12 h-12 object-contain bg-white rounded-lg p-1 border shadow-sm"
+               onerror="this.src='assets/no-image.webp'">
+          <div class="flex-1">
+            <h5 class="text-xs font-bold text-slate-800 line-clamp-1">${item.nama_barang}</h5>
+            <p class="text-[11px] font-semibold text-slate-500">Jumlah: <span class="text-slate-800 font-bold">${item.qty} item</span></p>
+          </div>
+          ${hargaDisplay ? `<span class="text-xs font-extrabold text-emerald-700">${hargaDisplay}</span>` : ''}
+        </div>
+      `;
+    }).join("");
+
+    const canCancel = statusText.toLowerCase() !== "selesai" && statusText.toLowerCase() !== "dibatalkan";
+
+    return `
+      <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+        <div class="flex justify-between items-start pb-2 border-b border-slate-100">
+          <div>
+            <span class="text-[10px] font-bold text-emerald-700 tracking-wider block font-mono">ID: ${displayOrderId}</span>
+            <span class="text-[11px] font-semibold text-slate-500">${tanggalFormatted}</span>
+          </div>
+          <span class="text-[11px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">
+            ${order.metode_pembayaran}
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          ${itemsHtml}
+        </div>
+
+        ${totalHargaSesi > 0 ? `
+          <div class="flex justify-between items-center px-3 py-2 bg-emerald-50/60 rounded-xl border border-emerald-100 text-xs">
+            <span class="font-bold text-slate-600">Total Pembayaran:</span>
+            <span class="font-extrabold text-emerald-700 text-sm">${formatRupiahOrders(totalHargaSesi)}</span>
+          </div>
+        ` : ''}
+
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+          <div>
+            ${canCancel ? `
+              <button onclick="promptCancelOrder('${displayOrderId}', '${order.waktu}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold rounded-lg text-[11px] border border-rose-200 transition active:scale-95 flex items-center gap-1">
+                <i class="fa-solid fa-trash-can text-[10px]"></i> Batalkan
+              </button>
+            ` : ''}
+          </div>
+
+          <div class="flex flex-col items-end gap-1 text-[11px]">
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-400 font-medium text-[10px]">Persetujuan:</span>
+              <span class="font-extrabold px-2 py-0.5 rounded-full border ${persetujuanBadgeClass} text-[10px]">
+                ${persetujuanText}
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-400 font-medium text-[10px]">Status:</span>
+              <span class="font-extrabold px-2 py-0.5 rounded-full border ${statusBadgeClass} text-[10px]">
+                ${statusText}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function promptCancelOrder(orderIdRaw, waktuRaw) {
+  pendingCancelOrderId = orderIdRaw;
+  pendingCancelWaktu = waktuRaw;
+  
+  const modal = document.getElementById("cancelOrderModal");
+  const box = document.getElementById("cancel-order-box-content");
+
+  if (!modal || !box) return;
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+
+  setTimeout(() => {
+    modal.classList.remove("opacity-0");
+    box.classList.remove("translate-y-8");
+    box.classList.add("translate-y-0");
+  }, 10);
+
+  const btnConfirm = document.getElementById("btnConfirmCancelOrder");
+  if (btnConfirm) {
+    btnConfirm.onclick = () => executeCancelOrder();
+  }
+}
+
+function closeCancelOrderModal() {
+  pendingCancelOrderId = null;
+  pendingCancelWaktu = null;
+  
+  const modal = document.getElementById("cancelOrderModal");
+  const box = document.getElementById("cancel-order-box-content");
+
+  if (!modal || !box) return;
+
+  modal.classList.add("opacity-0");
+  box.classList.remove("translate-y-0");
+  box.classList.add("translate-y-8");
+
+  setTimeout(() => {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }, 200);
+}
+
+async function executeCancelOrder() {
+  if (!pendingCancelOrderId && !pendingCancelWaktu) return;
+
+  const user = typeof getUserAccountData === 'function' ? getUserAccountData() : null;
+  if (!user) return;
+
+  const userWa = (user.no_wa || user.nomor_wa || user.whatsapp || "").toString().trim();
+  const btnConfirm = document.getElementById("btnConfirmCancelOrder");
+
+  if (btnConfirm) {
+    btnConfirm.disabled = true;
+    btnConfirm.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Membatalkan...`;
+  }
+
+  try {
+    const payload = {
+      action: "cancel",
+      order_id: pendingCancelOrderId,
+      waktu: pendingCancelWaktu,
+      nomor_wa: userWa
+    };
+
+    const response = await fetch(SPREADSHEET_ORDER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      alert("Pesanan Anda berhasil dibatalkan.");
+      closeCancelOrderModal();
+      fetchMyOrdersFromSpreadsheet();
+    } else {
+      alert("Gagal membatalkan pesanan: " + (result.message || "Terjadi kesalahan."));
+    }
+  } catch (error) {
+    console.error("Error Cancel Order:", error);
+    alert("Gagal terhubung ke server untuk membatalkan pesanan.");
+  } finally {
+    if (btnConfirm) {
+      btnConfirm.disabled = false;
+      btnConfirm.innerHTML = `Ya, Batalkan`;
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    checkOrdersInBackground();
+  }, 1000);
+});
+</script>
+
 <script>
     // ==========================================
     // LOOP SLIDER LIVE PREVIEW VERTIKAL (TIKTOK STYLE)
@@ -2384,7 +3145,7 @@ document.addEventListener("DOMContentLoaded", () => {
   <p id="fullPreviewCaption" class="text-white text-xs font-semibold mt-4 text-center px-4"></p>
 </div>
 
-<!-- ================= MODAL ALERT UNIVERSAL CLOUD FOTOKOPI ================= -->
+<!-- ================= MODAL ALERT UNIVERSAL FOTOKOPI ================= -->
 <div id="modal-alert-fotokopi" 
      class="fixed inset-0 z-[999999] hidden items-end justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-sm opacity-0 transition-opacity duration-200 ease-out select-none"
      onclick="event.stopPropagation();">
@@ -2587,14 +3348,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/Nurjaya-Shop/sw.js')
-      .then(reg => console.log('Service Worker terdaftar:', reg.scope))
-      .catch(err => console.error('Gagal daftar Service Worker:', err));
-  });
-}
-</script>
+
 </body>
 </html>
