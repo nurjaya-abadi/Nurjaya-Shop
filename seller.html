@@ -202,7 +202,7 @@
     <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- JAVASCRIPT SELLER ENGINE -->
+<!-- JAVASCRIPT SELLER ENGINE -->
   <script>
     const SPREADSHEET_ORDER_URL = "https://script.google.com/macros/s/AKfycbwXrdGh9qmn9M_L5H5Rx4a5gpytP7Fk9X4jVAmRhoq2_3vwliAg0mxjkhS4aH3_bDsh/exec";
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZTIveT2eZSA8eI-evypBEwSoz0iBOuRGHkis9-HH8axIwHBS_5OLNimAeM39JK_Pw/exec";
@@ -215,6 +215,7 @@
     let isInitialLoad = true;
     let currentFilterTab = "all";
     let isAudioEnabled = true;
+    let sellerWorker;
 
     function formatRupiah(num) {
       return "Rp " + Number(num || 0).toLocaleString("id-ID");
@@ -241,19 +242,17 @@
     }
 
     function getDirectDriveImageUrl(url) {
-  if (!url || url === "-" || url.includes("Error")) return null;
-  
-  // Ekstrak ID File Drive dari berbagai format URL
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || 
-                url.match(/id=([a-zA-Z0-9_-]+)/) || 
-                url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-                
-  if (match && match[1]) {
-    // Format thumbnail mentah Google Drive (sangat stabil untuk <img> src)
-    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
-  }
-  return url;
-}
+      if (!url || url === "-" || url.includes("Error")) return null;
+      
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || 
+                    url.match(/id=([a-zA-Z0-9_-]+)/) || 
+                    url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                    
+      if (match && match[1]) {
+        return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+      }
+      return url;
+    }
 
     function playNotificationSound() {
       if (!isAudioEnabled) return;
@@ -298,35 +297,48 @@
         const result = await res.json();
 
         if (result.status === "success" && Array.isArray(result.data)) {
-          const freshOrders = result.data;
-          
-          if (!isInitialLoad) {
-            let hasNewIncomingOrder = false;
-            freshOrders.forEach(order => {
-              if (order.order_id && !knownOrderIds.has(order.order_id)) {
-                hasNewIncomingOrder = true;
-              }
-            });
-
-            if (hasNewIncomingOrder) {
-              playNotificationSound();
-            }
-          }
-
-          knownOrderIds.clear();
-          freshOrders.forEach(o => { if (o.order_id) knownOrderIds.add(o.order_id); });
-
-          rawOrdersData = freshOrders;
-          isInitialLoad = false;
-          
-          updateStatistics();
-          applyFilters();
+          processIncomingOrdersData(result.data);
         }
       } catch (err) {
         console.error("Error fetching orders:", err);
       } finally {
         if (spinner) spinner.classList.remove("fa-spin");
       }
+    }
+
+    function processIncomingOrdersData(freshOrders) {
+      if (!isInitialLoad) {
+        let hasNewIncomingOrder = false;
+        let newOrderId = "";
+
+        freshOrders.forEach(order => {
+          if (order.order_id && !knownOrderIds.has(order.order_id)) {
+            hasNewIncomingOrder = true;
+            newOrderId = order.order_id;
+          }
+        });
+
+        if (hasNewIncomingOrder) {
+          playNotificationSound();
+
+          // Munculkan Banner Notifikasi Sistem Windows/HP saat PWA diminimize
+          if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+            new Notification("Pesanan Masuk Baru! 🔔", {
+              body: `Ada pesanan baru dengan ID: ${newOrderId}`,
+              icon: "assets/seller/icon-192.png"
+            });
+          }
+        }
+      }
+
+      knownOrderIds.clear();
+      freshOrders.forEach(o => { if (o.order_id) knownOrderIds.add(o.order_id); });
+
+      rawOrdersData = freshOrders;
+      isInitialLoad = false;
+      
+      updateStatistics();
+      applyFilters();
     }
 
     function manualRefreshData() {
@@ -531,152 +543,148 @@
               ` : ''}
             </div>
 
-<div class="pt-3 border-t border-slate-100 space-y-3">
-  <div class="flex items-center justify-between text-xs">
-    <div class="flex items-center gap-1">
-      ${persetujuanBadgeHtml}
-    </div>
-    <div>
-      ${statusBadgeHtml}
-    </div>
-  </div>
+            <div class="pt-3 border-t border-slate-100 space-y-3">
+              <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center gap-1">
+                  ${persetujuanBadgeHtml}
+                </div>
+                <div>
+                  ${statusBadgeHtml}
+                </div>
+              </div>
 
-  <!-- Action Buttons -->
-  <div class="flex items-center gap-2 pt-1">
-    ${!isApproved && !isCanceled && !isDone ? `
-      <button onclick="updateOrderStatus('${orderId}', 'Disetujui', null, this)" class="flex-1 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
-        <i class="fa-solid fa-check"></i> Setujui
-      </button>
-    ` : ''}
+              <!-- Action Buttons -->
+              <div class="flex items-center gap-2 pt-1">
+                ${!isApproved && !isCanceled && !isDone ? `
+                  <button onclick="updateOrderStatus('${orderId}', 'Disetujui', null, this)" class="flex-1 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
+                    <i class="fa-solid fa-check"></i> Setujui
+                  </button>
+                ` : ''}
 
-    ${isApproved && !isDone && !isCanceled ? `
-      <button onclick="updateOrderStatus('${orderId}', null, 'Selesai', this)" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
-        <i class="fa-solid fa-flag-checkered"></i> Tandai Selesai
-      </button>
-    ` : ''}
+                ${isApproved && !isDone && !isCanceled ? `
+                  <button onclick="updateOrderStatus('${orderId}', null, 'Selesai', this)" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
+                    <i class="fa-solid fa-flag-checkered"></i> Tandai Selesai
+                  </button>
+                ` : ''}
 
-    ${!isDone && !isCanceled ? `
-      <button onclick="updateOrderStatus('${orderId}', null, 'Dibatalkan', this)" class="py-2 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95" title="Batalkan Pesanan">
-        <i class="fa-solid fa-xmark"></i> Batalkan
-      </button>
-    ` : ''}
-  </div>
-</div>
+                ${!isDone && !isCanceled ? `
+                  <button onclick="updateOrderStatus('${orderId}', null, 'Dibatalkan', this)" class="py-2 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95" title="Batalkan Pesanan">
+                    <i class="fa-solid fa-xmark"></i> Batalkan
+                  </button>
+                ` : ''}
+              </div>
+            </div>
           </div>
         `;
       }).join("");
     }
 
-async function updateOrderStatus(orderId, persetujuanVal, statusVal, btnElement) {
-  // Pesan konfirmasi dinamis
-  let pesanKonfirmasi = `Konfirmasi pembaruan pesanan ${orderId}?`;
-  if (statusVal === "Dibatalkan") {
-    pesanKonfirmasi = `Apakah Anda yakin ingin MEMBATALKAN pesanan ${orderId}?`;
-  }
-
-  if (!confirm(pesanKonfirmasi)) return;
-
-  const orderObj = rawOrdersData.find(o => o.order_id === orderId);
-  if (!orderObj) {
-    alert("Data pesanan tidak ditemukan di memori lokal.");
-    return;
-  }
-
-  const originalText = btnElement ? btnElement.innerHTML : "";
-  if (btnElement) {
-    btnElement.disabled = true;
-    btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses...`;
-  }
-
-  try {
-    const payload = {
-      action: "update_seller",
-      order_id: orderId,
-      waktu: orderObj.waktu || "",
-      nama_konsumen: orderObj.nama_konsumen || "",
-      nomor_wa: orderObj.nomor_wa || "",
-      items: orderObj.items || [],
-      persetujuan: persetujuanVal !== null ? persetujuanVal : (orderObj.persetujuan || ""),
-      status: statusVal !== null ? statusVal : (orderObj.status || "")
-    };
-
-    const response = await fetch(SPREADSHEET_ORDER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    });
-
-    const result = await response.json();
-
-    if (result.status === "success") {
-      // 1. Update memori lokal
-      if (persetujuanVal !== null) {
-        orderObj.persetujuan = persetujuanVal;
-      }
-      if (statusVal !== null) {
-        orderObj.status = statusVal;
+    async function updateOrderStatus(orderId, persetujuanVal, statusVal, btnElement) {
+      let pesanKonfirmasi = `Konfirmasi pembaruan pesanan ${orderId}?`;
+      if (statusVal === "Dibatalkan") {
+        pesanKonfirmasi = `Apakah Anda yakin ingin MEMBATALKAN pesanan ${orderId}?`;
       }
 
-      // 2. Alert sesuai status baru
-      if (statusVal === "Selesai") {
-        alert(`Pesanan ${orderId} dinyatakan selesai`);
-      } else if (statusVal === "Dibatalkan") {
-        alert(`Pesanan ${orderId} telah dibatalkan`);
+      if (!confirm(pesanKonfirmasi)) return;
+
+      const orderObj = rawOrdersData.find(o => o.order_id === orderId);
+      if (!orderObj) {
+        alert("Data pesanan tidak ditemukan di memori lokal.");
+        return;
       }
 
-      // 3. Render ulang UI & statistik instan
-      updateStatistics();
-      applyFilters();
-    } else {
-      alert("Gagal memperbarui pesanan: " + (result.message || "Terjadi kesalahan."));
+      const originalText = btnElement ? btnElement.innerHTML : "";
       if (btnElement) {
-        btnElement.disabled = false;
-        btnElement.innerHTML = originalText;
+        btnElement.disabled = true;
+        btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses...`;
+      }
+
+      try {
+        const payload = {
+          action: "update_seller",
+          order_id: orderId,
+          waktu: orderObj.waktu || "",
+          nama_konsumen: orderObj.nama_konsumen || "",
+          nomor_wa: orderObj.nomor_wa || "",
+          items: orderObj.items || [],
+          persetujuan: persetujuanVal !== null ? persetujuanVal : (orderObj.persetujuan || ""),
+          status: statusVal !== null ? statusVal : (orderObj.status || "")
+        };
+
+        const response = await fetch(SPREADSHEET_ORDER_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          if (persetujuanVal !== null) {
+            orderObj.persetujuan = persetujuanVal;
+          }
+          if (statusVal !== null) {
+            orderObj.status = statusVal;
+          }
+
+          if (statusVal === "Selesai") {
+            alert(`Pesanan ${orderId} dinyatakan selesai`);
+          } else if (statusVal === "Dibatalkan") {
+            alert(`Pesanan ${orderId} telah dibatalkan`);
+          }
+
+          updateStatistics();
+          applyFilters();
+        } else {
+          alert("Gagal memperbarui pesanan: " + (result.message || "Terjadi kesalahan."));
+          if (btnElement) {
+            btnElement.disabled = false;
+            btnElement.innerHTML = originalText;
+          }
+        }
+      } catch (err) {
+        console.error("Error updating order status:", err);
+        alert("Gagal terhubung ke server spreadsheet.");
+        if (btnElement) {
+          btnElement.disabled = false;
+          btnElement.innerHTML = originalText;
+        }
       }
     }
-  } catch (err) {
-    console.error("Error updating order status:", err);
-    alert("Gagal terhubung ke server spreadsheet.");
-    if (btnElement) {
-      btnElement.disabled = false;
-      btnElement.innerHTML = originalText;
-    }
-  }
-}
+
     function openBuktiModal(driveUrl, orderId) {
-  const modal = document.getElementById("buktiModal");
-  const img = document.getElementById("buktiModalImg");
-  const spinner = document.getElementById("buktiLoadingSpinner");
-  const errorBox = document.getElementById("buktiErrorBox");
-  const directLink = document.getElementById("buktiDriveDirectLink");
-  const modalOrderId = document.getElementById("buktiModalOrderId");
+      const modal = document.getElementById("buktiModal");
+      const img = document.getElementById("buktiModalImg");
+      const spinner = document.getElementById("buktiLoadingSpinner");
+      const errorBox = document.getElementById("buktiErrorBox");
+      const directLink = document.getElementById("buktiDriveDirectLink");
+      const modalOrderId = document.getElementById("buktiModalOrderId");
 
-  modalOrderId.textContent = `Order ID: ${orderId}`;
-  directLink.href = driveUrl;
+      modalOrderId.textContent = `Order ID: ${orderId}`;
+      directLink.href = driveUrl;
 
-  img.classList.add("hidden");
-  errorBox.classList.add("hidden");
-  spinner.classList.remove("hidden");
+      img.classList.add("hidden");
+      errorBox.classList.add("hidden");
+      spinner.classList.remove("hidden");
 
-  const directImgUrl = getDirectDriveImageUrl(driveUrl);
+      const directImgUrl = getDirectDriveImageUrl(driveUrl);
 
-  if (directImgUrl) {
-    // Reset src terlebih dahulu agar onload ter-trigger bersih
-    img.src = "";
-    img.onload = function() {
-      spinner.classList.add("hidden");
-      img.classList.remove("hidden");
-    };
-    img.onerror = function() {
-      handleBuktiImageError();
-    };
-    img.src = directImgUrl;
-  } else {
-    handleBuktiImageError();
-  }
+      if (directImgUrl) {
+        img.src = "";
+        img.onload = function() {
+          spinner.classList.add("hidden");
+          img.classList.remove("hidden");
+        };
+        img.onerror = function() {
+          handleBuktiImageError();
+        };
+        img.src = directImgUrl;
+      } else {
+        handleBuktiImageError();
+      }
 
-  modal.classList.remove("hidden");
-}
+      modal.classList.remove("hidden");
+    }
 
     function handleBuktiImageError() {
       document.getElementById("buktiLoadingSpinner").classList.add("hidden");
@@ -688,13 +696,34 @@ async function updateOrderStatus(orderId, persetujuanVal, statusVal, btnElement)
       document.getElementById("buktiModal").classList.add("hidden");
     }
 
+    // Inisialisasi Web Worker & Notification Engine
+    function initBackgroundPolling() {
+      if ("Notification" in window && Notification.permission !== "granted") {
+        Notification.requestPermission();
+      }
+
+      if (window.Worker) {
+        sellerWorker = new Worker("seller-worker.js");
+        
+        sellerWorker.onmessage = function (e) {
+          const spinner = document.getElementById("refreshSpinner");
+          if (spinner) spinner.classList.remove("fa-spin");
+
+          if (e.data.status === "success") {
+            processIncomingOrdersData(e.data.data);
+          } else {
+            console.error("Worker polling error:", e.data.error);
+          }
+        };
+      } else {
+        fetchOrdersFromSpreadsheet();
+        setInterval(fetchOrdersFromSpreadsheet, POLLING_INTERVAL_MS);
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", async () => {
       await fetchCatalogProducts();
-      await fetchOrdersFromSpreadsheet();
-
-      setInterval(() => {
-        fetchOrdersFromSpreadsheet();
-      }, POLLING_INTERVAL_MS);
+      initBackgroundPolling();
     });
   </script>
   
