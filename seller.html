@@ -306,40 +306,79 @@
       }
     }
 
-    function processIncomingOrdersData(freshOrders) {
-      if (!isInitialLoad) {
-        let hasNewIncomingOrder = false;
-        let newOrderId = "";
+function processIncomingOrdersData(freshOrders) {
+  if (!isInitialLoad) {
+    let hasNewIncomingOrder = false;
+    let newOrderId = "";
 
-        freshOrders.forEach(order => {
-          if (order.order_id && !knownOrderIds.has(order.order_id)) {
-            hasNewIncomingOrder = true;
-            newOrderId = order.order_id;
-          }
-        });
+    let hasCanceledOrder = false;
+    let canceledOrderId = "";
 
-        if (hasNewIncomingOrder) {
-          playNotificationSound();
+    // Peta status order sebelumnya dari memori lokal
+    const previousStatusMap = new Map();
+    rawOrdersData.forEach(o => {
+      if (o.order_id) {
+        previousStatusMap.set(o.order_id, (o.status || "").toString().trim().toLowerCase());
+      }
+    });
 
-          // Munculkan Banner Notifikasi Sistem Windows/HP saat PWA diminimize
-          if (document.hidden && "Notification" in window && Notification.permission === "granted") {
-            new Notification("Pesanan Masuk Baru! 🔔", {
-              body: `Ada pesanan baru dengan ID: ${newOrderId}`,
-              icon: "assets/seller/icon-192.png"
-            });
-          }
-        }
+    freshOrders.forEach(order => {
+      const orderId = order.order_id;
+      if (!orderId) return;
+
+      const currentStatus = (order.status || "").toString().trim().toLowerCase();
+
+      // 1. Deteksi Pesanan Masuk Baru
+      if (!knownOrderIds.has(orderId)) {
+        hasNewIncomingOrder = true;
+        newOrderId = orderId;
       }
 
-      knownOrderIds.clear();
-      freshOrders.forEach(o => { if (o.order_id) knownOrderIds.add(o.order_id); });
+      // 2. Deteksi Pesanan yang Baru Sahaja Dibatalkan
+      if (previousStatusMap.has(orderId)) {
+        const oldStatus = previousStatusMap.get(orderId);
+        if (oldStatus !== "dibatalkan" && currentStatus === "dibatalkan") {
+          hasCanceledOrder = true;
+          canceledOrderId = orderId;
+        }
+      }
+    });
 
-      rawOrdersData = freshOrders;
-      isInitialLoad = false;
-      
-      updateStatistics();
-      applyFilters();
+    // Pemicu Notifikasi Pesanan Masuk Baru
+    if (hasNewIncomingOrder) {
+      playNotificationSound();
+
+      if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+        new Notification("Pesanan Masuk Baru! 🔔", {
+          body: `Ada pesanan baru dengan ID: ${newOrderId}`,
+          icon: "assets/seller/icon-192.png"
+        });
+      }
     }
+
+    // Pemicu Notifikasi Pesanan Dibatalkan
+    if (hasCanceledOrder) {
+      playNotificationSound();
+
+      if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+        new Notification("Pesanan Dibatalkan! ⚠️", {
+          body: `Pesanan ${canceledOrderId} telah dibatalkan.`,
+          icon: "assets/seller/icon-192.png"
+        });
+      }
+    }
+  }
+
+  // Perbarui Set Order ID yang diketahui
+  knownOrderIds.clear();
+  freshOrders.forEach(o => { if (o.order_id) knownOrderIds.add(o.order_id); });
+
+  rawOrdersData = freshOrders;
+  isInitialLoad = false;
+
+  updateStatistics();
+  applyFilters();
+}
 
     function manualRefreshData() {
       fetchOrdersFromSpreadsheet();
@@ -520,7 +559,7 @@
                   <h4 class="text-xs font-extrabold text-slate-800">${namaKonsumen}</h4>
                   <p class="text-[11px] font-mono text-slate-500 mt-0.5"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>${noWa}</p>
                 </div>
-                <a href="https://wa.me/${noWa.replace(/\D/g, '')}" target="_blank" class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-700 hover:text-white flex items-center justify-center text-xs transition" title="Chat WA Konsumen">
+                <a href="https://wa.me/${noWa.replace(/\D/g, '').replace(/^0/, '62')}" target="_blank" class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-700 hover:text-white flex items-center justify-center text-xs transition" title="Chat WA Konsumen">
                   <i class="fa-brands fa-whatsapp text-sm"></i>
                 </a>
               </div>
