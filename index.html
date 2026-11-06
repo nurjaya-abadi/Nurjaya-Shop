@@ -219,31 +219,40 @@ html {
       </button>
     </div>
 
-    <!-- Group Action Icons dengan Label Teks di Bawah (Pesanan & Keranjang) -->
-    <div class="flex items-center gap-1 shrink-0">
-      
-      <!-- Icon & Label Pesanan Saya -->
-      <!-- Icon & Label Pesanan Saya -->
-<button onclick="openOrdersModal()" id="headerOrdersBtn" class="relative flex flex-col items-center justify-center p-1 text-white hover:text-emerald-200 transition min-w-[42px]" title="Pesanan Saya">
-  <i class="fa-solid fa-receipt text-lg leading-none"></i>
-  <span class="text-[10px] font-semibold mt-1 tracking-tight leading-none">Pesanan</span>
-  <!-- Badge Angka Pesanan Aktif (Hitung Per Baris Sesi) -->
-  <span id="ordersBadge" class="hidden absolute -top-1 right-0.5 bg-amber-400 text-emerald-950 font-extrabold text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
-    0
-  </span>
-</button>
+<!-- Group Action Icons dengan Label Teks di Bawah (Chat, Pesanan & Keranjang) -->
+<div class="flex items-center gap-1 shrink-0">
+  
+  <!-- Icon & Label Chat Seller -->
+  <button onclick="openChatModal()" id="headerChatBtn" class="relative flex flex-col items-center justify-center p-1 text-white hover:text-emerald-200 transition min-w-[42px]" title="Chat Seller">
+    <i class="fa-solid fa-comments text-lg leading-none"></i>
+    <span class="text-[10px] font-semibold mt-1 tracking-tight leading-none">Chat</span>
+    <!-- Badge Notifikasi Pesan Belum Dibaca (Opsional) -->
+    <span id="chatBadge" class="hidden absolute -top-1 right-0.5 bg-red-500 text-white font-extrabold text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
+      !
+    </span>
+  </button>
 
-      <!-- Icon & Label Keranjang Header -->
-      <button onclick="openCartModal()" id="headerCartBtn" class="relative flex flex-col items-center justify-center p-1 text-white hover:text-emerald-200 transition min-w-[42px]" title="Keranjang Belanja">
-        <i class="fa-solid fa-cart-shopping text-lg leading-none"></i>
-        <span class="text-[10px] font-semibold mt-1 tracking-tight leading-none">Keranjang</span>
-        <!-- Badge Jumlah Item Keranjang -->
-        <span id="cartBadge" class="hidden absolute -top-1 right-0.5 bg-amber-400 text-emerald-950 font-extrabold text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
-          0
-        </span>
-      </button>
+  <!-- Icon & Label Pesanan Saya -->
+  <button onclick="openOrdersModal()" id="headerOrdersBtn" class="relative flex flex-col items-center justify-center p-1 text-white hover:text-emerald-200 transition min-w-[42px]" title="Pesanan Saya">
+    <i class="fa-solid fa-receipt text-lg leading-none"></i>
+    <span class="text-[10px] font-semibold mt-1 tracking-tight leading-none">Pesanan</span>
+    <!-- Badge Angka Pesanan Aktif -->
+    <span id="ordersBadge" class="hidden absolute -top-1 right-0.5 bg-amber-400 text-emerald-950 font-extrabold text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
+      0
+    </span>
+  </button>
 
-    </div>
+  <!-- Icon & Label Keranjang Header -->
+  <button onclick="openCartModal()" id="headerCartBtn" class="relative flex flex-col items-center justify-center p-1 text-white hover:text-emerald-200 transition min-w-[42px]" title="Keranjang Belanja">
+    <i class="fa-solid fa-cart-shopping text-lg leading-none"></i>
+    <span class="text-[10px] font-semibold mt-1 tracking-tight leading-none">Keranjang</span>
+    <!-- Badge Jumlah Item Keranjang -->
+    <span id="cartBadge" class="hidden absolute -top-1 right-0.5 bg-amber-400 text-emerald-950 font-extrabold text-[9px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
+      0
+    </span>
+  </button>
+
+</div>
 
   </div>
 </header>
@@ -1209,16 +1218,25 @@ html {
     <!-- Item List Container -->
     <div id="cartItemsContainer" class="p-4 overflow-y-auto space-y-3 flex-1"></div>
 
-    <!-- Footer Checkout -->
-    <div class="p-4 border-t bg-slate-50 space-y-3">
-      <div class="flex justify-between items-center">
-        <span class="text-xs font-bold text-slate-600">Total Pembayaran:</span>
-        <span id="cartTotalPrice" class="text-base font-extrabold text-emerald-700">Rp 0</span>
-      </div>
-     <button onclick="openPaymentModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm active:scale-98">
-  <i class="fa-solid fa-paper-plane text-lg"></i> PESAN SEKARANG
-</button>
-    </div>
+<!-- Footer Checkout -->
+<div class="p-4 border-t bg-slate-50 space-y-3">
+  <div class="flex justify-between items-center">
+    <span class="text-xs font-bold text-slate-600">Total Pembayaran:</span>
+    <span id="cartTotalPrice" class="text-base font-extrabold text-emerald-700">Rp 0</span>
+  </div>
+  
+  <div class="flex gap-2">
+    <!-- Tombol Chat dari Keranjang -->
+    <button onclick="openChatModalFromCart()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-3 rounded-xl shadow transition flex items-center justify-center gap-1.5 text-xs active:scale-95 shrink-0" title="Tanya Seller tentang Keranjang">
+      <i class="fa-solid fa-comments text-base"></i> Tanya Seller
+    </button>
+    
+    <!-- Tombol Pesan Sekarang -->
+    <button onclick="openPaymentModal()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm active:scale-98">
+      <i class="fa-solid fa-paper-plane text-lg"></i> PESAN SEKARANG
+    </button>
+  </div>
+</div>
 
   </div>
 </div>
@@ -1326,12 +1344,16 @@ html {
       </div>
     </div>
 
-    <!-- Footer Modal -->
-    <div class="p-3 border-t bg-white text-center">
-      <button onclick="fetchMyOrdersFromSpreadsheet()" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center justify-center gap-1.5 mx-auto py-1">
-        <i class="fa-solid fa-rotate text-xs"></i> Refresh Status Pesanan
-      </button>
-    </div>
+    <!-- Footer Modal Pesanan Saya -->
+<div class="p-3 border-t bg-white flex items-center justify-between gap-2">
+  <button onclick="openChatModalFromOrders()" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1.5 py-1 px-2 rounded-lg hover:bg-amber-50 transition">
+    <i class="fa-solid fa-headset text-xs"></i> Tanya/Chat Seller
+  </button>
+  
+  <button onclick="fetchMyOrdersFromSpreadsheet()" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5 py-1 px-2 rounded-lg hover:bg-emerald-50 transition">
+    <i class="fa-solid fa-rotate text-xs"></i> Refresh Status
+  </button>
+</div>
 
   </div>
 </div>
@@ -1374,6 +1396,103 @@ html {
         </div>
     </div>
 </div>
+
+
+<!-- Element UI Modal Room Chat -->
+<div id="chatModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity">
+  <div onclick="event.stopPropagation()" class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl h-[85vh] sm:h-[550px] flex flex-col shadow-2xl overflow-hidden animate-modal-slide-up">
+    
+    <!-- Header Modal Chat -->
+    <div class="p-3.5 bg-emerald-700 text-white flex justify-between items-center shadow-md shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-emerald-800 flex items-center justify-center text-amber-300 font-bold border border-emerald-600">
+          <i class="fa-solid fa-store text-xs"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-extrabold leading-tight">Nurjaya Store Seller</h3>
+          <p class="text-[10px] text-emerald-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Online Real-time
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="closeChatModal()" class="text-emerald-100 hover:text-white p-1 rounded-lg hover:bg-emerald-600/50">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Container Isi Chat (Scrollable) -->
+    <div id="chatItemsContainer" class="p-4 overflow-y-auto space-y-2.5 flex-1 bg-slate-50">
+      <div class="text-center py-8 text-slate-400 text-xs">
+        <i class="fa-solid fa-comments text-3xl mb-2 text-slate-300"></i>
+        <p>Belum ada percakapan.<br>Ketik pesan di bawah untuk memulai chat.</p>
+      </div>
+    </div>
+
+    <!-- Form Input Pesan & Upload Foto (Footer Chat) -->
+    <div class="p-3 bg-white border-t border-slate-200 shrink-0">
+      <!-- Input File Tersembunyi (Kamera & Galeri HP) -->
+      <input 
+        type="file" 
+        id="chatImageInput" 
+        accept="image/*" 
+        class="hidden" 
+        onchange="handleImageUpload(event)"
+      >
+
+      <form onsubmit="handleSendChatMessage(event)" class="flex items-center gap-2">
+        <!-- Tombol Pilih / Ambil Foto -->
+        <button 
+          type="button" 
+          onclick="document.getElementById('chatImageInput').click()" 
+          class="w-9 h-9 bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 rounded-full flex items-center justify-center transition shrink-0 active:scale-95 border border-slate-200"
+          title="Kirim Foto dari Kamera/Galeri"
+        >
+          <i class="fa-solid fa-camera text-xs"></i>
+        </button>
+
+        <!-- Input Teks Pesan -->
+        <input 
+          type="text" 
+          id="chatInputText" 
+          placeholder="Tulis pesan..." 
+          autocomplete="off"
+          class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition"
+        >
+
+        <!-- Tombol Kirim Teks -->
+        <button 
+          type="submit" 
+          id="btnSendChat" 
+          class="w-9 h-9 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full flex items-center justify-center shadow transition active:scale-95 shrink-0"
+        >
+          <i class="fa-solid fa-paper-plane text-xs"></i>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL LIGHTBOX PREVIEW GAMBAR CHAT -->
+<div id="imagePreviewModal" onclick="closeImagePreview()" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4 transition-opacity duration-200">
+  
+  <!-- Tombol Tutup (Silang) -->
+  <button type="button" onclick="closeImagePreview()" class="absolute top-4 right-4 text-white/80 hover:text-white bg-slate-800/60 hover:bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center transition">
+    <i class="fa-solid fa-xmark text-xl"></i>
+  </button>
+
+  <!-- Container Foto -->
+  <div onclick="event.stopPropagation()" class="max-w-full max-h-full flex flex-col items-center justify-center">
+    <img id="imagePreviewTarget" src="" alt="Preview Gambar" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl animate-modal-slide-up">
+    
+    <!-- Tombol Unduh Foto (Opsional) -->
+    <a id="imageDownloadBtn" href="" download="nurjaya-chat-photo.jpg" class="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-full shadow flex items-center gap-2 transition active:scale-95">
+      <i class="fa-solid fa-download"></i> Unduh Foto
+    </a>
+  </div>
+
+</div>
+
 
 <!-- FLOATING LIQUID GLASS BOTTOM NAV -->
 <aside class="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-[40] w-[95%] max-w-md bg-transparent p-0 m-0 border-none shadow-none outline-none select-none">
@@ -2279,6 +2398,253 @@ async function sendFotoMixToWA() {
 </script>
 
 
+<!-- SDK Firebase v13 Modular Engine (Sisi Nurjaya Shop) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+  import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
+
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCS1FVbmuYhKh_FjRQwFBHQOeY9BCT9gmI",
+    authDomain: "nurjaya-shop-db.firebaseapp.com",
+    databaseURL: "https://nurjaya-shop-db-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "nurjaya-shop-db",
+    storageBucket: "nurjaya-shop-db.firebasestorage.app",
+    messagingSenderId: "52423630287",
+    appId: "1:52423630287:web:f266887cf71e6f1ba786ba"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  let activeMessageUnsubscribe = null;
+
+  // 1. FUNGSI UTAMA BUKA MODAL CHAT
+  window.openChatModal = function(initialText = "") {
+    // Cek Akun VIP lewat fungsi bawaanmu
+    const user = typeof getUserAccountData === "function" ? getUserAccountData() : null;
+    if (!user) {
+      alert("Silakan masuk/daftar akun VIP terlebih dahulu untuk obrolan langsung dengan Seller!");
+      if (typeof openLoginModal === "function") openLoginModal();
+      return;
+    }
+
+    const modal = document.getElementById("chatModal");
+    if (modal) modal.classList.remove("hidden");
+
+    if (initialText) {
+      const input = document.getElementById("chatInputText");
+      if (input) input.value = initialText;
+    }
+
+    listenRealtimeMessages(user);
+  };
+
+  // 2. FUNGSI TUTUP MODAL CHAT
+  window.closeChatModal = function() {
+    const modal = document.getElementById("chatModal");
+    if (modal) modal.classList.add("hidden");
+  };
+
+  // 3. HANDLER KLIK DARI MODAL KERANJANG
+  window.openChatModalFromCart = function() {
+    if (typeof closeCartModal === "function") closeCartModal();
+    openChatModal("Halo Seller, saya mau tanya soal barang yang ada di keranjang belanja saya...");
+  };
+
+  // 4. HANDLER KLIK DARI MODAL PESANAN SAYA
+  window.openChatModalFromOrders = function() {
+    if (typeof closeOrdersModal === "function") closeOrdersModal();
+    openChatModal("Halo Seller, saya mau tanya update mengenai status pesanan saya...");
+  };
+
+  // 5. MENDENGARKAN PESAN REAL-TIME DARI FIREBASE (TEKS & GAMBAR)
+  function listenRealtimeMessages(user) {
+    const cleanUserId = String(user.id).replace(/[.#$\[\]]/g, "_");
+    const messagesRef = ref(db, `chats/${cleanUserId}/messages`);
+
+    // Hapus listener sebelumnya jika ada
+    if (typeof activeMessageUnsubscribe === "function") {
+      activeMessageUnsubscribe();
+    }
+
+    activeMessageUnsubscribe = onValue(messagesRef, (snapshot) => {
+      const container = document.getElementById("chatItemsContainer");
+      if (!container) return;
+
+      container.innerHTML = "";
+      const data = snapshot.val();
+
+      if (!data) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-slate-400 text-xs">
+            <i class="fa-solid fa-comments text-3xl mb-2 text-slate-300"></i>
+            <p>Belum ada percakapan.<br>Ketik pesan di bawah untuk memulai chat.</p>
+          </div>`;
+        return;
+      }
+
+      Object.values(data).forEach(msg => {
+        const isBuyer = msg.sender === "buyer";
+        const msgWrapper = document.createElement("div");
+        msgWrapper.className = `flex ${isBuyer ? 'justify-end' : 'justify-start'}`;
+
+        const msgBubble = document.createElement("div");
+        msgBubble.className = `max-w-[80%] p-2.5 rounded-2xl text-xs shadow-sm break-words ${
+          isBuyer 
+            ? 'bg-emerald-700 text-white rounded-br-none' 
+            : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'
+        }`;
+
+        // Cek tipe pesan (Gambar vs Teks biasa)
+        if (msg.type === "image") {
+  msgBubble.innerHTML = `
+    <div onclick="openImagePreview('${msg.text}')" class="block cursor-pointer overflow-hidden rounded-xl">
+      <img src="${msg.text}" class="rounded-xl max-w-full max-h-48 object-cover hover:scale-105 transition duration-200">
+    </div>
+  `;
+} else {
+          msgBubble.innerText = msg.text;
+        }
+
+        msgWrapper.appendChild(msgBubble);
+        container.appendChild(msgWrapper);
+      });
+
+      // Auto scroll ke pesan paling bawah
+      container.scrollTop = container.scrollHeight;
+    });
+  }
+
+  // 6. PROSES KIRIM PESAN TEKS KE FIREBASE
+  window.handleSendChatMessage = function(event) {
+    event.preventDefault();
+    const user = typeof getUserAccountData === "function" ? getUserAccountData() : null;
+    if (!user) return;
+
+    const input = document.getElementById("chatInputText");
+    const text = input.value.trim();
+    if (!text) return;
+
+    const cleanUserId = String(user.id).replace(/[.#$\[\]]/g, "_");
+
+    // Simpan pesan
+    const messagesRef = ref(db, `chats/${cleanUserId}/messages`);
+    push(messagesRef, {
+      sender: "buyer",
+      type: "text",
+      text: text,
+      timestamp: serverTimestamp()
+    });
+
+    // Simpan metadata info pembeli
+    const infoRef = ref(db, `chats/${cleanUserId}/info`);
+    push(infoRef, {
+      buyerId: user.id,
+      buyerNama: user.nama,
+      buyerWa: user.no_wa,
+      lastMessage: text,
+      updatedAt: serverTimestamp()
+    });
+
+    input.value = "";
+  };
+
+  // 7. HANDLER UPLOAD & KOMPRESI FOTO (KAMERA/GALERI)
+  window.handleImageUpload = function(event) {
+    const user = typeof getUserAccountData === "function" ? getUserAccountData() : null;
+    if (!user) {
+      alert("Silakan masuk/daftar akun VIP terlebih dahulu untuk mengunggah foto!");
+      return;
+    }
+
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Mohon pilih file gambar!');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = function() {
+        // Rescale gambar (Maksimal 600px)
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_SIZE = 600;
+
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Kompres ke JPEG kualitas 60%
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+
+        // Kirim ke Firebase
+        const cleanUserId = String(user.id).replace(/[.#$\[\]]/g, "_");
+        
+        const messagesRef = ref(db, `chats/${cleanUserId}/messages`);
+        push(messagesRef, {
+          sender: "buyer",
+          type: "image",
+          text: compressedBase64,
+          timestamp: serverTimestamp()
+        });
+
+        const infoRef = ref(db, `chats/${cleanUserId}/info`);
+        push(infoRef, {
+          buyerId: user.id,
+          buyerNama: user.nama,
+          buyerWa: user.no_wa,
+          lastMessage: "📷 [Mengirim Foto]",
+          updatedAt: serverTimestamp()
+        });
+      };
+    };
+
+    reader.readAsDataURL(file);
+    event.target.value = ''; // Reset input file
+  };
+  
+  // Fungsi Buka Preview Gambar Lightbox
+window.openImagePreview = function(imageUrl) {
+  const modal = document.getElementById("imagePreviewModal");
+  const imgTarget = document.getElementById("imagePreviewTarget");
+  const downloadBtn = document.getElementById("imageDownloadBtn");
+
+  if (modal && imgTarget) {
+    imgTarget.src = imageUrl;
+    if (downloadBtn) downloadBtn.href = imageUrl;
+    modal.classList.remove("hidden");
+  }
+};
+
+// Fungsi Tutup Preview Gambar
+window.closeImagePreview = function() {
+  const modal = document.getElementById("imagePreviewModal");
+  if (modal) modal.classList.add("hidden");
+};
+</script>
+
 <script>
 // SPREADSHEET ORDER URL (Simpan Spreadsheet & Auto Upload ke Google Drive)
 const SPREADSHEET_ORDER_URL = "https://script.google.com/macros/s/AKfycbwXrdGh9qmn9M_L5H5Rx4a5gpytP7Fk9X4jVAmRhoq2_3vwliAg0mxjkhS4aH3_bDsh/exec";
@@ -3033,6 +3399,7 @@ function saveUserAccountData(user) {
 
 function logoutAccount() {
   if (confirm("Apakah Anda yakin ingin keluar dari akun VIP ini?")) {
+    if (shopWorker) shopWorker.terminate(); // Matikan worker saat logout
     localStorage.removeItem("NURJAYA_USER_PROFILE");
     checkUserAccountState();
     alert("Anda telah berhasil logout.");
@@ -3063,6 +3430,10 @@ async function handleRegisterSubmit(event) {
     if (res.status === "success") {
       saveUserAccountData(res.data);
       closeRegisterModal();
+      
+      // 🟢 Aktifkan Web Worker Notifikasi Pesanan
+      initShopBackgroundWorker();
+
       alert(`Selamat ${res.data.nama}! Akun VIP Anda berhasil diaktifkan dengan ID: ${res.data.id}`);
       document.getElementById("registerForm").reset();
     } else if (res.status === "exists") {
@@ -3102,6 +3473,10 @@ async function handleLoginSubmit(event) {
     if (res.status === "success") {
       saveUserAccountData(res.data);
       closeLoginModal();
+
+      // 🟢 Aktifkan Web Worker Notifikasi Pesanan
+      initShopBackgroundWorker();
+
       alert(`Selamat datang kembali Member VIP, ${res.data.nama}!`);
       document.getElementById("loginForm").reset();
     } else {
@@ -3128,10 +3503,86 @@ function getWaUserHeader() {
 }
 
 // ==========================================
-// 6. INITIALIZATION ON DOM LOADED
+// 6. WEB WORKER NOTIFIKASI PESANAN PEMBELI
+// ==========================================
+let shopWorker = null;
+
+function initShopBackgroundWorker() {
+  const user = typeof getUserAccountData === "function" ? getUserAccountData() : null;
+  if (!user || !user.id) return;
+
+  if (window.Worker) {
+    // Matikan worker lama jika ada
+    if (shopWorker) shopWorker.terminate();
+
+    // Buat worker baru dari file shop-worker.js
+    shopWorker = new Worker("shop-worker.js");
+
+    // Kirim ID VIP User ke worker
+    shopWorker.postMessage({ action: "init", userId: user.id });
+
+    // Menerima balasan dari worker saat status pesanan berubah
+    shopWorker.onmessage = function(e) {
+      if (e.data.status === "success") {
+        const changes = e.data.changes || [];
+        
+        // Loop jika ada pesanan yang statusnya berubah
+        changes.forEach(change => {
+          showOrderStatusNotification(change);
+        });
+
+        // Refresh list pesanan jika modal sedang terbuka
+        if (typeof fetchMyOrdersFromSpreadsheet === "function" && document.getElementById("ordersModal") && !document.getElementById("ordersModal").classList.contains("hidden")) {
+          fetchMyOrdersFromSpreadsheet();
+        }
+      }
+    };
+  }
+}
+
+// Fungsi Menampilkan Notifikasi & Suara untuk Pembeli
+function showOrderStatusNotification(change) {
+  let title = "Update Pesanan!";
+  
+  if (change.newStatus.toLowerCase().includes("disetujui") || change.newStatus.toLowerCase().includes("diproses")) {
+    title = "Pesanan Disetujui Seller! 🎉";
+  } else if (change.newStatus.toLowerCase().includes("batal")) {
+    title = "Pesanan Dibatalkan ❌";
+  } else if (change.newStatus.toLowerCase().includes("selesai")) {
+    title = "Pesanan Selesai! ✅";
+  }
+
+  const message = `Status pesanan #${change.orderId} berubah menjadi: ${change.newStatus}`;
+
+  // 1. Notifikasi Browser Standard
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification(title, {
+      body: message,
+      icon: "/icon.png"
+    });
+  } else {
+    alert(`${title}\n${message}`);
+  }
+
+  // 2. Bunyikan Suara Notifikasi
+  const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+  audio.play().catch(() => {});
+}
+
+// ==========================================
+// 7. INITIALIZATION ON DOM LOADED (DIGABUNG)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
+  // Cek UI State Akun Login
   checkUserAccountState();
+
+  // Minta Izin Notifikasi Browser
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+
+  // Jalankan background worker jika user sudah logged in sebelumnya
+  initShopBackgroundWorker();
 });
 </script>
 
