@@ -62,34 +62,45 @@
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
 
   <!-- TOP HEADER NAV -->
-  <header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-800 border border-emerald-600/50 flex items-center justify-center shadow-inner">
-          <i class="fa-solid fa-store text-amber-300 text-xl"></i>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg font-extrabold tracking-tight leading-tight">Nurjaya Seller</h1>
-            
-          </div>
-          <p class="text-xs text-emerald-100/90 font-medium">Monitoring & Kelola Pesanan Konsumen</p>
-        </div>
+<header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-emerald-800 border border-emerald-600/50 flex items-center justify-center shadow-inner">
+        <i class="fa-solid fa-store text-amber-300 text-xl"></i>
       </div>
-
-      <div class="flex items-center space-x-3">
-        <button id="toggleAudioBtn" onclick="toggleAudioNotifications()" class="px-3 py-1.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-800 text-emerald-100 border border-emerald-600/60 text-xs font-semibold flex items-center gap-2 transition shadow-sm">
-          <i id="audioIcon" class="fa-solid fa-bell text-amber-300"></i>
-          <span id="audioText">Suara: ON</span>
-        </button>
-
-        <button onclick="manualRefreshData()" class="px-3.5 py-1.5 bg-white text-emerald-700 hover:bg-emerald-50 rounded-xl text-xs font-extrabold flex items-center gap-2 transition shadow-md active:scale-95">
-          <i id="refreshSpinner" class="fa-solid fa-rotate text-emerald-600"></i>
-          <span>Refresh Data</span>
-        </button>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-lg font-extrabold tracking-tight leading-tight">Nurjaya Seller</h1>
+        </div>
+        <p class="text-xs text-emerald-100/90 font-medium">Monitoring & Kelola Pesanan Konsumen</p>
       </div>
     </div>
-  </header>
+
+    <div class="flex items-center space-x-3">
+      <!-- Tombol Pesan Masuk (Chat) di Sebelah Kiri Tombol Suara -->
+      <button id="toggleSellerChatBtn" onclick="openSellerChatModal()" class="relative px-3.5 py-1.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-800 text-emerald-100 border border-emerald-600/60 text-xs font-semibold flex items-center gap-2 transition shadow-sm active:scale-95" title="Pesan Masuk Konsumen">
+        <i class="fa-solid fa-comments text-amber-300 text-sm"></i>
+        <span>Pesan Masuk</span>
+        <!-- Badge Unread/Total Chat -->
+        <span id="sellerChatBadge" class="hidden bg-amber-400 text-emerald-950 font-extrabold text-[10px] min-w-[18px] h-4 px-1 rounded-full flex items-center justify-center border border-emerald-700 shadow">
+          0
+        </span>
+      </button>
+
+      <!-- Tombol Suara -->
+      <button id="toggleAudioBtn" onclick="toggleAudioNotifications()" class="px-3 py-1.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-800 text-emerald-100 border border-emerald-600/60 text-xs font-semibold flex items-center gap-2 transition shadow-sm">
+        <i id="audioIcon" class="fa-solid fa-bell text-amber-300"></i>
+        <span id="audioText">Suara: ON</span>
+      </button>
+
+      <!-- Tombol Refresh Data -->
+      <button onclick="manualRefreshData()" class="px-3.5 py-1.5 bg-white text-emerald-700 hover:bg-emerald-50 rounded-xl text-xs font-extrabold flex items-center gap-2 transition shadow-md active:scale-95">
+        <i id="refreshSpinner" class="fa-solid fa-rotate text-emerald-600"></i>
+        <span>Refresh Data</span>
+      </button>
+    </div>
+  </div>
+</header>
 
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
@@ -196,6 +207,144 @@
       </div>
     </div>
   </div>
+  
+<!-- MODAL UTAMA CHAT SELLER -->
+<div id="sellerChatModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity">
+  <div onclick="event.stopPropagation()" class="bg-white w-full max-w-2xl rounded-t-2xl sm:rounded-2xl h-[85vh] sm:h-[580px] flex flex-col shadow-2xl overflow-hidden animate-modal-slide-up">
+    
+    <!-- Header Modal Seller Chat -->
+    <div class="p-3.5 bg-emerald-700 text-white flex justify-between items-center shadow-md shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-emerald-800 flex items-center justify-center text-amber-300 font-bold border border-emerald-600">
+          <i class="fa-solid fa-headset text-xs"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-extrabold leading-tight">Pesan Masuk Konsumen</h3>
+          <p class="text-[10px] text-emerald-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Firebase Real-time Active
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="closeSellerChatModal()" class="text-emerald-100 hover:text-white p-1 rounded-lg hover:bg-emerald-600/50">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Body Modal: 2 Columns Split Layout -->
+    <div class="flex-1 flex overflow-hidden">
+      
+      <!-- Left Panel: Daftar Percakapan Pembeli (Inbox) -->
+      <div id="sellerInboxPanel" class="w-full sm:w-5/12 border-r border-slate-200 bg-slate-50 flex flex-col overflow-hidden">
+        <div class="p-2.5 border-b border-slate-200 bg-white">
+          <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Daftar Obrolan</p>
+        </div>
+        <div id="sellerInboxList" class="flex-1 overflow-y-auto divide-y divide-slate-100">
+          <div class="text-center py-10 text-slate-400 text-xs">
+            <i class="fa-solid fa-circle-notch fa-spin text-xl text-emerald-600 mb-2"></i>
+            <p>Memuat daftar percakapan...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Ruang Obrolan & Form Balas (Chat Room) -->
+      <div id="sellerRoomPanel" class="hidden sm:flex flex-1 flex-col bg-white overflow-hidden">
+        
+        <!-- Header Info Pembeli Aktif -->
+        <div id="activeBuyerHeader" class="p-2.5 bg-slate-100 border-b border-slate-200 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-2">
+            <button onclick="backToInboxList()" class="sm:hidden text-slate-600 p-1 mr-1">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div>
+              <h4 id="activeBuyerName" class="text-xs font-extrabold text-slate-800">Pilih Pembeli</h4>
+              <p id="activeBuyerSub" class="text-[10px] text-slate-500">Klik salah satu obrolan di sebelah kiri</p>
+            </div>
+          </div>
+          <a id="activeBuyerWaLink" target="_blank" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1 transition">
+            <i class="fa-brands fa-whatsapp text-xs"></i> WA
+          </a>
+        </div>
+
+        <!-- Container Isi Pesan (Scrollable) -->
+        <div id="sellerChatItemsContainer" class="p-4 overflow-y-auto space-y-2.5 flex-1 bg-slate-50">
+          <div class="text-center py-12 text-slate-400 text-xs">
+            <i class="fa-solid fa-comments text-3xl mb-2 text-slate-300"></i>
+            <p>Pilih pembeli untuk melihat isi percakapan.</p>
+          </div>
+        </div>
+
+        <!-- Form Balas Pesan & Upload Foto (Footer Chat Seller) -->
+        <div class="p-3 bg-white border-t border-slate-200 shrink-0">
+          <!-- Input File Tersembunyi (Kamera & Galeri HP Seller) -->
+          <input 
+            type="file" 
+            id="sellerChatImageInput" 
+            accept="image/*" 
+            class="hidden" 
+            onchange="handleSellerImageUpload(event)"
+          >
+
+          <form onsubmit="handleSellerSendChatMessage(event)" class="flex items-center gap-2">
+            <!-- Tombol Kamera/Foto Balasan Seller -->
+            <button 
+              type="button" 
+              id="btnSellerCamera"
+              disabled
+              onclick="document.getElementById('sellerChatImageInput').click()" 
+              class="w-9 h-9 bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 rounded-full flex items-center justify-center transition shrink-0 active:scale-95 border border-slate-200 disabled:opacity-50"
+              title="Kirim Foto Balasan"
+            >
+              <i class="fa-solid fa-camera text-xs"></i>
+            </button>
+
+            <!-- Input Teks Balasan -->
+            <input 
+              type="text" 
+              id="sellerChatInputText" 
+              placeholder="Ketik balasan seller..." 
+              disabled
+              autocomplete="off"
+              class="flex-1 bg-slate-100 text-slate-800 text-xs px-3.5 py-2.5 rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition disabled:opacity-50"
+            >
+
+            <!-- Tombol Kirim Teks -->
+            <button 
+              type="submit" 
+              id="btnSellerSendChat" 
+              disabled 
+              class="w-9 h-9 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full flex items-center justify-center shadow transition active:scale-95 shrink-0 disabled:opacity-50"
+            >
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL LIGHTBOX PREVIEW GAMBAR CHAT -->
+<div id="imagePreviewModal" onclick="closeImagePreview()" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4 transition-opacity duration-200">
+  
+  <!-- Tombol Tutup (Silang) -->
+  <button type="button" onclick="closeImagePreview()" class="absolute top-4 right-4 text-white/80 hover:text-white bg-slate-800/60 hover:bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center transition">
+    <i class="fa-solid fa-xmark text-xl"></i>
+  </button>
+
+  <!-- Container Foto -->
+  <div onclick="event.stopPropagation()" class="max-w-full max-h-full flex flex-col items-center justify-center">
+    <img id="imagePreviewTarget" src="" alt="Preview Gambar" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl animate-modal-slide-up">
+    
+    <!-- Tombol Unduh Foto (Opsional) -->
+    <a id="imageDownloadBtn" href="" download="nurjaya-chat-photo.jpg" class="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-full shadow flex items-center gap-2 transition active:scale-95">
+      <i class="fa-solid fa-download"></i> Unduh Foto
+    </a>
+  </div>
+
+</div>
 
   <!-- AUDIO NOTIFIKASI -->
   <audio id="notifSound" preload="auto">
@@ -203,579 +352,883 @@
   </audio>
 
 <!-- JAVASCRIPT SELLER ENGINE -->
-  <script>
-    const SPREADSHEET_ORDER_URL = "https://script.google.com/macros/s/AKfycbwXrdGh9qmn9M_L5H5Rx4a5gpytP7Fk9X4jVAmRhoq2_3vwliAg0mxjkhS4aH3_bDsh/exec";
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZTIveT2eZSA8eI-evypBEwSoz0iBOuRGHkis9-HH8axIwHBS_5OLNimAeM39JK_Pw/exec";
-    const IMAGE_PATH = "assets/img/";
-    const POLLING_INTERVAL_MS = 12000;
+<script>
+  const SPREADSHEET_ORDER_URL = "https://script.google.com/macros/s/AKfycbwXrdGh9qmn9M_L5H5Rx4a5gpytP7Fk9X4jVAmRhoq2_3vwliAg0mxjkhS4aH3_bDsh/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZTIveT2eZSA8eI-evypBEwSoz0iBOuRGHkis9-HH8axIwHBS_5OLNimAeM39JK_Pw/exec";
+  const IMAGE_PATH = "assets/img/";
+  const POLLING_INTERVAL_MS = 12000;
 
-    let rawOrdersData = [];
-    let catalogProducts = [];
-    let knownOrderIds = new Set();
-    let isInitialLoad = true;
-    let currentFilterTab = "all";
-    let isAudioEnabled = true;
-    let sellerWorker;
+  let rawOrdersData = [];
+  let catalogProducts = [];
+  let knownOrderIds = new Set();
+  let isInitialLoad = true;
+  let currentFilterTab = "all";
+  let isAudioEnabled = true;
+  let sellerWorker;
 
-    function formatRupiah(num) {
-      return "Rp " + Number(num || 0).toLocaleString("id-ID");
-    }
+  function formatRupiah(num) {
+    return "Rp " + Number(num || 0).toLocaleString("id-ID");
+  }
 
-    function formatTanggalIndo(waktuRaw) {
-      if (!waktuRaw) return "-";
-      try {
-        let d;
-        if (typeof waktuRaw === 'string' && waktuRaw.includes('/')) {
-          const parts = waktuRaw.split(' ');
-          const dateParts = parts[0].split('/');
-          const timeParts = parts[1] ? parts[1].split(':') : [0, 0, 0];
-          d = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1], timeParts[2] || 0);
-        } else {
-          d = new Date(waktuRaw);
-        }
-        if (isNaN(d.getTime())) return waktuRaw;
-        const opsiHari = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return d.toLocaleDateString('id-ID', opsiHari);
-      } catch (e) {
-        return waktuRaw;
-      }
-    }
-
-    function getDirectDriveImageUrl(url) {
-      if (!url || url === "-" || url.includes("Error")) return null;
-      
-      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || 
-                    url.match(/id=([a-zA-Z0-9_-]+)/) || 
-                    url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-                    
-      if (match && match[1]) {
-        return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
-      }
-      return url;
-    }
-
-    function playNotificationSound() {
-      if (!isAudioEnabled) return;
-      const audio = document.getElementById("notifSound");
-      if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(err => console.log("Autoplay prevented:", err));
-      }
-    }
-
-    function toggleAudioNotifications() {
-      isAudioEnabled = !isAudioEnabled;
-      const icon = document.getElementById("audioIcon");
-      const text = document.getElementById("audioText");
-      if (isAudioEnabled) {
-        icon.className = "fa-solid fa-bell text-amber-300";
-        text.textContent = "Suara: ON";
+  function formatTanggalIndo(waktuRaw) {
+    if (!waktuRaw) return "-";
+    try {
+      let d;
+      if (typeof waktuRaw === 'string' && waktuRaw.includes('/')) {
+        const parts = waktuRaw.split(' ');
+        const dateParts = parts[0].split('/');
+        const timeParts = parts[1] ? parts[1].split(':') : [0, 0, 0];
+        d = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1], timeParts[2] || 0);
       } else {
-        icon.className = "fa-solid fa-bell-slash text-slate-300";
-        text.textContent = "Suara: OFF";
+        d = new Date(waktuRaw);
       }
-    }
-
-    async function fetchCatalogProducts() {
-      try {
-        const res = await fetch(APPS_SCRIPT_URL);
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          catalogProducts = data;
-        }
-      } catch (e) {
-        console.error("Gagal memuat katalog produk:", e);
-      }
-    }
-
-    async function fetchOrdersFromSpreadsheet() {
-      const spinner = document.getElementById("refreshSpinner");
-      if (spinner) spinner.classList.add("fa-spin");
-
-      try {
-        const res = await fetch(SPREADSHEET_ORDER_URL);
-        const result = await res.json();
-
-        if (result.status === "success" && Array.isArray(result.data)) {
-          processIncomingOrdersData(result.data);
-        }
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-      } finally {
-        if (spinner) spinner.classList.remove("fa-spin");
-      }
-    }
-
-function processIncomingOrdersData(freshOrders) {
-  if (!isInitialLoad) {
-    let hasNewIncomingOrder = false;
-    let newOrderId = "";
-
-    let hasCanceledOrder = false;
-    let canceledOrderId = "";
-
-    // Peta status order sebelumnya dari memori lokal
-    const previousStatusMap = new Map();
-    rawOrdersData.forEach(o => {
-      if (o.order_id) {
-        previousStatusMap.set(o.order_id, (o.status || "").toString().trim().toLowerCase());
-      }
-    });
-
-    freshOrders.forEach(order => {
-      const orderId = order.order_id;
-      if (!orderId) return;
-
-      const currentStatus = (order.status || "").toString().trim().toLowerCase();
-
-      // 1. Deteksi Pesanan Masuk Baru
-      if (!knownOrderIds.has(orderId)) {
-        hasNewIncomingOrder = true;
-        newOrderId = orderId;
-      }
-
-      // 2. Deteksi Pesanan yang Baru Sahaja Dibatalkan
-      if (previousStatusMap.has(orderId)) {
-        const oldStatus = previousStatusMap.get(orderId);
-        if (oldStatus !== "dibatalkan" && currentStatus === "dibatalkan") {
-          hasCanceledOrder = true;
-          canceledOrderId = orderId;
-        }
-      }
-    });
-
-    // Pemicu Notifikasi Pesanan Masuk Baru
-    if (hasNewIncomingOrder) {
-      playNotificationSound();
-
-      if (document.hidden && "Notification" in window && Notification.permission === "granted") {
-        new Notification("Pesanan Masuk Baru! 🔔", {
-          body: `Ada pesanan baru dengan ID: ${newOrderId}`,
-          icon: "assets/seller/icon-192.png"
-        });
-      }
-    }
-
-    // Pemicu Notifikasi Pesanan Dibatalkan
-    if (hasCanceledOrder) {
-      playNotificationSound();
-
-      if (document.hidden && "Notification" in window && Notification.permission === "granted") {
-        new Notification("Pesanan Dibatalkan! ⚠️", {
-          body: `Pesanan ${canceledOrderId} telah dibatalkan.`,
-          icon: "assets/seller/icon-192.png"
-        });
-      }
+      if (isNaN(d.getTime())) return waktuRaw;
+      const opsiHari = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return d.toLocaleDateString('id-ID', opsiHari);
+    } catch (e) {
+      return waktuRaw;
     }
   }
 
-  // Perbarui Set Order ID yang diketahui
-  knownOrderIds.clear();
-  freshOrders.forEach(o => { if (o.order_id) knownOrderIds.add(o.order_id); });
-
-  rawOrdersData = freshOrders;
-  isInitialLoad = false;
-
-  updateStatistics();
-  applyFilters();
-}
-
-    function manualRefreshData() {
-      fetchOrdersFromSpreadsheet();
+  function getDirectDriveImageUrl(url) {
+    if (!url || url === "-" || url.includes("Error")) return null;
+    
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || 
+                  url.match(/id=([a-zA-Z0-9_-]+)/) || 
+                  url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                  
+    if (match && match[1]) {
+      return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
     }
+    return url;
+  }
 
-    function updateStatistics() {
-      let total = rawOrdersData.length;
-      let pending = 0;
-      let approved = 0;
-      let done = 0;
+  function playNotificationSound() {
+    if (!isAudioEnabled) return;
+    const audio = document.getElementById("notifSound");
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(err => console.log("Autoplay prevented:", err));
+    }
+  }
 
+  function toggleAudioNotifications() {
+    isAudioEnabled = !isAudioEnabled;
+    const icon = document.getElementById("audioIcon");
+    const text = document.getElementById("audioText");
+    if (isAudioEnabled) {
+      icon.className = "fa-solid fa-bell text-amber-300";
+      text.textContent = "Suara: ON";
+    } else {
+      icon.className = "fa-solid fa-bell-slash text-slate-300";
+      text.textContent = "Suara: OFF";
+    }
+  }
+
+  async function fetchCatalogProducts() {
+    try {
+      const res = await fetch(APPS_SCRIPT_URL);
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        catalogProducts = data;
+      }
+    } catch (e) {
+      console.error("Gagal memuat katalog produk:", e);
+    }
+  }
+
+  async function fetchOrdersFromSpreadsheet() {
+    const spinner = document.getElementById("refreshSpinner");
+    if (spinner) spinner.classList.add("fa-spin");
+
+    try {
+      const res = await fetch(SPREADSHEET_ORDER_URL);
+      const result = await res.json();
+
+      if (result.status === "success" && Array.isArray(result.data)) {
+        processIncomingOrdersData(result.data);
+      }
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+    } finally {
+      if (spinner) spinner.classList.remove("fa-spin");
+    }
+  }
+
+  function processIncomingOrdersData(freshOrders) {
+    if (!isInitialLoad) {
+      let hasNewIncomingOrder = false;
+      let newOrderId = "";
+
+      let hasCanceledOrder = false;
+      let canceledOrderId = "";
+
+      const previousStatusMap = new Map();
       rawOrdersData.forEach(o => {
-        const persetujuan = (o.persetujuan || "").toString().trim().toLowerCase();
-        const status = (o.status || "").toString().trim().toLowerCase();
-
-        if (status === "selesai") {
-          done++;
-        } else if (persetujuan === "acc" || persetujuan === "disetujui") {
-          approved++;
-        } else if (status !== "dibatalkan") {
-          pending++;
+        if (o.order_id) {
+          previousStatusMap.set(o.order_id, (o.status || "").toString().trim().toLowerCase());
         }
       });
 
-      document.getElementById("statTotal").textContent = total;
-      document.getElementById("statPending").textContent = pending;
-      document.getElementById("statApproved").textContent = approved;
-      document.getElementById("statDone").textContent = done;
-    }
+      freshOrders.forEach(order => {
+        const orderId = order.order_id;
+        if (!orderId) return;
 
-    function setFilterTab(tabKey) {
-      currentFilterTab = tabKey;
-      const tabs = ["all", "pending", "approved", "done", "canceled"];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`tabFilter${t.charAt(0).toUpperCase() + t.slice(1)}`);
-        if (btn) {
-          if (t === tabKey) {
-            btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-700 text-white shadow-sm whitespace-nowrap";
-          } else {
-            btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap";
+        const currentStatus = (order.status || "").toString().trim().toLowerCase();
+
+        if (!knownOrderIds.has(orderId)) {
+          hasNewIncomingOrder = true;
+          newOrderId = orderId;
+        }
+
+        if (previousStatusMap.has(orderId)) {
+          const oldStatus = previousStatusMap.get(orderId);
+          if (oldStatus !== "dibatalkan" && currentStatus === "dibatalkan") {
+            hasCanceledOrder = true;
+            canceledOrderId = orderId;
           }
         }
       });
-      applyFilters();
-    }
 
-    function applyFilters() {
-      const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
+      if (hasNewIncomingOrder) {
+        playNotificationSound();
 
-      let filtered = rawOrdersData.filter(order => {
-        const orderId = (order.order_id || "").toLowerCase();
-        const nama = (order.nama_konsumen || "").toLowerCase();
-        const wa = (order.nomor_wa || "").toLowerCase();
-        const persetujuan = (order.persetujuan || "").toString().trim().toLowerCase();
-        const status = (order.status || "").toString().trim().toLowerCase();
-
-        const matchSearch = orderId.includes(q) || nama.includes(q) || wa.includes(q);
-
-        let matchTab = true;
-        if (currentFilterTab === "pending") {
-          matchTab = (persetujuan !== "acc" && persetujuan !== "disetujui") && status !== "dibatalkan" && status !== "selesai";
-        } else if (currentFilterTab === "approved") {
-          matchTab = (persetujuan === "acc" || persetujuan === "disetujui") && status !== "selesai" && status !== "dibatalkan";
-        } else if (currentFilterTab === "done") {
-          matchTab = status === "selesai";
-        } else if (currentFilterTab === "canceled") {
-          matchTab = status === "dibatalkan";
+        if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+          new Notification("Pesanan Masuk Baru! 🔔", {
+            body: `Ada pesanan baru dengan ID: ${newOrderId}`,
+            icon: "assets/seller/icon-192.png"
+          });
         }
-
-        return matchSearch && matchTab;
-      });
-
-      renderOrdersGrid([...filtered].reverse());
-    }
-
-    function renderOrdersGrid(ordersList) {
-      const container = document.getElementById("ordersGrid");
-      if (!container) return;
-
-      if (ordersList.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-200/80">
-            <i class="fa-solid fa-inbox text-4xl mb-3 opacity-30 text-slate-400"></i>
-            <p class="text-xs font-bold text-slate-600">Tidak ada pesanan masuk</p>
-            <p class="text-[11px] text-slate-400 mt-1">Coba ubah kata kunci pencarian atau filter tab status Anda.</p>
-          </div>
-        `;
-        return;
       }
 
-      container.innerHTML = ordersList.map(order => {
-        const orderId = order.order_id || "-";
-        const tanggalFormatted = formatTanggalIndo(order.waktu);
-        const namaKonsumen = order.nama_konsumen || "Konsumen";
-        const noWa = order.nomor_wa || "-";
+      if (hasCanceledOrder) {
+        playNotificationSound();
 
-        const rawPersetujuan = (order.persetujuan || "").toString().trim().toLowerCase();
-        const isApproved = (rawPersetujuan === "acc" || rawPersetujuan === "disetujui");
+        if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+          new Notification("Pesanan Dibatalkan! ⚠️", {
+            body: `Pesanan ${canceledOrderId} telah dibatalkan.`,
+            icon: "assets/seller/icon-192.png"
+          });
+        }
+      }
+    }
 
-        const statusText = order.status && order.status.trim() !== "" ? order.status : "Siap Ambil di Toko";
-        const isDone = statusText.toLowerCase() === "selesai";
-        const isCanceled = statusText.toLowerCase() === "dibatalkan";
+    knownOrderIds.clear();
+    freshOrders.forEach(o => { if (o.order_id) knownOrderIds.add(o.order_id); });
 
-        let persetujuanBadgeHtml = `
-          <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1">
-            <i class="fa-solid fa-clock text-[9px]"></i> Menunggu Persetujuan
+    rawOrdersData = freshOrders;
+    isInitialLoad = false;
+
+    updateStatistics();
+    applyFilters();
+  }
+
+  function manualRefreshData() {
+    fetchOrdersFromSpreadsheet();
+  }
+
+  function updateStatistics() {
+    let total = rawOrdersData.length;
+    let pending = 0;
+    let approved = 0;
+    let done = 0;
+
+    rawOrdersData.forEach(o => {
+      const persetujuan = (o.persetujuan || "").toString().trim().toLowerCase();
+      const status = (o.status || "").toString().trim().toLowerCase();
+
+      if (status === "selesai") {
+        done++;
+      } else if (persetujuan === "acc" || persetujuan === "disetujui") {
+        approved++;
+      } else if (status !== "dibatalkan") {
+        pending++;
+      }
+    });
+
+    document.getElementById("statTotal").textContent = total;
+    document.getElementById("statPending").textContent = pending;
+    document.getElementById("statApproved").textContent = approved;
+    document.getElementById("statDone").textContent = done;
+  }
+
+  function setFilterTab(tabKey) {
+    currentFilterTab = tabKey;
+    const tabs = ["all", "pending", "approved", "done", "canceled"];
+    tabs.forEach(t => {
+      const btn = document.getElementById(`tabFilter${t.charAt(0).toUpperCase() + t.slice(1)}`);
+      if (btn) {
+        if (t === tabKey) {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-700 text-white shadow-sm whitespace-nowrap";
+        } else {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap";
+        }
+      }
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
+
+    let filtered = rawOrdersData.filter(order => {
+      const orderId = (order.order_id || "").toLowerCase();
+      const nama = (order.nama_konsumen || "").toLowerCase();
+      const wa = (order.nomor_wa || "").toLowerCase();
+      const persetujuan = (order.persetujuan || "").toString().trim().toLowerCase();
+      const status = (order.status || "").toString().trim().toLowerCase();
+
+      const matchSearch = orderId.includes(q) || nama.includes(q) || wa.includes(q);
+
+      let matchTab = true;
+      if (currentFilterTab === "pending") {
+        matchTab = (persetujuan !== "acc" && persetujuan !== "disetujui") && status !== "dibatalkan" && status !== "selesai";
+      } else if (currentFilterTab === "approved") {
+        matchTab = (persetujuan === "acc" || persetujuan === "disetujui") && status !== "selesai" && status !== "dibatalkan";
+      } else if (currentFilterTab === "done") {
+        matchTab = status === "selesai";
+      } else if (currentFilterTab === "canceled") {
+        matchTab = status === "dibatalkan";
+      }
+
+      return matchSearch && matchTab;
+    });
+
+    renderOrdersGrid([...filtered].reverse());
+  }
+
+  function renderOrdersGrid(ordersList) {
+    const container = document.getElementById("ordersGrid");
+    if (!container) return;
+
+    if (ordersList.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-200/80">
+          <i class="fa-solid fa-inbox text-4xl mb-3 opacity-30 text-slate-400"></i>
+          <p class="text-xs font-bold text-slate-600">Tidak ada pesanan masuk</p>
+          <p class="text-[11px] text-slate-400 mt-1">Coba ubah kata kunci pencarian atau filter tab status Anda.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = ordersList.map(order => {
+      const orderId = order.order_id || "-";
+      const tanggalFormatted = formatTanggalIndo(order.waktu);
+      const namaKonsumen = order.nama_konsumen || "Konsumen";
+      const noWa = order.nomor_wa || "-";
+
+      const rawPersetujuan = (order.persetujuan || "").toString().trim().toLowerCase();
+      const isApproved = (rawPersetujuan === "acc" || rawPersetujuan === "disetujui");
+
+      const statusText = order.status && order.status.trim() !== "" ? order.status : "Siap Ambil di Toko";
+      const isDone = statusText.toLowerCase() === "selesai";
+      const isCanceled = statusText.toLowerCase() === "dibatalkan";
+
+      let persetujuanBadgeHtml = `
+        <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1">
+          <i class="fa-solid fa-clock text-[9px]"></i> Menunggu Persetujuan
+        </span>
+      `;
+      if (isApproved) {
+        persetujuanBadgeHtml = `
+          <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+            <i class="fa-solid fa-circle-check text-[9px]"></i> Disetujui
           </span>
         `;
-        if (isApproved) {
-          persetujuanBadgeHtml = `
-            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
-              <i class="fa-solid fa-circle-check text-[9px]"></i> Disetujui
-            </span>
-          `;
-        }
+      }
 
-        let statusBadgeHtml = `
-          <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-300">
-            ${statusText}
+      let statusBadgeHtml = `
+        <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-300">
+          ${statusText}
+        </span>
+      `;
+      if (isDone) {
+        statusBadgeHtml = `
+          <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-300 flex items-center gap-1">
+            <i class="fa-solid fa-check-double text-[9px]"></i> Selesai
           </span>
         `;
-        if (isDone) {
-          statusBadgeHtml = `
-            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-300 flex items-center gap-1">
-              <i class="fa-solid fa-check-double text-[9px]"></i> Selesai
-            </span>
-          `;
-        } else if (isCanceled) {
-          statusBadgeHtml = `
-            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1">
-              <i class="fa-solid fa-xmark text-[9px]"></i> Dibatalkan
-            </span>
-          `;
-        }
+      } else if (isCanceled) {
+        statusBadgeHtml = `
+          <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1">
+            <i class="fa-solid fa-xmark text-[9px]"></i> Dibatalkan
+          </span>
+        `;
+      }
 
-        let totalHargaSesi = 0;
-        const itemsList = Array.isArray(order.items) ? order.items : [];
-        const itemsHtml = itemsList.map(item => {
-          const itemNama = item.nama_barang || item.nama || "Barang";
-          const itemQty = item.qty || item.jumlah || 1;
+      let totalHargaSesi = 0;
+      const itemsList = Array.isArray(order.items) ? order.items : [];
+      const itemsHtml = itemsList.map(item => {
+        const itemNama = item.nama_barang || item.nama || "Barang";
+        const itemQty = item.qty || item.jumlah || 1;
 
-          const matchedProduct = catalogProducts.find(p => (p.nama_barang || "").trim().toLowerCase() === itemNama.trim().toLowerCase());
-          const fotoSrc = matchedProduct && matchedProduct.foto_file ? `${IMAGE_PATH}${matchedProduct.foto_file}` : "assets/no-image.webp";
-          const subtotalItem = matchedProduct && matchedProduct.harga_jual ? matchedProduct.harga_jual * itemQty : 0;
-          totalHargaSesi += subtotalItem;
-
-          return `
-            <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl border border-slate-200/70">
-              <img src="${fotoSrc}" alt="${itemNama}" class="w-10 h-10 object-contain bg-white rounded-lg p-1 border shadow-xs" onerror="this.src='https://via.placeholder.com/100?text=Barang'">
-              <div class="flex-1 min-w-0">
-                <h5 class="text-xs font-bold text-slate-800 truncate">${itemNama}</h5>
-                <p class="text-[11px] text-slate-500 font-semibold">Qty: <span class="font-bold text-slate-800">${itemQty} pcs</span></p>
-              </div>
-              ${subtotalItem > 0 ? `<span class="text-xs font-extrabold text-emerald-700 whitespace-nowrap">${formatRupiah(subtotalItem)}</span>` : ''}
-            </div>
-          `;
-        }).join("");
-
-        const hasBuktiQRIS = order.metode_pembayaran === "QRIS" && order.bukti_transaksi && order.bukti_transaksi !== "-";
+        const matchedProduct = catalogProducts.find(p => (p.nama_barang || "").trim().toLowerCase() === itemNama.trim().toLowerCase());
+        const fotoSrc = matchedProduct && matchedProduct.foto_file ? `${IMAGE_PATH}${matchedProduct.foto_file}` : "assets/no-image.webp";
+        const subtotalItem = matchedProduct && matchedProduct.harga_jual ? matchedProduct.harga_jual * itemQty : 0;
+        totalHargaSesi += subtotalItem;
 
         return `
-          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
-            <div>
-              <div class="flex justify-between items-start pb-2.5 border-b border-slate-100">
-                <div>
-                  <span class="text-[11px] font-mono font-extrabold text-emerald-700 block tracking-wider">ID: ${orderId}</span>
-                  <span class="text-[11px] font-semibold text-slate-400">${tanggalFormatted}</span>
-                </div>
-                <div class="flex flex-col items-end gap-1">
-                  <span class="text-[10px] font-extrabold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">
-                    ${order.metode_pembayaran || 'COD'}
-                  </span>
-                </div>
-              </div>
-
-              <div class="mt-3 flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                <div>
-                  <h4 class="text-xs font-extrabold text-slate-800">${namaKonsumen}</h4>
-                  <p class="text-[11px] font-mono text-slate-500 mt-0.5"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>${noWa}</p>
-                </div>
-                <a href="https://wa.me/${noWa.replace(/\D/g, '').replace(/^0/, '62')}" target="_blank" class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-700 hover:text-white flex items-center justify-center text-xs transition" title="Chat WA Konsumen">
-                  <i class="fa-brands fa-whatsapp text-sm"></i>
-                </a>
-              </div>
-
-              <div class="mt-3 space-y-1.5">
-                ${itemsHtml}
-              </div>
-
-              ${totalHargaSesi > 0 ? `
-                <div class="mt-3 flex justify-between items-center px-3 py-2 bg-emerald-50/70 rounded-xl border border-emerald-100 text-xs">
-                  <span class="font-bold text-slate-600">Total Transaksi:</span>
-                  <span class="font-black text-emerald-700 text-sm">${formatRupiah(totalHargaSesi)}</span>
-                </div>
-              ` : ''}
-
-              ${hasBuktiQRIS ? `
-                <button onclick="openBuktiModal('${order.bukti_transaksi}', '${orderId}')" class="mt-2.5 w-full py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 flex items-center justify-center gap-2 transition">
-                  <i class="fa-solid fa-receipt text-amber-600"></i> Lihat Bukti Pembayaran QRIS
-                </button>
-              ` : ''}
+          <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl border border-slate-200/70">
+            <img src="${fotoSrc}" alt="${itemNama}" class="w-10 h-10 object-contain bg-white rounded-lg p-1 border shadow-xs" onerror="this.src='https://via.placeholder.com/100?text=Barang'">
+            <div class="flex-1 min-w-0">
+              <h5 class="text-xs font-bold text-slate-800 truncate">${itemNama}</h5>
+              <p class="text-[11px] text-slate-500 font-semibold">Qty: <span class="font-bold text-slate-800">${itemQty} pcs</span></p>
             </div>
-
-            <div class="pt-3 border-t border-slate-100 space-y-3">
-              <div class="flex items-center justify-between text-xs">
-                <div class="flex items-center gap-1">
-                  ${persetujuanBadgeHtml}
-                </div>
-                <div>
-                  ${statusBadgeHtml}
-                </div>
-              </div>
-
-              <!-- Action Buttons -->
-              <div class="flex items-center gap-2 pt-1">
-                ${!isApproved && !isCanceled && !isDone ? `
-                  <button onclick="updateOrderStatus('${orderId}', 'Disetujui', null, this)" class="flex-1 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
-                    <i class="fa-solid fa-check"></i> Setujui
-                  </button>
-                ` : ''}
-
-                ${isApproved && !isDone && !isCanceled ? `
-                  <button onclick="updateOrderStatus('${orderId}', null, 'Selesai', this)" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
-                    <i class="fa-solid fa-flag-checkered"></i> Tandai Selesai
-                  </button>
-                ` : ''}
-
-                ${!isDone && !isCanceled ? `
-                  <button onclick="updateOrderStatus('${orderId}', null, 'Dibatalkan', this)" class="py-2 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95" title="Batalkan Pesanan">
-                    <i class="fa-solid fa-xmark"></i> Batalkan
-                  </button>
-                ` : ''}
-              </div>
-            </div>
+            ${subtotalItem > 0 ? `<span class="text-xs font-extrabold text-emerald-700 whitespace-nowrap">${formatRupiah(subtotalItem)}</span>` : ''}
           </div>
         `;
       }).join("");
+
+      const hasBuktiQRIS = order.metode_pembayaran === "QRIS" && order.bukti_transaksi && order.bukti_transaksi !== "-";
+
+      return `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex justify-between items-start pb-2.5 border-b border-slate-100">
+              <div>
+                <span class="text-[11px] font-mono font-extrabold text-emerald-700 block tracking-wider">ID: ${orderId}</span>
+                <span class="text-[11px] font-semibold text-slate-400">${tanggalFormatted}</span>
+              </div>
+              <div class="flex flex-col items-end gap-1">
+                <span class="text-[10px] font-extrabold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">
+                  ${order.metode_pembayaran || 'COD'}
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-3 flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+              <div>
+                <h4 class="text-xs font-extrabold text-slate-800">${namaKonsumen}</h4>
+                <p class="text-[11px] font-mono text-slate-500 mt-0.5"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i>${noWa}</p>
+              </div>
+              <a href="https://wa.me/${noWa.replace(/\D/g, '').replace(/^0/, '62')}" target="_blank" class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-700 hover:text-white flex items-center justify-center text-xs transition" title="Chat WA Konsumen">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+              </a>
+            </div>
+
+            <div class="mt-3 space-y-1.5">
+              ${itemsHtml}
+            </div>
+
+            ${totalHargaSesi > 0 ? `
+              <div class="mt-3 flex justify-between items-center px-3 py-2 bg-emerald-50/70 rounded-xl border border-emerald-100 text-xs">
+                <span class="font-bold text-slate-600">Total Transaksi:</span>
+                <span class="font-black text-emerald-700 text-sm">${formatRupiah(totalHargaSesi)}</span>
+              </div>
+            ` : ''}
+
+            ${hasBuktiQRIS ? `
+              <button onclick="openBuktiModal('${order.bukti_transaksi}', '${orderId}')" class="mt-2.5 w-full py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs font-bold border border-amber-200 flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-receipt text-amber-600"></i> Lihat Bukti Pembayaran QRIS
+              </button>
+            ` : ''}
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-1">
+                ${persetujuanBadgeHtml}
+              </div>
+              <div>
+                ${statusBadgeHtml}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-1">
+              ${!isApproved && !isCanceled && !isDone ? `
+                <button onclick="updateOrderStatus('${orderId}', 'Disetujui', null, this)" class="flex-1 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
+                  <i class="fa-solid fa-check"></i> Setujui
+                </button>
+              ` : ''}
+
+              ${isApproved && !isDone && !isCanceled ? `
+                <button onclick="updateOrderStatus('${orderId}', null, 'Selesai', this)" class="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95">
+                  <i class="fa-solid fa-flag-checkered"></i> Tandai Selesai
+                </button>
+              ` : ''}
+
+              ${!isDone && !isCanceled ? `
+                <button onclick="updateOrderStatus('${orderId}', null, 'Dibatalkan', this)" class="py-2 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 active:scale-95" title="Batalkan Pesanan">
+                  <i class="fa-solid fa-xmark"></i> Batalkan
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function updateOrderStatus(orderId, persetujuanVal, statusVal, btnElement) {
+    let pesanKonfirmasi = `Konfirmasi pembaruan pesanan ${orderId}?`;
+    if (statusVal === "Dibatalkan") {
+      pesanKonfirmasi = `Apakah Anda yakin ingin MEMBATALKAN pesanan ${orderId}?`;
     }
 
-    async function updateOrderStatus(orderId, persetujuanVal, statusVal, btnElement) {
-      let pesanKonfirmasi = `Konfirmasi pembaruan pesanan ${orderId}?`;
-      if (statusVal === "Dibatalkan") {
-        pesanKonfirmasi = `Apakah Anda yakin ingin MEMBATALKAN pesanan ${orderId}?`;
-      }
+    if (!confirm(pesanKonfirmasi)) return;
 
-      if (!confirm(pesanKonfirmasi)) return;
+    const orderObj = rawOrdersData.find(o => o.order_id === orderId);
+    if (!orderObj) {
+      alert("Data pesanan tidak ditemukan di memori lokal.");
+      return;
+    }
 
-      const orderObj = rawOrdersData.find(o => o.order_id === orderId);
-      if (!orderObj) {
-        alert("Data pesanan tidak ditemukan di memori lokal.");
-        return;
-      }
+    const originalText = btnElement ? btnElement.innerHTML : "";
+    if (btnElement) {
+      btnElement.disabled = true;
+      btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses...`;
+    }
 
-      const originalText = btnElement ? btnElement.innerHTML : "";
-      if (btnElement) {
-        btnElement.disabled = true;
-        btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses...`;
-      }
+    try {
+      const payload = {
+        action: "update_seller",
+        order_id: orderId,
+        waktu: orderObj.waktu || "",
+        nama_konsumen: orderObj.nama_konsumen || "",
+        nomor_wa: orderObj.nomor_wa || "",
+        items: orderObj.items || [],
+        persetujuan: persetujuanVal !== null ? persetujuanVal : (orderObj.persetujuan || ""),
+        status: statusVal !== null ? statusVal : (orderObj.status || "")
+      };
 
-      try {
-        const payload = {
-          action: "update_seller",
-          order_id: orderId,
-          waktu: orderObj.waktu || "",
-          nama_konsumen: orderObj.nama_konsumen || "",
-          nomor_wa: orderObj.nomor_wa || "",
-          items: orderObj.items || [],
-          persetujuan: persetujuanVal !== null ? persetujuanVal : (orderObj.persetujuan || ""),
-          status: statusVal !== null ? statusVal : (orderObj.status || "")
-        };
+      const response = await fetch(SPREADSHEET_ORDER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
 
-        const response = await fetch(SPREADSHEET_ORDER_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
-        });
+      const result = await response.json();
 
-        const result = await response.json();
-
-        if (result.status === "success") {
-          if (persetujuanVal !== null) {
-            orderObj.persetujuan = persetujuanVal;
-          }
-          if (statusVal !== null) {
-            orderObj.status = statusVal;
-          }
-
-          if (statusVal === "Selesai") {
-            alert(`Pesanan ${orderId} dinyatakan selesai`);
-          } else if (statusVal === "Dibatalkan") {
-            alert(`Pesanan ${orderId} telah dibatalkan`);
-          }
-
-          updateStatistics();
-          applyFilters();
-        } else {
-          alert("Gagal memperbarui pesanan: " + (result.message || "Terjadi kesalahan."));
-          if (btnElement) {
-            btnElement.disabled = false;
-            btnElement.innerHTML = originalText;
-          }
+      if (result.status === "success") {
+        if (persetujuanVal !== null) {
+          orderObj.persetujuan = persetujuanVal;
         }
-      } catch (err) {
-        console.error("Error updating order status:", err);
-        alert("Gagal terhubung ke server spreadsheet.");
+        if (statusVal !== null) {
+          orderObj.status = statusVal;
+        }
+
+        if (statusVal === "Selesai") {
+          alert(`Pesanan ${orderId} dinyatakan selesai`);
+        } else if (statusVal === "Dibatalkan") {
+          alert(`Pesanan ${orderId} telah dibatalkan`);
+        }
+
+        updateStatistics();
+        applyFilters();
+      } else {
+        alert("Gagal memperbarui pesanan: " + (result.message || "Terjadi kesalahan."));
         if (btnElement) {
           btnElement.disabled = false;
           btnElement.innerHTML = originalText;
         }
       }
+    } catch (err) {
+      console.error("Error updating order status:", err);
+      alert("Gagal terhubung ke server spreadsheet.");
+      if (btnElement) {
+        btnElement.disabled = false;
+        btnElement.innerHTML = originalText;
+      }
     }
+  }
 
-    function openBuktiModal(driveUrl, orderId) {
-      const modal = document.getElementById("buktiModal");
-      const img = document.getElementById("buktiModalImg");
-      const spinner = document.getElementById("buktiLoadingSpinner");
-      const errorBox = document.getElementById("buktiErrorBox");
-      const directLink = document.getElementById("buktiDriveDirectLink");
-      const modalOrderId = document.getElementById("buktiModalOrderId");
+  function openBuktiModal(driveUrl, orderId) {
+    const modal = document.getElementById("buktiModal");
+    const img = document.getElementById("buktiModalImg");
+    const spinner = document.getElementById("buktiLoadingSpinner");
+    const errorBox = document.getElementById("buktiErrorBox");
+    const directLink = document.getElementById("buktiDriveDirectLink");
+    const modalOrderId = document.getElementById("buktiModalOrderId");
 
-      modalOrderId.textContent = `Order ID: ${orderId}`;
-      directLink.href = driveUrl;
+    modalOrderId.textContent = `Order ID: ${orderId}`;
+    directLink.href = driveUrl;
 
-      img.classList.add("hidden");
-      errorBox.classList.add("hidden");
-      spinner.classList.remove("hidden");
+    img.classList.add("hidden");
+    errorBox.classList.add("hidden");
+    spinner.classList.remove("hidden");
 
-      const directImgUrl = getDirectDriveImageUrl(driveUrl);
+    const directImgUrl = getDirectDriveImageUrl(driveUrl);
 
-      if (directImgUrl) {
-        img.src = "";
-        img.onload = function() {
-          spinner.classList.add("hidden");
-          img.classList.remove("hidden");
-        };
-        img.onerror = function() {
-          handleBuktiImageError();
-        };
-        img.src = directImgUrl;
-      } else {
+    if (directImgUrl) {
+      img.src = "";
+      img.onload = function() {
+        spinner.classList.add("hidden");
+        img.classList.remove("hidden");
+      };
+      img.onerror = function() {
         handleBuktiImageError();
-      }
-
-      modal.classList.remove("hidden");
+      };
+      img.src = directImgUrl;
+    } else {
+      handleBuktiImageError();
     }
 
-    function handleBuktiImageError() {
-      document.getElementById("buktiLoadingSpinner").classList.add("hidden");
-      document.getElementById("buktiModalImg").classList.add("hidden");
-      document.getElementById("buktiErrorBox").classList.remove("hidden");
+    modal.classList.remove("hidden");
+  }
+
+  function handleBuktiImageError() {
+    document.getElementById("buktiLoadingSpinner").classList.add("hidden");
+    document.getElementById("buktiModalImg").classList.add("hidden");
+    document.getElementById("buktiErrorBox").classList.remove("hidden");
+  }
+
+  function closeBuktiModal() {
+    document.getElementById("buktiModal").classList.add("hidden");
+  }
+
+  // 🟢 INISIALISASI BACKGROUND POLLING WORKER (MENANGANI PESANAN & CHAT)
+  function initBackgroundPolling() {
+    if ("Notification" in window && Notification.permission !== "granted") {
+      Notification.requestPermission();
     }
 
-    function closeBuktiModal() {
-      document.getElementById("buktiModal").classList.add("hidden");
-    }
+    if (window.Worker) {
+      sellerWorker = new Worker("seller-worker.js");
+      
+      sellerWorker.onmessage = function (e) {
+        const spinner = document.getElementById("refreshSpinner");
+        if (spinner) spinner.classList.remove("fa-spin");
 
-    // Inisialisasi Web Worker & Notification Engine
-    function initBackgroundPolling() {
-      if ("Notification" in window && Notification.permission !== "granted") {
-        Notification.requestPermission();
-      }
-
-      if (window.Worker) {
-        sellerWorker = new Worker("seller-worker.js");
-        
-        sellerWorker.onmessage = function (e) {
-          const spinner = document.getElementById("refreshSpinner");
-          if (spinner) spinner.classList.remove("fa-spin");
-
+        // 1. Menangani Notifikasi Data Pesanan
+        if (e.data.type === "orders" || !e.data.type) {
           if (e.data.status === "success") {
             processIncomingOrdersData(e.data.data);
           } else {
             console.error("Worker polling error:", e.data.error);
           }
-        };
-      } else {
-        fetchOrdersFromSpreadsheet();
-        setInterval(fetchOrdersFromSpreadsheet, POLLING_INTERVAL_MS);
+        }
+
+        // 2. Menangani Notifikasi Pesan Chat Baru dari Pembeli
+        if (e.data.type === "chats" && e.data.status === "new_messages") {
+          const newMsgs = e.data.data || [];
+          newMsgs.forEach(msg => {
+            playNotificationSound();
+
+            if ("Notification" in window && Notification.permission === "granted") {
+              new Notification(`Pesan Baru dari ${msg.buyerNama} 💬`, {
+                body: msg.text,
+                icon: "assets/seller/icon-192.png"
+              });
+            }
+          });
+        }
+      };
+    } else {
+      fetchOrdersFromSpreadsheet();
+      setInterval(fetchOrdersFromSpreadsheet, POLLING_INTERVAL_MS);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    await fetchCatalogProducts();
+    initBackgroundPolling();
+  });
+</script>
+
+<!-- Registrasi Service Worker Seller -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw-seller.js')
+        .then(reg => console.log('Seller PWA SW Registered:', reg.scope))
+        .catch(err => console.error('Seller PWA SW Registration Failed:', err));
+    });
+  }
+</script>
+
+<!-- SDK Firebase v13 Modular Engine untuk Nurjaya Seller -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+  import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCS1FVbmuYhKh_FjRQwFBHQOeY9BCT9gmI",
+    authDomain: "nurjaya-shop-db.firebaseapp.com",
+    databaseURL: "https://nurjaya-shop-db-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "nurjaya-shop-db",
+    storageBucket: "nurjaya-shop-db.firebasestorage.app",
+    messagingSenderId: "52423630287",
+    appId: "1:52423630287:web:f266887cf71e6f1ba786ba"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  let currentSelectedBuyerId = null;
+  let activeMessagesListener = null;
+
+  // 1. OPEN / CLOSE MODAL CHAT SELLER
+  window.openSellerChatModal = function() {
+    const modal = document.getElementById("sellerChatModal");
+    if (modal) modal.classList.remove("hidden");
+    listenAllChatsInbox();
+  };
+
+  window.closeSellerChatModal = function() {
+    const modal = document.getElementById("sellerChatModal");
+    if (modal) modal.classList.add("hidden");
+  };
+
+  window.backToInboxList = function() {
+    const inbox = document.getElementById("sellerInboxPanel");
+    const room = document.getElementById("sellerRoomPanel");
+    if (inbox && room) {
+      inbox.classList.remove("hidden");
+      room.classList.add("hidden");
+    }
+  };
+
+  // 2. LISTEN SELURUH DAFTAR INBOX PEMBELI (REAL-TIME LISTENER)
+  function listenAllChatsInbox() {
+    const chatsRef = ref(db, 'chats');
+
+    onValue(chatsRef, (snapshot) => {
+      const inboxList = document.getElementById("sellerInboxList");
+      const badge = document.getElementById("sellerChatBadge");
+      if (!inboxList) return;
+
+      inboxList.innerHTML = "";
+      const chatsData = snapshot.val();
+
+      if (!chatsData) {
+        inboxList.innerHTML = `
+          <div class="text-center py-10 text-slate-400 text-xs">
+            <i class="fa-solid fa-inbox text-2xl mb-1 text-slate-300"></i>
+            <p>Belum ada pesan masuk.</p>
+          </div>`;
+        if (badge) badge.classList.add("hidden");
+        return;
       }
+
+      const keys = Object.keys(chatsData);
+      if (badge && keys.length > 0) {
+        badge.innerText = keys.length;
+        badge.classList.remove("hidden");
+      }
+
+      keys.forEach(cleanUserId => {
+        const item = chatsData[cleanUserId];
+        let lastInfo = {};
+        
+        if (item.info) {
+          const infoKeys = Object.keys(item.info);
+          lastInfo = item.info[infoKeys[infoKeys.length - 1]] || {};
+        }
+
+        const buyerNama = lastInfo.buyerNama || cleanUserId;
+        const buyerId = lastInfo.buyerId || cleanUserId;
+        const buyerWa = lastInfo.buyerWa || '';
+        const lastMsg = lastInfo.lastMessage || 'Mengirim pesan...';
+
+        const btnItem = document.createElement("button");
+        btnItem.className = `w-full p-3 text-left hover:bg-white flex flex-col gap-1 transition ${currentSelectedBuyerId === cleanUserId ? 'bg-white border-l-4 border-emerald-600 shadow-sm' : ''}`;
+        btnItem.onclick = () => selectBuyerChat(cleanUserId, buyerNama, buyerId, buyerWa);
+
+        btnItem.innerHTML = `
+          <div class="flex justify-between items-center w-full">
+            <span class="text-xs font-extrabold text-slate-800 truncate">${buyerNama}</span>
+            <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">${buyerId}</span>
+          </div>
+          <p class="text-[11px] text-slate-500 truncate">${lastMsg}</p>
+        `;
+
+        inboxList.appendChild(btnItem);
+      });
+    });
+  }
+
+  // 3. PILIH SALAH SATU PEMBELI UNTUK DIBUKA ROOM CHAT-NYA
+  window.selectBuyerChat = function(cleanUserId, buyerNama, buyerId, buyerWa) {
+    currentSelectedBuyerId = cleanUserId;
+
+    // Responsive Mobile Toggle
+    const inbox = document.getElementById("sellerInboxPanel");
+    const room = document.getElementById("sellerRoomPanel");
+    if (inbox && room) {
+      inbox.classList.add("hidden", "sm:flex");
+      room.classList.remove("hidden");
+      room.classList.add("flex");
     }
 
-    document.addEventListener("DOMContentLoaded", async () => {
-      await fetchCatalogProducts();
-      initBackgroundPolling();
-    });
-  </script>
-  
-  
-  <!-- Registrasi Service Worker Seller -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw-seller.js')
-          .then(reg => console.log('Seller PWA SW Registered:', reg.scope))
-          .catch(err => console.error('Seller PWA SW Registration Failed:', err));
-      });
+    // Update Header Info Pembeli
+    document.getElementById("activeBuyerName").innerText = buyerNama;
+    document.getElementById("activeBuyerSub").innerText = `ID: ${buyerId} ${buyerWa ? '| WA: ' + buyerWa : ''}`;
+    
+    const waLink = document.getElementById("activeBuyerWaLink");
+    if (buyerWa) {
+      let cleanWa = buyerWa.replace(/[^0-9]/g, '');
+      if (cleanWa.startsWith('0')) cleanWa = '62' + cleanWa.substring(1);
+      waLink.href = `https://wa.me/${cleanWa}?text=Halo%20${encodeURIComponent(buyerNama)},%20kami%20dari%20Nurjaya%20Seller...`;
+      waLink.classList.remove("hidden");
+    } else {
+      waLink.classList.add("hidden");
     }
-  </script>
+
+    // Enable Form Input & Tombol Kamera Seller
+    const input = document.getElementById("sellerChatInputText");
+    const btnSend = document.getElementById("btnSellerSendChat");
+    const btnCam = document.getElementById("btnSellerCamera");
+    if (input) input.disabled = false;
+    if (btnSend) btnSend.disabled = false;
+    if (btnCam) btnCam.disabled = false;
+
+    // Listen Realtime Messages khusus untuk buyer terpilih
+    listenBuyerMessages(cleanUserId);
+  };
+
+  // 4. MENDENGARKAN DETAIL PESAN DARI BUYER TERPILIH (TEKS & GAMBAR)
+  function listenBuyerMessages(cleanUserId) {
+    const messagesRef = ref(db, `chats/${cleanUserId}/messages`);
+
+    if (typeof activeMessagesListener === "function") {
+      activeMessagesListener();
+    }
+
+    activeMessagesListener = onValue(messagesRef, (snapshot) => {
+      const container = document.getElementById("sellerChatItemsContainer");
+      if (!container) return;
+
+      container.innerHTML = "";
+      const data = snapshot.val();
+
+      if (!data) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-slate-400 text-xs">
+            <p>Belum ada riwayat pesan.</p>
+          </div>`;
+        return;
+      }
+
+      Object.values(data).forEach(msg => {
+        const isSeller = msg.sender === "seller";
+        const msgWrapper = document.createElement("div");
+        msgWrapper.className = `flex ${isSeller ? 'justify-end' : 'justify-start'}`;
+
+        const msgBubble = document.createElement("div");
+        msgBubble.className = `max-w-[80%] p-2.5 rounded-2xl text-xs shadow-sm break-words ${
+          isSeller 
+            ? 'bg-emerald-700 text-white rounded-br-none' 
+            : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'
+        }`;
+
+        if (msg.type === "image") {
+          msgBubble.innerHTML = `
+            <div onclick="openImagePreview('${msg.text}')" class="block cursor-pointer overflow-hidden rounded-xl">
+              <img src="${msg.text}" class="rounded-xl max-w-full max-h-48 object-cover hover:scale-105 transition duration-200">
+            </div>
+          `;
+        } else {
+          msgBubble.innerText = msg.text;
+        }
+
+        msgWrapper.appendChild(msgBubble);
+        container.appendChild(msgWrapper);
+      });
+
+      container.scrollTop = container.scrollHeight;
+    });
+  }
+
+  // 5. BALAS PESAN TEKS SELLER
+  window.handleSellerSendChatMessage = function(event) {
+    event.preventDefault();
+    if (!currentSelectedBuyerId) return;
+
+    const input = document.getElementById("sellerChatInputText");
+    const text = input.value.trim();
+    if (!text) return;
+
+    const messagesRef = ref(db, `chats/${currentSelectedBuyerId}/messages`);
+    push(messagesRef, {
+      sender: "seller",
+      type: "text",
+      text: text,
+      timestamp: serverTimestamp()
+    });
+
+    input.value = "";
+  };
+
+  // 6. BALAS FOTO SELLER (KOMPRESI AUTOMATIS & UPLOAD)
+  window.handleSellerImageUpload = function(event) {
+    if (!currentSelectedBuyerId) {
+      alert("Pilih pembeli terlebih dahulu!");
+      return;
+    }
+
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Mohon pilih file gambar!');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_SIZE = 600;
+
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+
+        const messagesRef = ref(db, `chats/${currentSelectedBuyerId}/messages`);
+        push(messagesRef, {
+          sender: "seller",
+          type: "image",
+          text: compressedBase64,
+          timestamp: serverTimestamp()
+        });
+      };
+    };
+
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  };
+  
+  // 7. FUNGSI LIGHTBOX PREVIEW GAMBAR
+  window.openImagePreview = function(imageUrl) {
+    const modal = document.getElementById("imagePreviewModal");
+    const imgTarget = document.getElementById("imagePreviewTarget");
+    const downloadBtn = document.getElementById("imageDownloadBtn");
+
+    if (modal && imgTarget) {
+      imgTarget.src = imageUrl;
+      if (downloadBtn) downloadBtn.href = imageUrl;
+      modal.classList.remove("hidden");
+    }
+  };
+
+  window.closeImagePreview = function() {
+    const modal = document.getElementById("imagePreviewModal");
+    if (modal) modal.classList.add("hidden");
+  };
+</script>
+
+
 </body>
 </html>
